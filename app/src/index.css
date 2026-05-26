@@ -1,0 +1,65 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --bg-obsidian: #0A090C;
+    --bg-charcoal: #131217;
+    --bg-surface: #1A191D;
+    --accent-red: #D91E36;
+    --accent-red-light: #FF3B5C;
+    --text-primary: #F4F4F5;
+    --text-secondary: #8A8A93;
+    --text-muted: #5A5A63;
+    --border-subtle: rgba(244, 244, 245, 0.08);
+    --border-active: rgba(217, 30, 54, 0.5);
+    --safe-green: #00E5A0;
+    --warn-yellow: #FFB800;
+
+    --background: 260 14% 4%;
+    --foreground: 240 6% 96%;
+    --card: 260 12% 8%;
+    --card-foreground: 240 6% 96%;
+    --popover: 260 12% 8%;
+    --popover-foreground: 240 6% 96%;
+    --primary: 352 76% 48%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 260 8% 11%;
+    --secondary-foreground: 240 6% 96%;
+    --muted: 260 8% 11%;
+    --muted-foreground: 240 4% 55%;
+    --accent: 260 8% 11%;
+    --accent-foreground: 240 6% 96%;
+    --destructive: 352 76% 48%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 240 6% 96%;
+    --input: 260 8% 11%;
+    --ring: 352 76% 48%;
+    --radius: 0.5rem;
+    --sidebar-background: 260 12% 8%;
+    --sidebar-foreground: 240 6% 96%;
+    --sidebar-primary: 352 76% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 260 8% 11%;
+    --sidebar-accent-foreground: 240 6% 96%;
+    --sidebar-border: 240 6% 96%;
+    --sidebar-ring: 352 76% 48%;
+  }
+
+  html {
+    scroll-behavior: auto;
+  }
+
+  body {
+    background-color: var(--bg-obsidian);
+    color: var(--text-primary);
+    font-family: 'Inter', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Space Grotesk', sans-serif;
+  }
+}
