@@ -66,6 +66,7 @@ export default function Navbar() {
           className="inline-flex items-center justify-center rounded-md p-2 text-text-secondary transition-colors hover:text-text-primary md:hidden"
           aria-label="Menüyü aç/kapat"
           aria-expanded={mobileOpen}
+          aria-controls="mobile-menu"
         >
           {mobileOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
         </button>
@@ -74,6 +75,7 @@ export default function Navbar() {
       {/* Mobile menu */}
       {mobileOpen && (
         <div
+          id="mobile-menu"
           className="border-t border-border-subtle px-6 py-4 md:hidden"
           style={{ backgroundColor: 'rgba(19, 18, 23, 0.95)', backdropFilter: 'blur(12px)' }}
         >

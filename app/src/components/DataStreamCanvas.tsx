@@ -1,4 +1,4 @@
-import { useRef, useEffect, useCallback } from 'react'
+import { useRef, useEffect, useState, useCallback } from 'react'
 
 interface Particle {
   x: number
@@ -13,13 +13,18 @@ export default function DataStreamCanvas() {
   const particlesRef = useRef<Particle[]>([])
   const animFrameRef = useRef<number>(0)
   const isMobileRef = useRef(false)
+  const [isMobile, setIsMobile] = useState<boolean>(
+    typeof window !== 'undefined' ? window.innerWidth < 768 : false
+  )
 
   const resize = useCallback(() => {
     const canvas = canvasRef.current
     if (!canvas) return
     canvas.width = window.innerWidth
     canvas.height = window.innerHeight
-    isMobileRef.current = window.innerWidth < 768
+    const mobile = window.innerWidth < 768
+    isMobileRef.current = mobile
+    setIsMobile(mobile)
   }, [])
 
   useEffect(() => {
@@ -30,6 +35,13 @@ export default function DataStreamCanvas() {
 
     resize()
     window.addEventListener('resize', resize)
+
+    // Skip canvas animation entirely on mobile (gradient fallback rendered instead)
+    if (isMobileRef.current) {
+      return () => {
+        window.removeEventListener('resize', resize)
+      }
+    }
 
     function createParticle(): Particle {
       return {
@@ -83,8 +95,9 @@ export default function DataStreamCanvas() {
       )
       ctx.restore()
 
-      // Spawn new particle
-      if (Math.random() > 0.1) {
+      // Spawn new particle (capped to prevent unbounded growth)
+      const MAX_PARTICLES = isMobileRef.current ? 50 : 150
+      if (Math.random() > 0.1 && particlesRef.current.length < MAX_PARTICLES) {
         particlesRef.current.push(createParticle())
       }
 
@@ -98,13 +111,33 @@ export default function DataStreamCanvas() {
       animFrameRef.current = requestAnimationFrame(animate)
     }
 
-    animate()
+    const handleVisibility = () => {
+      if (document.hidden) {
+        cancelAnimationFrame(animFrameRef.current)
+      } else {
+        animFrameRef.current = requestAnimationFrame(animate)
+      }
+    }
+    document.addEventListener('visibilitychange', handleVisibility)
+
+    animFrameRef.current = requestAnimationFrame(animate)
 
     return () => {
       window.removeEventListener('resize', resize)
+      document.removeEventListener('visibilitychange', handleVisibility)
       cancelAnimationFrame(animFrameRef.current)
     }
   }, [resize])
+
+  if (isMobile) {
+    return (
+      <div
+        aria-hidden="true"
+        className="fixed inset-0 bg-gradient-to-b from-accent-red/20 via-bg-charcoal to-bg-obsidian"
+        style={{ zIndex: 0 }}
+      />
+    )
+  }
 
   return (
     <canvas

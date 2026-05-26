@@ -22,7 +22,11 @@ export default function Footer() {
         <div className="grid grid-cols-1 gap-12 sm:grid-cols-2 lg:grid-cols-4">
           {/* Brand & mission */}
           <div className="sm:col-span-2 lg:col-span-1">
-            <Link to="/" className="inline-flex items-center gap-0 font-display text-xl font-bold tracking-tight">
+            <Link
+              to="/"
+              aria-label="OllamaTR ana sayfa"
+              className="inline-flex items-center gap-0 font-display text-xl font-bold tracking-tight"
+            >
               <span className="text-text-primary">Ollama</span>
               <span className="text-accent-red">TR</span>
             </Link>
@@ -109,7 +113,7 @@ export default function Footer() {
         {/* Bottom bar */}
         <div className="mt-16 flex flex-col items-center justify-between gap-4 border-t border-border-subtle pt-8 sm:flex-row">
           <p className="text-xs text-text-muted">
-            &copy; {new Date().getFullYear()} OllamaTR. Tüm hakları saklıdır.
+            &copy; 2025 OllamaTR. Tüm hakları saklıdır.
           </p>
           <div className="flex items-center gap-6">
             <a

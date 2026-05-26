@@ -1,4 +1,5 @@
 import { useEffect, type ReactNode } from 'react'
+import type LenisType from 'lenis'
 import Navbar from './Navbar'
 import Footer from './Footer'
 
@@ -8,24 +9,25 @@ interface LayoutProps {
 
 export default function Layout({ children }: LayoutProps) {
   useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    let lenis: any = null
-    let rafId: number
+    let lenis: LenisType | null = null
+    let rafId = 0
+    let cancelled = false
+
+    const raf = (time: number) => {
+      lenis?.raf(time)
+      rafId = requestAnimationFrame(raf)
+    }
 
     async function initLenis() {
       try {
         const Lenis = (await import('lenis')).default
+        if (cancelled) return
         lenis = new Lenis({
           lerp: 0.1,
           smoothWheel: true,
         })
-
-        function raf(time: number) {
-          lenis.raf(time)
-          rafId = requestAnimationFrame(raf)
-        }
         rafId = requestAnimationFrame(raf)
-      } catch (e) {
+      } catch {
         // Lenis not available, fall back to native scrolling
       }
     }
@@ -33,10 +35,9 @@ export default function Layout({ children }: LayoutProps) {
     initLenis()
 
     return () => {
+      cancelled = true
       cancelAnimationFrame(rafId)
-      if (lenis) {
-        lenis.destroy()
-      }
+      lenis?.destroy()
     }
   }, [])
 
