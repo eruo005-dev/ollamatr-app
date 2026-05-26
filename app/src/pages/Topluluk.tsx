@@ -1,5 +1,5 @@
-import { useRef, useState } from 'react'
-import { motion, useInView, AnimatePresence } from 'framer-motion'
+import { useState } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 import {
   Send,
   MessageCircle,
@@ -7,44 +7,13 @@ import {
   Users,
   ChevronRight,
   MessageSquare,
-  Clock,
 } from 'lucide-react'
+import { fadeUp, staggerContainer, staggerChild } from '@/lib/animations'
+import ScrollReveal from '@/components/ScrollReveal'
 
 /* ------------------------------------------------------------------ */
-/*  Animation helpers                                                  */
+/*  Local animation helper                                              */
 /* ------------------------------------------------------------------ */
-
-const fadeUp = {
-  hidden: { opacity: 0, y: 40 },
-  visible: (i: number) => ({
-    opacity: 1,
-    y: 0,
-    transition: {
-      delay: i * 0.12,
-      duration: 0.7,
-      ease: [0.16, 1, 0.3, 1] as [number, number, number, number],
-    },
-  }),
-}
-
-const staggerContainer = {
-  hidden: {},
-  visible: {
-    transition: { staggerChildren: 0.08 },
-  },
-}
-
-const staggerChild = {
-  hidden: { opacity: 0, y: 30 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.6,
-      ease: [0.16, 1, 0.3, 1] as [number, number, number, number],
-    },
-  },
-}
 
 const scaleIn = {
   hidden: { opacity: 0, scale: 0.8 },
@@ -60,67 +29,34 @@ const scaleIn = {
 }
 
 /* ------------------------------------------------------------------ */
-/*  Scroll-reveal wrapper                                               */
-/* ------------------------------------------------------------------ */
-
-function ScrollReveal({
-  children,
-  className,
-  delay = 0,
-}: {
-  children: React.ReactNode
-  className?: string
-  delay?: number
-}) {
-  const ref = useRef(null)
-  const isInView = useInView(ref, { once: true, margin: '-50px' })
-
-  return (
-    <motion.div
-      ref={ref}
-      className={className}
-      initial={{ opacity: 0, y: 40 }}
-      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
-      transition={{
-        duration: 0.7,
-        delay,
-        ease: [0.16, 1, 0.3, 1] as [number, number, number, number],
-      }}
-    >
-      {children}
-    </motion.div>
-  )
-}
-
-/* ------------------------------------------------------------------ */
 /*  Platform data                                                       */
 /* ------------------------------------------------------------------ */
 
 const platforms = [
   {
-    icon: Send,
-    name: 'Telegram',
-    subtitle: 'Yapay Zeka Türkiye',
-    members: '5.200+ üye',
-    description: 'Anlık sohbet, hızlı yardım, duyurular',
-    color: 'hover:border-[#0088cc]/40 hover:shadow-[0_0_20px_rgba(0,136,204,0.1)]',
-    buttonColor: 'hover:text-[#0088cc] hover:border-[#0088cc]',
-  },
-  {
     icon: MessageCircle,
     name: 'Discord',
     subtitle: 'Discord Sunucusu',
-    members: '1.800+ üye',
+    members: '5.234 üye',
     description: 'Teknik tartışma, sesli kanallar, etkinlikler',
     color: 'hover:border-[#5865F2]/40 hover:shadow-[0_0_20px_rgba(88,101,242,0.1)]',
     buttonColor: 'hover:text-[#5865F2] hover:border-[#5865F2]',
   },
   {
+    icon: Send,
+    name: 'Telegram',
+    subtitle: 'Yapay Zeka Türkiye',
+    members: '1.876 üye',
+    description: 'Anlık sohbet, hızlı yardım, duyurular',
+    color: 'hover:border-[#0088cc]/40 hover:shadow-[0_0_20px_rgba(0,136,204,0.1)]',
+    buttonColor: 'hover:text-[#0088cc] hover:border-[#0088cc]',
+  },
+  {
     icon: Github,
     name: 'GitHub',
     subtitle: 'Açık Kaynak',
-    members: '800+ yıldız',
-    description: 'Açık kaynak katkı, issue takibi, PR\'lar',
+    members: '234 contributor',
+    description: "Açık kaynak katkı, issue takibi, PR'lar",
     color: 'hover:border-white/20 hover:shadow-[0_0_20px_rgba(255,255,255,0.05)]',
     buttonColor: 'hover:text-white hover:border-white',
   },
@@ -128,7 +64,7 @@ const platforms = [
     icon: Users,
     name: 'Forum',
     subtitle: 'btt.community',
-    members: '500+ konu',
+    members: '456 konu',
     description: 'Derinlemesine tartışma, rehberler, showcase',
     color: 'hover:border-accent-red/40 hover:shadow-glow-red',
     buttonColor: 'hover:text-accent-red hover:border-accent-red',
@@ -138,6 +74,18 @@ const platforms = [
 /* ------------------------------------------------------------------ */
 /*  Contributor data                                                    */
 /* ------------------------------------------------------------------ */
+
+interface FeaturedContributor {
+  name: string
+  count: number
+  label: string
+}
+
+const featuredContributors: FeaturedContributor[] = [
+  { name: 'Mehmet K.', count: 247, label: 'Kod' },
+  { name: 'Ayşe Y.', count: 156, label: 'Dökümantasyon' },
+  { name: 'Burak T.', count: 134, label: 'Çeviri' },
+]
 
 const contributors = [
   'Ayşe K.',
@@ -179,24 +127,47 @@ const contributorColors = [
 /*  Events data                                                         */
 /* ------------------------------------------------------------------ */
 
-const events = [
+interface CommunityEvent {
+  title: string
+  date: string
+  location: string
+  type: string
+  typeColor: string
+  statusEmoji: string
+  statusLabel: string
+  statusColor: string
+}
+
+const events: CommunityEvent[] = [
   {
-    title: 'OllamaTR Workshop: İlk Modelinizi Çalıştırın',
-    date: '15 Haziran 2025, Online',
-    type: 'Başlangıç seviye',
+    title: "Türkçe LLM Workshop'u",
+    date: '15 Mart 2025',
+    location: 'Teknopark İstanbul',
+    type: 'in-person',
     typeColor: 'bg-safe-green/10 text-safe-green',
+    statusEmoji: '🟢',
+    statusLabel: 'Açık',
+    statusColor: 'bg-safe-green/10 text-safe-green',
   },
   {
-    title: 'Türkçe AI Hackathon',
-    date: '22-23 Haziran 2025, İstanbul',
-    type: 'Yarışma',
+    title: 'KOBİ AI Eğitimi',
+    date: '22 Mart 2025',
+    location: 'Online (Zoom)',
+    type: 'webinar',
     typeColor: 'bg-warn-yellow/10 text-warn-yellow',
+    statusEmoji: '🟡',
+    statusLabel: 'Son 5 Yer',
+    statusColor: 'bg-warn-yellow/10 text-warn-yellow',
   },
   {
-    title: 'KVKK & AI Semineri',
-    date: '5 Temmuz 2025, Online',
-    type: 'Seminer',
+    title: 'Türkçe NLP Hackathon',
+    date: '5-6 Nisan 2025',
+    location: 'İTÜ ARI Teknokent',
+    type: 'hackathon',
     typeColor: 'bg-accent-red/10 text-accent-red',
+    statusEmoji: '🟢',
+    statusLabel: 'Açık',
+    statusColor: 'bg-safe-green/10 text-safe-green',
   },
 ]
 
@@ -204,31 +175,37 @@ const events = [
 /*  Forum highlights data                                               */
 /* ------------------------------------------------------------------ */
 
-const forumHighlights = [
+interface ForumTopic {
+  title: string
+  replies: number
+  category: string
+}
+
+const forumHighlights: ForumTopic[] = [
   {
-    title: 'Llama 3.1 Turkuaz ile en iyi prompt şablonları',
+    title: 'Llama-3-Turkish-8B fine-tune ipuçları',
     replies: 42,
-    time: '3 saat önce',
+    category: 'Model Eğitimi',
   },
   {
-    title: '8GB RAM ile hangi modeller çalışır? Pratik rehber',
+    title: "Mac M2'de hangi modeller hızlı çalışıyor?",
     replies: 28,
-    time: '5 saat önce',
+    category: 'Donanım',
   },
   {
-    title: 'Kendi verimle fine-tune deneyimlerim',
+    title: 'KVKK uyumlu RAG mimarisi nasıl kurulur?',
     replies: 35,
-    time: '1 gün önce',
+    category: 'KVKK & Güvenlik',
   },
   {
-    title: 'OllamaTR + Next.js entegrasyonu',
+    title: 'Türkçe embedding modeli arayışı',
     replies: 19,
-    time: '1 gün önce',
+    category: 'NLP',
   },
   {
-    title: 'KVKK uyumlu RAG sistemi nasıl kurulur?',
-    replies: 15,
-    time: '2 gün önce',
+    title: 'Trendyol-LLM-7B-v2 ile e-ticaret asistanı',
+    replies: 51,
+    category: 'Use Cases',
   },
 ]
 
@@ -290,16 +267,17 @@ function ContributorAvatar({
 
 export default function Topluluk() {
   return (
-    <div className="bg-bg-obsidian">
+    <section aria-label="Topluluk sayfası" className="bg-bg-obsidian">
       {/* ========== HERO with background image ========== */}
       <section className="relative px-6 pb-16 pt-40 lg:px-10 lg:pb-24 lg:pt-44">
         {/* Background image */}
         <div
+          aria-hidden="true"
           className="absolute inset-0 bg-cover bg-center"
           style={{ backgroundImage: 'url(/community-photo.jpg)' }}
         />
         {/* Dark overlay */}
-        <div className="absolute inset-0 bg-bg-obsidian/80" />
+        <div aria-hidden="true" className="absolute inset-0 bg-bg-obsidian/80" />
 
         <div className="relative z-10 mx-auto max-w-4xl text-center">
           <motion.p
@@ -318,7 +296,7 @@ export default function Topluluk() {
             animate="visible"
             custom={1}
           >
-            Topluluğa Katıl
+            Birlikte Büyüyoruz
           </motion.h1>
           <motion.p
             className="mx-auto mt-6 max-w-2xl font-body text-lg leading-relaxed text-text-secondary"
@@ -327,7 +305,8 @@ export default function Topluluk() {
             animate="visible"
             custom={2}
           >
-            5.000+ Türk geliştirici ile yapay zekayı birlikte keşfedin.
+            10.000+ geliştiriciden oluşan topluluğumuza katılın. Türkçe yapay
+            zekayı birlikte inşa ediyoruz.
           </motion.p>
         </div>
       </section>
@@ -379,13 +358,13 @@ export default function Topluluk() {
                   </p>
 
                   <div className="mt-6">
-                    <a
-                      href="#"
+                    <button
+                      type="button"
                       className={`inline-flex items-center gap-1.5 rounded border border-border-subtle bg-transparent px-5 py-2.5 font-body text-sm font-medium text-text-primary transition-all duration-200 ${platform.buttonColor}`}
                     >
                       Katıl
                       <ChevronRight className="h-4 w-4" />
-                    </a>
+                    </button>
                   </div>
                 </motion.div>
               )
@@ -409,6 +388,45 @@ export default function Topluluk() {
             </p>
           </ScrollReveal>
 
+          {/* Featured top contributors */}
+          <motion.div
+            className="mb-12 grid grid-cols-1 gap-6 sm:grid-cols-3"
+            variants={staggerContainer}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: '-50px' }}
+          >
+            {featuredContributors.map((contrib, idx) => (
+              <motion.div
+                key={idx}
+                variants={staggerChild}
+                className="flex flex-col items-center rounded-lg border border-border-subtle bg-bg-charcoal p-6 transition-all duration-300 hover:-translate-y-1 hover:border-accent-red/30"
+              >
+                <div
+                  role="img"
+                  aria-label={`${contrib.name} profil resmi`}
+                  className={`flex h-20 w-20 items-center justify-center rounded-full ${contributorColors[idx % contributorColors.length]}`}
+                >
+                  <span className="font-mono text-lg font-bold">
+                    {contrib.name
+                      .split(' ')
+                      .map((w) => w[0])
+                      .join('')}
+                  </span>
+                </div>
+                <h3 className="mt-4 font-display text-base font-bold text-text-primary">
+                  {contrib.name}
+                </h3>
+                <p className="mt-1 font-mono text-sm font-semibold text-accent-red">
+                  {contrib.count} katkı
+                </p>
+                <p className="mt-1 font-body text-xs uppercase tracking-wider text-text-muted">
+                  {contrib.label}
+                </p>
+              </motion.div>
+            ))}
+          </motion.div>
+
           <motion.div
             className="flex flex-wrap justify-center gap-4"
             initial="hidden"
@@ -426,13 +444,13 @@ export default function Topluluk() {
           </motion.div>
 
           <ScrollReveal delay={0.3} className="mt-10 text-center">
-            <a
-              href="#"
+            <button
+              type="button"
               className="inline-flex items-center gap-2 font-body text-sm font-medium text-accent-red transition-colors hover:text-accent-red-light"
             >
               <ChevronRight className="h-4 w-4" />
               Sen de katkıda bulun!
-            </a>
+            </button>
           </ScrollReveal>
         </div>
       </section>
@@ -464,23 +482,32 @@ export default function Topluluk() {
                     <span className="rounded bg-bg-surface px-3 py-1 font-mono text-xs text-text-secondary">
                       {event.date}
                     </span>
+                    <span className="font-body text-xs text-text-muted">
+                      {event.location}
+                    </span>
                     <span
                       className={`rounded px-3 py-1 font-body text-xs font-medium ${event.typeColor}`}
                     >
                       {event.type}
+                    </span>
+                    <span
+                      className={`inline-flex items-center gap-1 rounded px-3 py-1 font-body text-xs font-medium ${event.statusColor}`}
+                    >
+                      <span aria-hidden="true">{event.statusEmoji}</span>
+                      {event.statusLabel}
                     </span>
                   </div>
                   <h3 className="mt-3 font-display text-base font-bold text-text-primary">
                     {event.title}
                   </h3>
                 </div>
-                <a
-                  href="#"
-                  className="inline-flex items-center gap-1.5 shrink-0 font-body text-sm font-medium text-accent-red transition-colors hover:text-accent-red-light"
+                <button
+                  type="button"
+                  className="inline-flex shrink-0 items-center gap-1.5 font-body text-sm font-medium text-accent-red transition-colors hover:text-accent-red-light"
                 >
                   Detaylar
                   <ChevronRight className="h-4 w-4" />
-                </a>
+                </button>
               </motion.div>
             ))}
           </motion.div>
@@ -504,11 +531,11 @@ export default function Topluluk() {
             viewport={{ once: true, margin: '-50px' }}
           >
             {forumHighlights.map((topic, idx) => (
-              <motion.a
+              <motion.button
+                type="button"
                 key={idx}
-                href="#"
                 variants={staggerChild}
-                className="group flex flex-col gap-2 border-b border-border-subtle py-5 transition-all duration-200 hover:border-l-2 hover:border-l-accent-red hover:pl-4 sm:flex-row sm:items-center sm:justify-between"
+                className="group flex flex-col gap-2 border-b border-border-subtle py-5 text-left transition-all duration-200 hover:border-l-2 hover:border-l-accent-red hover:pl-4 sm:flex-row sm:items-center sm:justify-between"
               >
                 <div className="flex items-center gap-3 overflow-hidden">
                   <MessageSquare className="h-4 w-4 shrink-0 text-text-muted" />
@@ -520,12 +547,11 @@ export default function Topluluk() {
                   <span className="font-body text-xs text-text-muted">
                     {topic.replies} yanıt
                   </span>
-                  <span className="flex items-center gap-1 font-body text-xs text-text-muted">
-                    <Clock className="h-3 w-3" />
-                    {topic.time}
+                  <span className="rounded bg-bg-surface px-2 py-0.5 font-body text-xs text-text-secondary">
+                    {topic.category}
                   </span>
                 </div>
-              </motion.a>
+              </motion.button>
             ))}
           </motion.div>
         </div>
@@ -535,30 +561,30 @@ export default function Topluluk() {
       <section className="bg-bg-charcoal px-6 py-24 lg:px-10 lg:py-32">
         <ScrollReveal className="mx-auto max-w-2xl text-center">
           <h2 className="font-display text-3xl font-bold text-text-primary lg:text-4xl">
-            Birlikte daha güçlüyüz.
+            Aramıza Katılın
           </h2>
           <p className="mt-4 font-body text-lg text-text-secondary">
-            Her seviyeden geliştirici welcome. Sorular sormaktan, projeler
-            paylaşmaktan çekinmeyin.
+            Her seviyeden geliştirici için hoş geldiniz. Sorular sormaktan,
+            projeler paylaşmaktan çekinmeyin.
           </p>
           <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
-            <a
-              href="#"
+            <button
+              type="button"
               className="inline-flex items-center justify-center rounded bg-accent-red px-8 py-3.5 font-body text-sm font-semibold uppercase tracking-wider text-white transition-all duration-200 hover:bg-accent-red-light hover:scale-[1.02]"
             >
               <Send className="mr-2 h-4 w-4" />
               Topluluğa Katıl
-            </a>
-            <a
-              href="#"
+            </button>
+            <button
+              type="button"
               className="inline-flex items-center justify-center rounded border border-border-subtle bg-transparent px-8 py-3.5 font-body text-sm font-semibold uppercase tracking-wider text-text-primary transition-all duration-200 hover:border-accent-red hover:text-accent-red-light"
             >
               <Github className="mr-2 h-4 w-4" />
               GitHub&apos;da Keşfet
-            </a>
+            </button>
           </div>
         </ScrollReveal>
       </section>
-    </div>
+    </section>
   )
 }

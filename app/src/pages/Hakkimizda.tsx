@@ -1,109 +1,49 @@
 import { useRef } from 'react'
 import { Link } from 'react-router'
-import { motion, useInView } from 'framer-motion'
+import { motion } from 'framer-motion'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useGSAP } from '@gsap/react'
+import { fadeUp, staggerContainer, staggerChild } from '@/lib/animations'
+import ScrollReveal from '@/components/ScrollReveal'
 
 gsap.registerPlugin(ScrollTrigger)
-
-/* ------------------------------------------------------------------ */
-/*  Animation helpers                                                  */
-/* ------------------------------------------------------------------ */
-
-const fadeUp = {
-  hidden: { opacity: 0, y: 40 },
-  visible: (i: number) => ({
-    opacity: 1,
-    y: 0,
-    transition: {
-      delay: i * 0.12,
-      duration: 0.7,
-      ease: [0.16, 1, 0.3, 1] as [number, number, number, number],
-    },
-  }),
-}
-
-const staggerContainer = {
-  hidden: {},
-  visible: {
-    transition: { staggerChildren: 0.1 },
-  },
-}
-
-const staggerChild = {
-  hidden: { opacity: 0, y: 30 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.6,
-      ease: [0.16, 1, 0.3, 1] as [number, number, number, number],
-    },
-  },
-}
-
-/* ------------------------------------------------------------------ */
-/*  Scroll-reveal wrapper (Framer Motion)                              */
-/* ------------------------------------------------------------------ */
-
-function ScrollReveal({
-  children,
-  className,
-  delay = 0,
-}: {
-  children: React.ReactNode
-  className?: string
-  delay?: number
-}) {
-  const ref = useRef(null)
-  const isInView = useInView(ref, { once: true, margin: '-50px' })
-
-  return (
-    <motion.div
-      ref={ref}
-      className={className}
-      initial={{ opacity: 0, y: 40 }}
-      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
-      transition={{
-        duration: 0.7,
-        delay,
-        ease: [0.16, 1, 0.3, 1] as [number, number, number, number],
-      }}
-    >
-      {children}
-    </motion.div>
-  )
-}
 
 /* ------------------------------------------------------------------ */
 /*  Team data                                                           */
 /* ------------------------------------------------------------------ */
 
-const teamMembers = [
+interface TeamMember {
+  name: string
+  role: string
+  bio: string
+  initials: string
+}
+
+const teamMembers: TeamMember[] = [
   {
-    name: 'Efe Kaya',
+    name: 'Ali Yılmaz',
     role: 'Kurucu & CEO',
-    bio: 'AI ve sistem mimarisi tutkunu.',
-    initials: 'EK',
+    bio: "Türkiye'de yapay zekanın demokratikleşmesi için 10+ yıldır çalışıyor. Önceden Trendyol AI ekibinde.",
+    initials: 'AY',
   },
   {
-    name: 'Zeynep Arslan',
+    name: 'Deniz Kaya',
     role: 'CTO',
-    bio: 'Açık kaynak savunucusu, backend uzmanı.',
-    initials: 'ZA',
+    bio: 'GPU optimizasyonu ve dağıtık sistemler uzmanı. İTÜ Bilgisayar Müh. mezunu, eski Hugging Face contributor.',
+    initials: 'DK',
   },
   {
-    name: 'Burak Yılmaz',
-    role: 'Baş Geliştirici',
-    bio: 'Tauri ve Rust meraklısı.',
-    initials: 'BY',
+    name: 'Ebru Şahin',
+    role: 'ML Lead',
+    bio: "NLP ve Türkçe dil modelleri üzerine doktora. Boğaziçi Üniversitesi'nde misafir araştırmacı.",
+    initials: 'EŞ',
   },
   {
-    name: 'Elif Demir',
-    role: 'Ürün & Topluluk',
-    bio: 'Geliştirici deneyimi tasarımcısı.',
-    initials: 'ED',
+    name: 'Can Özdemir',
+    role: 'Head of Product',
+    bio: "10 yıllık ürün liderliği. Önceden Getir ve Peak Games'te ürün direktörü.",
+    initials: 'CÖ',
   },
 ]
 
@@ -111,13 +51,18 @@ const teamMembers = [
 /*  Partners data                                                       */
 /* ------------------------------------------------------------------ */
 
-const partners = [
-  'Teknopark İstanbul',
-  'İTÜ ARI Teknokent',
-  'KOSGEB',
-  'TÜBİTAK',
-  'Türkiye Yapay Zeka Girişimi',
-  'Yıldız Teknopark',
+interface Partner {
+  name: string
+  slug: string
+}
+
+const partners: Partner[] = [
+  { name: 'Teknopark İstanbul', slug: 'teknopark-istanbul' },
+  { name: 'KOSGEB', slug: 'kosgeb' },
+  { name: 'TÜBİTAK', slug: 'tubitak' },
+  { name: 'İTÜ ARI Teknokent', slug: 'itu-ari-teknokent' },
+  { name: 'BİLGİ Yapay Zeka Merkezi', slug: 'bilgi-yapay-zeka' },
+  { name: 'Türkiye Yapay Zeka İnisiyatifi', slug: 'turkiye-yzi' },
 ]
 
 /* ------------------------------------------------------------------ */
@@ -127,6 +72,7 @@ const partners = [
 interface RoadmapItem {
   quarter: string
   title: string
+  description: string
   status: 'completed' | 'in-progress' | 'planned'
   statusLabel: string
 }
@@ -134,37 +80,43 @@ interface RoadmapItem {
 const roadmapItems: RoadmapItem[] = [
   {
     quarter: 'Q1 2024',
-    title: 'Prototip & İlk 100 Kullanıcı',
+    title: 'Kuruluş & İlk Beta',
+    description: 'Ekibin oluşması, ilk Türkçe LLM beta sürümü',
     status: 'completed',
     statusLabel: 'Tamamlandı',
   },
   {
     quarter: 'Q2 2024',
-    title: 'Model Kataloğu & Topluluk',
+    title: 'Public Launch',
+    description: 'Ücretsiz tier ile genel kullanıma açılım',
     status: 'completed',
     statusLabel: 'Tamamlandı',
   },
   {
     quarter: 'Q3 2024',
-    title: 'Pro Tier & KVKK Modülü',
+    title: 'GPU Cluster Desteği',
+    description: 'Çoklu GPU üzerinde dağıtık çıkarım',
     status: 'in-progress',
     statusLabel: 'Devam Ediyor',
   },
   {
     quarter: 'Q4 2024',
-    title: 'KOBİ Paketleri & Eğitim',
+    title: 'Fine-Tune Platformu',
+    description: 'Topluluk-driven Türkçe model fine-tune',
     status: 'planned',
     statusLabel: 'Planlandı',
   },
   {
     quarter: 'Q1 2025',
-    title: 'OllamaTR Cloud — Türkiye\'de Barındırma',
+    title: 'Mobile SDK',
+    description: 'iOS ve Android için yerel SDK',
     status: 'planned',
     statusLabel: 'Planlandı',
   },
   {
     quarter: 'Q2 2025',
-    title: 'Özel Model Eğitim Platformu',
+    title: 'Federal Öğrenme',
+    description: 'Veri paylaşmadan ortak model eğitimi',
     status: 'planned',
     statusLabel: 'Planlandı',
   },
@@ -265,7 +217,9 @@ function RoadmapTimeline({ items }: { items: RoadmapItem[] }) {
         {items.map((item, idx) => (
           <div
             key={idx}
-            ref={(el) => { itemRefs.current[idx] = el }}
+            ref={(el) => {
+              itemRefs.current[idx] = el
+            }}
             className="relative flex items-start gap-6 md:gap-8"
           >
             {/* Dot */}
@@ -290,6 +244,9 @@ function RoadmapTimeline({ items }: { items: RoadmapItem[] }) {
               <h3 className="mt-1 font-display text-base font-bold text-text-primary">
                 {item.title}
               </h3>
+              <p className="mt-1 font-body text-sm leading-relaxed text-text-secondary">
+                {item.description}
+              </p>
             </div>
           </div>
         ))}
@@ -357,7 +314,8 @@ export default function Hakkimizda() {
             <p className="mt-6 font-body text-lg leading-relaxed text-text-secondary">
               Türkiye&apos;deki her geliştiricinin, her KOBİ&apos;nin ve her
               öğrencinin yapay zeka teknolojisine yerel, güvenli ve anadilinde
-              erişimini sağlamak.
+              erişimini sağlamak. Verilerinizin sınırı ülke sınırınızı aşmasın —
+              kendi sunucularınızda, kendi dilinizde, tam kontrolünüzde.
             </p>
           </motion.div>
 
@@ -408,7 +366,11 @@ export default function Hakkimizda() {
                 className="group rounded-lg border border-border-subtle bg-bg-charcoal p-6 transition-all duration-300 hover:-translate-y-1 hover:border-accent-red/30"
               >
                 {/* Avatar */}
-                <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-bg-surface font-display text-lg font-bold text-accent-red">
+                <div
+                  role="img"
+                  aria-label={`${member.name} profil resmi`}
+                  className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-bg-surface font-display text-lg font-bold text-accent-red"
+                >
                   {member.initials}
                 </div>
 
@@ -418,7 +380,7 @@ export default function Hakkimizda() {
                 <p className="mt-1 font-body text-sm font-medium text-accent-red">
                   {member.role}
                 </p>
-                <p className="mt-2 font-body text-xs leading-relaxed text-text-secondary line-clamp-2">
+                <p className="mt-2 font-body text-xs leading-relaxed text-text-secondary line-clamp-3">
                   {member.bio}
                 </p>
               </motion.div>
@@ -454,17 +416,16 @@ export default function Hakkimizda() {
                 variants={staggerChild}
                 className="group flex flex-col items-center gap-3"
               >
-                <div className="flex h-16 w-16 items-center justify-center rounded-lg bg-bg-surface transition-all duration-300 group-hover:bg-bg-obsidian">
-                  <span className="font-display text-xs font-bold text-text-secondary transition-colors duration-300 group-hover:text-accent-red">
-                    {partner
-                      .split(' ')
-                      .map((w) => w[0])
-                      .join('')
-                      .slice(0, 3)}
-                  </span>
+                <div className="flex max-h-10 items-center justify-center">
+                  <img
+                    src={`/partners/${partner.slug}.svg`}
+                    alt={`${partner.name} logosu`}
+                    loading="lazy"
+                    className="max-h-10 w-auto transition-all duration-300 [filter:grayscale(100%)] hover:[filter:none] group-hover:[filter:none]"
+                  />
                 </div>
                 <span className="text-center font-body text-xs text-text-muted transition-colors duration-300 group-hover:text-text-secondary">
-                  {partner}
+                  {partner.name}
                 </span>
               </motion.div>
             ))}

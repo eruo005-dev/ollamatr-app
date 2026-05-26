@@ -1,49 +1,15 @@
-import { useRef, useState } from 'react'
+import { useState } from 'react'
 import { Link } from 'react-router'
 import { Check, X } from 'lucide-react'
-import { motion, useInView } from 'framer-motion'
+import { motion } from 'framer-motion'
 import {
   Accordion,
   AccordionItem,
   AccordionTrigger,
   AccordionContent,
 } from '@/components/ui/accordion'
-
-/* ------------------------------------------------------------------ */
-/*  Animation helpers                                                  */
-/* ------------------------------------------------------------------ */
-
-const fadeUp = {
-  hidden: { opacity: 0, y: 40 },
-  visible: (i: number) => ({
-    opacity: 1,
-    y: 0,
-    transition: {
-      delay: i * 0.12,
-      duration: 0.7,
-      ease: [0.16, 1, 0.3, 1] as [number, number, number, number],
-    },
-  }),
-}
-
-const staggerContainer = {
-  hidden: {},
-  visible: {
-    transition: { staggerChildren: 0.08 },
-  },
-}
-
-const staggerChild = {
-  hidden: { opacity: 0, y: 30 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.6,
-      ease: [0.16, 1, 0.3, 1] as [number, number, number, number],
-    },
-  },
-}
+import { fadeUp, staggerContainer, staggerChild } from '@/lib/animations'
+import ScrollReveal from '@/components/ScrollReveal'
 
 /* ------------------------------------------------------------------ */
 /*  Pricing tiers data                                                  */
@@ -63,26 +29,28 @@ interface Tier {
   features: Feature[]
   cta: string
   ctaStyle: 'primary' | 'ghost'
-  ctaLink: string
+  ctaLink?: string
   featured?: boolean
   borderColor?: string
 }
 
 const tiers: Tier[] = [
   {
-    name: 'Başlangıç',
+    name: 'Ücretsiz',
     label: 'ÜCRETSİZ',
-    price: 'Ücretsiz',
-    period: '',
+    price: '0₺',
+    period: '/ay',
     description: 'Bireysel kullanıcılar ve hobiler için',
     features: [
-      { text: 'OllamaTR uygulaması', included: true },
-      { text: '50+ temel model erişimi', included: true },
-      { text: 'Türkçe arayüz', included: true },
-      { text: 'Topluluk desteği', included: true },
-      { text: 'KVKK temel modülü', included: true },
+      { text: '50+ model erişimi', included: true },
+      { text: 'Yerel çalıştırma', included: true },
+      { text: 'Temel WebUI', included: true },
+      { text: 'Türkçe dokümantasyon', included: true },
+      { text: 'Öncelikli destek', included: false },
+      { text: 'Kurumsal özellikler', included: false },
+      { text: 'Özel model entegrasyonu', included: false },
     ],
-    cta: 'Hemen İndir',
+    cta: 'Ücretsiz Başla',
     ctaStyle: 'ghost',
     ctaLink: '/indir',
   },
@@ -95,38 +63,41 @@ const tiers: Tier[] = [
     featured: true,
     borderColor: 'border-accent-red',
     features: [
-      { text: 'Başlangıç\'taki her şey', included: true },
-      { text: 'Özel model öneri motoru', included: true },
-      { text: 'Gelişmiş KVKK raporlama', included: true },
+      { text: "Ücretsiz'deki her şey", included: true },
+      { text: 'Gelişmiş WebUI + temalar', included: true },
+      { text: 'Otomatik model güncellemeleri', included: true },
+      { text: 'API rate limit: 10.000/gün', included: true },
+      { text: 'Çoklu kullanıcı yönetimi', included: true },
       { text: 'Öncelikli teknik destek', included: true },
-      { text: 'API erişimi (10.000 istek/ay)', included: true },
       { text: 'Model performans analitiği', included: true },
-      { text: 'Çoklu cihaz yönetimi', included: true },
+      { text: 'Türkçe destek (e-posta)', included: true },
+      { text: 'Kurumsal SLA', included: false },
+      { text: 'Özel model entegrasyonu', included: false },
     ],
-    cta: "Pro'ya Yükselt",
+    cta: "Pro'ya Geç",
     ctaStyle: 'primary',
-    ctaLink: '#',
   },
   {
-    name: 'KOBİ',
+    name: 'KOBİ Paketi',
     label: 'KOBİ / KURUMSAL',
-    price: '25.000₺ - 60.000₺',
-    period: 'başlangıç',
+    price: '25.000₺ — 60.000₺',
+    period: 'tek seferlik kurulum',
     description: 'Kurumsal ve KOBİ çözümleri',
     borderColor: 'border-[#FFB800]',
     features: [
-      { text: 'Pro\'daki her şey', included: true },
-      { text: 'Yerinde kurulum (on-premise)', included: true },
-      { text: 'Özel model eğitimi', included: true },
+      { text: 'Tüm 100+ model erişimi', included: true },
+      { text: 'Yerel çalıştırma', included: true },
+      { text: 'Özelleştirilmiş WebUI', included: true },
+      { text: 'Özel eğitim & workshop', included: true },
       { text: '7/24 telefon desteği', included: true },
-      { text: 'KVKK tam danışmanlık', included: true },
-      { text: 'API erişimi (sınırsız)', included: true },
-      { text: 'Özel entegrasyon desteği', included: true },
-      { text: 'Eğitim ve workshop', included: true },
+      { text: 'KVKK danışmanlığı', included: true },
+      { text: "Özel model fine-tune'u", included: true },
+      { text: 'Anahtar teslim kurulum', included: true },
+      { text: 'SLA garantisi (%99.9)', included: true },
+      { text: 'Yıllık bakım sözleşmesi', included: true },
     ],
-    cta: 'Bizimle İletişime Geç',
+    cta: 'Teklif Al',
     ctaStyle: 'ghost',
-    ctaLink: '#',
   },
 ]
 
@@ -134,14 +105,24 @@ const tiers: Tier[] = [
 /*  Comparison table data                                               */
 /* ------------------------------------------------------------------ */
 
-const comparisonFeatures = [
-  { name: 'Model Kataloğu', baslangic: '50+', pro: '50+', kobi: '50+ + Özel' },
-  { name: 'KVKK Modülü', baslangic: 'Temel', pro: 'Gelişmiş', kobi: 'Tam + Danışmanlık' },
-  { name: 'API Erişimi', baslangic: '—', pro: '10K/ay', kobi: 'Sınırsız' },
-  { name: 'Teknik Destek', baslangic: 'Topluluk', pro: 'Öncelikli', kobi: '7/24 Telefon' },
-  { name: 'Model Eğitimi', baslangic: '—', pro: '—', kobi: 'Var' },
-  { name: 'Yerinde Kurulum', baslangic: '—', pro: '—', kobi: 'Var' },
-  { name: 'Fiyat', baslangic: 'Ücretsiz', pro: '149₺/ay', kobi: '25-60K₺' },
+interface ComparisonRow {
+  name: string
+  ucretsiz: string
+  pro: string
+  kobi: string
+}
+
+const comparisonFeatures: ComparisonRow[] = [
+  { name: 'Türkçe Model Erişimi', ucretsiz: '50+', pro: '100+', kobi: 'Tümü' },
+  { name: 'Yerel Çalıştırma', ucretsiz: '✓', pro: '✓', kobi: '✓' },
+  { name: 'WebUI Arayüzü', ucretsiz: 'Temel', pro: 'Gelişmiş', kobi: 'Özelleştirilmiş' },
+  { name: 'API Rate Limit', ucretsiz: '—', pro: '10.000/gün', kobi: 'Sınırsız' },
+  { name: 'Kullanıcı Yönetimi', ucretsiz: '✗', pro: '✓', kobi: '✓' },
+  { name: 'Öncelikli Destek', ucretsiz: '✗', pro: '✓', kobi: '✓ 7/24' },
+  { name: 'Otomatik Güncelleme', ucretsiz: '✗', pro: '✓', kobi: '✓' },
+  { name: 'KVKK Danışmanlığı', ucretsiz: '✗', pro: '✗', kobi: '✓' },
+  { name: 'Özel Model Fine-tune', ucretsiz: '✗', pro: '✗', kobi: '✓' },
+  { name: 'SLA Garantisi', ucretsiz: '✗', pro: '✗', kobi: '%99.9' },
 ]
 
 /* ------------------------------------------------------------------ */
@@ -150,24 +131,29 @@ const comparisonFeatures = [
 
 const faqItems = [
   {
-    question: 'Pro planı deneyebilir miyim?',
-    answer: 'Evet, 14 gün ücretsiz deneme süresi mevcut.',
+    question: 'Pro aboneliğimi nasıl iptal ederim?',
+    answer:
+      'Hesabınızdan tek tıkla iptal. İptal sonrası mevcut dönem sonuna kadar Pro özellikleri açık kalır.',
   },
   {
     question: 'KOBİ paketi fiyatı nasıl belirleniyor?',
-    answer: 'Kullanıcı sayısı, model ihtiyacı ve destek seviyesine göre özelleştirilir.',
+    answer:
+      'Çalışan sayısı, model sayısı ve özel entegrasyon ihtiyaçlarına göre. 25.000₺ — 60.000₺ arası özel teklif sunuyoruz.',
   },
   {
-    question: 'İstediğim zaman iptal edebilir miyim?',
-    answer: 'Kesinlikle. Aylık aboneliğinizi dilediğiniz zaman iptal edebilirsiniz.',
+    question: 'Ücretsiz sürümün sınırı var mı?',
+    answer:
+      'Hayır, 50+ Türkçe modele tam erişim. Sadece bazı kurumsal özellikler kapalı.',
   },
   {
     question: 'Öğrenci indirimi var mı?',
-    answer: 'Evet, .edu.tr uzantılı e-posta ile %50 indirim!',
+    answer:
+      'Evet, .edu.tr uzantılı e-posta ile Pro %50 indirimli — 75₺/ay.',
   },
   {
-    question: 'Kurumsal faturalandırma mümkün mü?',
-    answer: 'Evet, KOBİ paketlerinde standart kurumsal fatura kesilir.',
+    question: 'Kurumsal faturalandırma destekliyor musunuz?',
+    answer:
+      'Evet, e-fatura ve dönemsel faturalandırma. Kurumsal müşterilerimize özel finans ekibimiz hizmet veriyor.',
   },
 ]
 
@@ -177,49 +163,24 @@ const faqItems = [
 
 const testimonials = [
   {
-    quote: 'OllamaTR Pro ile şirketimizdeki tüm AI altyapısını 1 günde kurduk.',
-    author: 'Ahmet Y.',
-    role: 'CTO @TechKobi',
+    quote:
+      'OllamaTR sayesinde KVKK denetiminden tek seferde geçtik. Tüm hassas veriler şirket içinde kaldı.',
+    author: 'Selin A.',
+    role: 'CTO, TeknoStart',
   },
   {
-    quote: "KVKK raporlama özelliği zamanımızın %80'ini kurtardı.",
-    author: 'Selin K.',
-    role: 'IT Yöneticisi',
+    quote:
+      "100 çalışanlı şirketimizde 6 ayda kuruldu. Eğitim ve workshop'lar gerçekten profesyoneldi.",
+    author: 'Burak T.',
+    role: 'IT Direktörü, Lojistik A.Ş.',
+  },
+  {
+    quote:
+      'Bitirme projemde Türkçe LLM ile çalıştım. Ücretsiz sürüm bile inanılmaz.',
+    author: 'Zeynep K.',
+    role: 'ODTÜ öğrencisi',
   },
 ]
-
-/* ------------------------------------------------------------------ */
-/*  Scroll-reveal wrapper                                               */
-/* ------------------------------------------------------------------ */
-
-function ScrollReveal({
-  children,
-  className,
-  delay = 0,
-}: {
-  children: React.ReactNode
-  className?: string
-  delay?: number
-}) {
-  const ref = useRef(null)
-  const isInView = useInView(ref, { once: true, margin: '-50px' })
-
-  return (
-    <motion.div
-      ref={ref}
-      className={className}
-      initial={{ opacity: 0, y: 40 }}
-      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
-      transition={{
-        duration: 0.7,
-        delay,
-        ease: [0.16, 1, 0.3, 1] as [number, number, number, number],
-      }}
-    >
-      {children}
-    </motion.div>
-  )
-}
 
 /* ------------------------------------------------------------------ */
 /*  Main component                                                      */
@@ -258,7 +219,8 @@ export default function Fiyatlandirma() {
             animate="visible"
             custom={2}
           >
-            Bireysel geliştiriciden kurumsal KOBİ'ye, herkes için uygun plan.
+            Bireysel geliştiriciler için ücretsiz. Pro özellikler için aylık
+            abonelik. Kurumsal ihtiyaçlar için özel çözümler.
           </motion.p>
         </div>
       </section>
@@ -279,7 +241,7 @@ export default function Fiyatlandirma() {
               className={`relative flex flex-col rounded-lg border p-8 transition-all duration-300 ${
                 tier.featured
                   ? 'border-accent-red shadow-[0_0_30px_rgba(217,30,54,0.12)] md:scale-[1.02]'
-                  : tier.name === 'KOBİ'
+                  : tier.name === 'KOBİ Paketi'
                     ? 'border-[#FFB800]/40'
                     : 'border-border-subtle'
               } bg-bg-charcoal`}
@@ -324,16 +286,26 @@ export default function Fiyatlandirma() {
               {/* CTA */}
               <div className="mt-6">
                 {tier.ctaStyle === 'primary' ? (
-                  <button className="w-full rounded bg-accent-red py-3.5 font-body text-sm font-semibold uppercase tracking-wider text-white transition-all duration-200 hover:bg-accent-red-light hover:scale-[1.02]">
+                  <button
+                    type="button"
+                    className="w-full rounded bg-accent-red py-3.5 font-body text-sm font-semibold uppercase tracking-wider text-white transition-all duration-200 hover:bg-accent-red-light hover:scale-[1.02]"
+                  >
                     {tier.cta}
                   </button>
-                ) : (
+                ) : tier.ctaLink ? (
                   <Link
                     to={tier.ctaLink}
                     className="flex w-full items-center justify-center rounded border border-border-subtle bg-transparent py-3.5 font-body text-sm font-semibold uppercase tracking-wider text-text-primary transition-all duration-200 hover:border-accent-red hover:text-accent-red-light"
                   >
                     {tier.cta}
                   </Link>
+                ) : (
+                  <button
+                    type="button"
+                    className="flex w-full items-center justify-center rounded border border-border-subtle bg-transparent py-3.5 font-body text-sm font-semibold uppercase tracking-wider text-text-primary transition-all duration-200 hover:border-accent-red hover:text-accent-red-light"
+                  >
+                    {tier.cta}
+                  </button>
                 )}
               </div>
 
@@ -353,7 +325,7 @@ export default function Fiyatlandirma() {
                       className={
                         feature.included
                           ? 'text-text-primary'
-                          : 'text-text-muted'
+                          : 'text-text-muted line-through opacity-60'
                       }
                     >
                       {feature.text}
@@ -383,7 +355,7 @@ export default function Fiyatlandirma() {
                     Özellik
                   </th>
                   <th className="sticky top-0 bg-bg-obsidian px-4 py-4 text-center font-body text-sm font-medium text-text-secondary">
-                    Başlangıç
+                    Ücretsiz
                   </th>
                   <th className="sticky top-0 bg-bg-obsidian px-4 py-4 text-center font-body text-sm font-semibold text-accent-red">
                     Pro
@@ -411,7 +383,7 @@ export default function Fiyatlandirma() {
                       {row.name}
                     </td>
                     <td className="px-4 py-4 text-center font-body text-sm text-text-secondary">
-                      {row.baslangic}
+                      {row.ucretsiz}
                     </td>
                     <td className="border-l border-r border-accent-red/10 bg-accent-red/[0.03] px-4 py-4 text-center font-body text-sm font-medium text-text-primary">
                       {row.pro}
@@ -467,7 +439,7 @@ export default function Fiyatlandirma() {
           </ScrollReveal>
 
           <motion.div
-            className="grid grid-cols-1 gap-6 md:grid-cols-2"
+            className="grid grid-cols-1 gap-6 md:grid-cols-3"
             variants={staggerContainer}
             initial="hidden"
             whileInView="visible"
@@ -518,12 +490,12 @@ export default function Fiyatlandirma() {
             >
               İndir
             </Link>
-            <Link
-              to="#"
+            <button
+              type="button"
               className="inline-flex items-center justify-center rounded border border-border-subtle bg-transparent px-8 py-3.5 font-body text-sm font-semibold uppercase tracking-wider text-text-primary transition-all duration-200 hover:border-accent-red hover:text-accent-red-light"
             >
               KOBİ Teklifi Al
-            </Link>
+            </button>
           </div>
         </ScrollReveal>
       </section>
