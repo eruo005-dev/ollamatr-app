@@ -480,7 +480,7 @@ function SocialProofSection() {
             transition: 'all 0.8s cubic-bezier(0.16, 1, 0.3, 1)',
           }}
         >
-          TÜRKİYE&apos;NIN GELİŞTİRİCİLERİ GÜVENİYOR
+          TÜRKİYE&apos;NİN GELİŞTİRİCİLERİ GÜVENİYOR
         </h2>
 
         {/* Stats */}

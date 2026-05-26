@@ -337,10 +337,19 @@ export default function Indir() {
               SİSTEMİNİZ: {detectedOS} tespit edildi
             </motion.div>
 
-            <motion.a
+            {/* TODO: replace external URL when real installer ships */}
+            <motion.button
               variants={staggerChild}
-              href="#"
-              className="group flex items-center gap-4 rounded bg-accent-red px-8 py-5 text-white transition-all duration-200 hover:scale-[1.02] hover:bg-accent-red-light"
+              type="button"
+              onClick={() => {
+                window.open(
+                  'https://github.com/ollamatr/installer/releases/latest',
+                  '_blank',
+                  'noopener,noreferrer'
+                )
+              }}
+              aria-label="OllamaTR installer indir"
+              className="group flex items-center gap-4 rounded bg-accent-red px-8 py-5 text-left text-white transition-all duration-200 hover:scale-[1.02] hover:bg-accent-red-light"
             >
               <Download className="h-8 w-8 shrink-0" />
               <div>
@@ -349,7 +358,7 @@ export default function Indir() {
                   v1.2.0 — 180 MB — Ücretsiz
                 </div>
               </div>
-            </motion.a>
+            </motion.button>
 
             {/* Secondary OS buttons */}
             <motion.div variants={staggerChild} className="mt-6 flex flex-wrap gap-3">
@@ -571,13 +580,22 @@ export default function Indir() {
             10.000+ geliştirici yerel AI'ye geçti. Siz de aramıza katılın.
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-4">
-            <a
-              href="#"
+            {/* TODO: replace external URL when real installer ships */}
+            <button
+              type="button"
+              onClick={() => {
+                window.open(
+                  'https://github.com/ollamatr/installer/releases/latest',
+                  '_blank',
+                  'noopener,noreferrer'
+                )
+              }}
+              aria-label="OllamaTR installer indir"
               className="inline-flex items-center gap-2 rounded bg-accent-red px-7 py-3.5 font-body text-sm font-semibold uppercase tracking-wider text-white transition-all duration-200 hover:scale-[1.02] hover:bg-accent-red-light"
             >
               <Download className="h-4 w-4" />
               Hemen İndir
-            </a>
+            </button>
             <Link
               to="/dokumantasyon"
               className="inline-flex items-center gap-2 rounded border border-border-subtle px-7 py-3.5 font-body text-sm font-semibold uppercase tracking-wider text-text-primary transition-all duration-200 hover:border-accent-red hover:text-accent-red-light"
