@@ -14,6 +14,8 @@ import {
   XCircle,
   Monitor,
 } from 'lucide-react'
+import { easeExpoOut } from '@/lib/animations'
+import { ErrorBoundary } from '@/components/ErrorBoundary'
 
 /* ------------------------------------------------------------------ */
 /*  Scroll reveal hook (from Modeller.tsx pattern)                    */
@@ -104,13 +106,21 @@ const installerSteps = [
   },
 ]
 
-const comparisonRows = [
-  { feature: 'Veri İşleme Yeri', ollamatr: 'Yerel Donanım', cloud: 'ABD/EU Sunucular' },
+interface ComparisonRow {
+  feature: string
+  ollamatr: string
+  cloud: string
+  /** When true, the cloud cell is rendered with warn-yellow (risk indicator). */
+  cloudRisk?: boolean
+}
+
+const comparisonRows: ComparisonRow[] = [
+  { feature: 'Veri İşleme Yeri', ollamatr: 'Yerel Donanım', cloud: 'ABD/EU Sunucular', cloudRisk: true },
   { feature: 'İnternet Gereksinimi', ollamatr: 'Gerekmez', cloud: 'Zorunlu' },
-  { feature: 'Veri Saklama', ollamatr: 'Kullanıcı cihazında', cloud: 'Sağlayıcı sunucularında' },
-  { feature: 'KVKK Uyumu', ollamatr: 'Doğal uyum', cloud: 'Riskli (transfer)' },
+  { feature: 'Veri Saklama', ollamatr: 'Kullanıcı cihazında', cloud: 'Sunucuda saklanır', cloudRisk: true },
+  { feature: 'KVKK Uyumu', ollamatr: 'Doğal uyum', cloud: 'Riskli (transfer)', cloudRisk: true },
   { feature: 'Veri Silme', ollamatr: 'Anlık, yerel', cloud: 'Talep gerekli' },
-  { feature: '3. Taraf Paylaşım', ollamatr: 'Yok', cloud: 'Politika değişebilir' },
+  { feature: '3. Taraf Paylaşım', ollamatr: 'Sadece sizin', cloud: '3. taraflarla paylaşılabilir', cloudRisk: true },
   { feature: 'Maliyet', ollamatr: 'Ücretsiz/149₺', cloud: '$20/ay+' },
 ]
 
@@ -179,13 +189,13 @@ function ExpandableChecklistItem({
         </div>
       </button>
 
-      <AnimatePresence initial={false}>
+      <AnimatePresence initial={false} mode="wait">
         {open && (
           <motion.div
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.25, ease: 'easeInOut' }}
+            transition={{ duration: 0.25, ease: easeExpoOut }}
             className="overflow-hidden"
           >
             <div className="px-2 pb-5 pl-[4.5rem]">
@@ -199,10 +209,17 @@ function ExpandableChecklistItem({
 }
 
 /* ------------------------------------------------------------------ */
-/*  Main Component                                                     */
+/*  Heavy below-fold content (deferred mount)                          */
 /* ------------------------------------------------------------------ */
-export default function KVKK() {
-  const heroReveal = useScrollReveal()
+interface HeavyContentProps {
+  sectionStyle: (visible: boolean, delay?: number) => {
+    opacity: number
+    transform: string
+    transition: string
+  }
+}
+
+function KVKKHeavyContent({ sectionStyle }: HeavyContentProps) {
   const promiseReveal = useScrollReveal()
   const diagramReveal = useScrollReveal()
   const checklistReveal = useScrollReveal()
@@ -210,47 +227,8 @@ export default function KVKK() {
   const comparisonReveal = useScrollReveal()
   const ctaReveal = useScrollReveal()
 
-  const heroStyle = (delay = 0) => ({
-    opacity: heroReveal.visible ? 1 : 0,
-    transform: heroReveal.visible ? 'translateY(0)' : 'translateY(30px)',
-    transition: `all 0.6s cubic-bezier(0.16, 1, 0.3, 1) ${delay}s`,
-  })
-
-  const sectionStyle = (visible: boolean, delay = 0) => ({
-    opacity: visible ? 1 : 0,
-    transform: visible ? 'translateY(0)' : 'translateY(30px)',
-    transition: `all 0.6s cubic-bezier(0.16, 1, 0.3, 1) ${delay}s`,
-  })
-
   return (
-    <div>
-      {/* ============================================================ */}
-      {/* SECTION 1 — Hero                                             */}
-      {/* ============================================================ */}
-      <section className="bg-bg-obsidian px-6 pt-40 pb-16 lg:px-10">
-        <div ref={heroReveal.ref} className="mx-auto max-w-7xl">
-          <span
-            style={heroStyle(0)}
-            className="mb-4 inline-block font-body text-sm font-medium uppercase tracking-wider text-accent-red"
-          >
-            VERİ GİZLİLİĞİ
-          </span>
-          <h1
-            style={heroStyle(0.1)}
-            className="font-display text-4xl font-bold leading-tight text-text-primary md:text-5xl lg:text-6xl"
-          >
-            KVKK Uyumlu Yerel AI
-          </h1>
-          <p
-            style={heroStyle(0.22)}
-            className="mt-6 max-w-xl text-lg leading-relaxed text-text-secondary"
-          >
-            OllamaTR'de verileriniz asla sunucularımıza gitmez. Tüm işleme yerel donanımda gerçekleşir.
-            6698 sayılı KVKK kanununa tam uyum.
-          </p>
-        </div>
-      </section>
-
+    <>
       {/* ============================================================ */}
       {/* SECTION 2 — The KVKK Promise ("Taahhüdümüz")                 */}
       {/* ============================================================ */}
@@ -262,12 +240,13 @@ export default function KVKK() {
               style={sectionStyle(promiseReveal.visible)}
               className="font-display text-3xl font-bold leading-tight text-text-primary md:text-4xl"
             >
-              Veri gizliliği bir özellik değil, temel hakkımızdır.
+              VERİLERİNİZ SİZDE KALIR
             </h2>
             <p
               style={sectionStyle(promiseReveal.visible, 0.1)}
               className="mt-6 text-base leading-relaxed text-text-secondary"
             >
+              Tüm verileriniz cihazınızda işlenir. Hiçbir veri sunucularımıza gönderilmez.
               Geleneksel AI hizmetleri (ChatGPT, Claude vb.) sorgularınızı kendi sunucularına gönderir
               ve verilerinizi saklar. OllamaTR tamamen farklıdır:
             </p>
@@ -300,12 +279,19 @@ export default function KVKK() {
                   Kullanıcı
                 </div>
                 <ArrowRight className="h-4 w-4 text-text-muted" />
-                <div className="flex items-center gap-2 rounded border border-safe-green/50 bg-bg-obsidian px-3 py-2 font-body text-xs text-safe-green">
+                <div className="flex items-center gap-2 rounded border-2 border-safe-green bg-bg-obsidian px-3 py-2 font-body text-xs text-safe-green">
                   <HardDrive className="h-4 w-4" />
                   OllamaTR (Yerel)
                 </div>
-                <XCircle className="h-4 w-4 text-accent-red" />
-                <span className="font-body text-xs text-text-muted">İnternet/Sunucu</span>
+                <motion.div
+                  animate={{ opacity: [0.6, 1, 0.6] }}
+                  transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+                  className="flex items-center"
+                  aria-hidden="true"
+                >
+                  <XCircle className="h-4 w-4 text-accent-red" />
+                </motion.div>
+                <span className="font-body text-xs text-text-muted line-through">İnternet/Sunucu</span>
               </div>
             </div>
           </div>
@@ -448,7 +434,11 @@ export default function KVKK() {
                     <td className="border-l-2 border-l-accent-red px-5 py-4 font-body text-sm font-medium text-safe-green">
                       {row.ollamatr}
                     </td>
-                    <td className="px-5 py-4 font-body text-sm text-text-secondary">
+                    <td
+                      className={`px-5 py-4 font-body text-sm ${
+                        row.cloudRisk === true ? 'font-medium text-warn-yellow' : 'text-text-secondary'
+                      }`}
+                    >
                       {row.cloud}
                     </td>
                   </tr>
@@ -512,11 +502,85 @@ export default function KVKK() {
               href="mailto:privacy@ollamatr.com"
               className="inline-flex items-center gap-2 rounded border border-border-subtle px-7 py-3.5 font-body text-sm font-semibold uppercase tracking-wider text-text-primary transition-all duration-200 hover:border-accent-red hover:text-accent-red-light"
             >
-              Detaylı Rapor İste
+              Daha Fazla Bilgi
             </a>
           </div>
         </div>
       </section>
+    </>
+  )
+}
+
+/* ------------------------------------------------------------------ */
+/*  Main Component                                                     */
+/* ------------------------------------------------------------------ */
+export default function KVKK() {
+  const heroReveal = useScrollReveal()
+
+  /**
+   * Deferred mount for heavy below-fold sections.
+   *
+   * AUDIT FIX (audit-ux.md CRITICAL): KVKK page was timing out on load due to
+   * 7 simultaneous IntersectionObserver instances + heavy Framer Motion subtrees
+   * all mounting synchronously. We render the hero immediately and defer the
+   * rest of the page to the next tick via setTimeout(0). Hash routing remains
+   * intact because the route element resolves synchronously — only the inner
+   * content mounts on the next tick.
+   */
+  const [heavyReady, setHeavyReady] = useState(false)
+  useEffect(() => {
+    const timer = window.setTimeout(() => setHeavyReady(true), 0)
+    return () => window.clearTimeout(timer)
+  }, [])
+
+  const heroStyle = (delay = 0): { opacity: number; transform: string; transition: string } => ({
+    opacity: heroReveal.visible ? 1 : 0,
+    transform: heroReveal.visible ? 'translateY(0)' : 'translateY(30px)',
+    transition: `all 0.6s cubic-bezier(0.16, 1, 0.3, 1) ${delay}s`,
+  })
+
+  const sectionStyle = (
+    visible: boolean,
+    delay = 0
+  ): { opacity: number; transform: string; transition: string } => ({
+    opacity: visible ? 1 : 0,
+    transform: visible ? 'translateY(0)' : 'translateY(30px)',
+    transition: `all 0.6s cubic-bezier(0.16, 1, 0.3, 1) ${delay}s`,
+  })
+
+  return (
+    <div>
+      {/* ============================================================ */}
+      {/* SECTION 1 — Hero (mounts synchronously)                      */}
+      {/* ============================================================ */}
+      <section className="bg-bg-obsidian px-6 pt-40 pb-16 lg:px-10">
+        <div ref={heroReveal.ref} className="mx-auto max-w-7xl">
+          <span
+            style={heroStyle(0)}
+            className="mb-4 inline-block font-body text-sm font-medium uppercase tracking-wider text-accent-red"
+          >
+            VERİ GİZLİLİĞİ
+          </span>
+          <h1
+            style={heroStyle(0.1)}
+            className="font-display text-4xl font-bold leading-tight text-text-primary md:text-5xl lg:text-6xl"
+          >
+            KVKK Uyumlu Yerel AI
+          </h1>
+          <p
+            style={heroStyle(0.22)}
+            className="mt-6 max-w-xl text-lg leading-relaxed text-text-secondary"
+          >
+            OllamaTR'de verileriniz asla sunucularımıza gitmez. Tüm işleme yerel donanımda gerçekleşir.
+            6698 sayılı KVKK kanununa tam uyum.
+          </p>
+        </div>
+      </section>
+
+      {/* Heavy below-fold sections — deferred mount + error-boundary isolated */}
+      <ErrorBoundary>
+        {heavyReady ? <KVKKHeavyContent sectionStyle={sectionStyle} /> : null}
+      </ErrorBoundary>
     </div>
   )
 }
