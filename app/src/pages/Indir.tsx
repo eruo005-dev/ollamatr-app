@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react'
+import { useState, useEffect, useMemo, useRef } from 'react'
 import { Link } from 'react-router'
 import { motion } from 'framer-motion'
 import {
@@ -13,47 +13,62 @@ import {
   CheckCircle2,
   Monitor,
   Apple,
-
+  Copy,
+  Check,
 } from 'lucide-react'
+import { easeExpoOut, fadeUp, staggerContainer, staggerChild } from '@/lib/animations'
+import { useScrollReveal } from '@/hooks/useScrollReveal'
 
 type OS = 'Windows' | 'macOS' | 'Linux'
 
-const easeExpoOut = [0.16, 1, 0.3, 1] as [number, number, number, number]
+/* ------------------------------------------------------------------ */
+/*  OS Detection (userAgent-based)                                     */
+/* ------------------------------------------------------------------ */
+function detectOS(): OS {
+  const ua = navigator.userAgent.toLowerCase()
+  if (ua.includes('mac') || ua.includes('darwin')) return 'macOS'
+  if (ua.includes('linux') || ua.includes('x11')) return 'Linux'
+  return 'Windows'
+}
 
-/* ------------------------------------------------------------------ */
-/*  OS Detection                                                       */
-/* ------------------------------------------------------------------ */
 function useDetectedOS(): OS {
   const [os, setOs] = useState<OS>('Windows')
   useEffect(() => {
-    const platform = navigator.platform.toLowerCase()
-    if (platform.includes('mac') || platform.includes('darwin')) setOs('macOS')
-    else if (platform.includes('linux')) setOs('Linux')
-    else setOs('Windows')
+    setOs(detectOS())
   }, [])
   return os
 }
 
 /* ------------------------------------------------------------------ */
-/*  Animation helpers                                                  */
+/*  Count-up hook                                                      */
 /* ------------------------------------------------------------------ */
-const fadeUp = {
-  hidden: { opacity: 0, y: 40 },
-  visible: (i: number) => ({
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.6, delay: i * 0.12, ease: easeExpoOut },
-  }),
-}
+function useCountUp(target: number, active: boolean, durationMs = 300): number {
+  const [value, setValue] = useState(0)
+  const startRef = useRef<number | null>(null)
+  const rafRef = useRef<number | null>(null)
 
-const staggerContainer = {
-  hidden: {},
-  visible: { transition: { staggerChildren: 0.1 } },
-}
+  useEffect(() => {
+    if (!active) return
+    startRef.current = null
 
-const staggerItem = {
-  hidden: { opacity: 0, y: 30 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: easeExpoOut } },
+    const tick = (ts: number) => {
+      if (startRef.current === null) startRef.current = ts
+      const elapsed = ts - startRef.current
+      const progress = Math.min(1, elapsed / durationMs)
+      setValue(Math.round(progress * target))
+      if (progress < 1) {
+        rafRef.current = requestAnimationFrame(tick)
+      }
+    }
+
+    rafRef.current = requestAnimationFrame(tick)
+
+    return () => {
+      if (rafRef.current !== null) cancelAnimationFrame(rafRef.current)
+    }
+  }, [active, target, durationMs])
+
+  return value
 }
 
 /* ------------------------------------------------------------------ */
@@ -61,19 +76,19 @@ const staggerItem = {
 /* ------------------------------------------------------------------ */
 const steps = [
   {
-    num: '01',
+    num: 1,
     title: 'İndirin',
     desc: "180 MB'lık installer'ı tek tıkla indirin.",
     icon: Download,
   },
   {
-    num: '02',
+    num: 2,
     title: 'Kurun',
     desc: 'Sihirbazı takip edin. Ollama, Open WebUI ve Türkçe modeller otomatik yüklenir.',
     icon: Settings,
   },
   {
-    num: '03',
+    num: 3,
     title: 'Sohbet Edin',
     desc: "Tarayıcınızda localhost:3000'e gidin ve ilk Türkçe sohbetinizi başlatın.",
     icon: Rocket,
@@ -122,6 +137,143 @@ const trustPoints = [
   'Ağ bağlantısı gerekmez',
 ]
 
+// TODO: replace with actual build artifact hash
+const CHECKSUM_PLACEHOLDER =
+  'a1b2c3d4e5f6789abcdef0123456789abcdef0123456789abcdef0123456789'
+
+/* ------------------------------------------------------------------ */
+/*  Step row — own scroll-reveal + count-up                            */
+/* ------------------------------------------------------------------ */
+interface StepRowProps {
+  num: number
+  title: string
+  desc: string
+  icon: typeof Download
+  index: number
+}
+
+function StepRow({ num, title, desc, icon: Icon, index }: StepRowProps) {
+  const { ref, visible } = useScrollReveal<HTMLDivElement>(0.4)
+  const count = useCountUp(num, visible, 300)
+  const display = count.toString().padStart(2, '0')
+
+  return (
+    <motion.div
+      ref={ref}
+      custom={index}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, margin: '-80px' }}
+      variants={fadeUp}
+      className={`flex gap-6 border-l pl-6 transition-colors duration-[400ms] ${
+        visible ? 'border-accent-red' : 'border-border-subtle'
+      }`}
+    >
+      <span className="shrink-0 pt-1 font-display text-2xl font-bold text-accent-red tabular-nums">
+        {display}
+      </span>
+      <div>
+        <div className="mb-1 flex items-center gap-3">
+          <Icon className="h-5 w-5 text-text-secondary" />
+          <h3 className="font-display text-xl font-bold text-text-primary">{title}</h3>
+        </div>
+        <p className="text-base leading-relaxed text-text-secondary">{desc}</p>
+      </div>
+    </motion.div>
+  )
+}
+
+/* ------------------------------------------------------------------ */
+/*  Checksum block — expandable + copy                                 */
+/* ------------------------------------------------------------------ */
+function ChecksumBlock({ hash }: { hash: string }) {
+  const [expanded, setExpanded] = useState(false)
+  const [copied, setCopied] = useState(false)
+
+  const short = `${hash.slice(0, 16)}...`
+
+  const onCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(hash)
+      setCopied(true)
+      window.setTimeout(() => setCopied(false), 1500)
+    } catch {
+      /* clipboard unavailable — silent */
+    }
+  }
+
+  return (
+    <div className="mt-4 flex flex-wrap items-center gap-2 font-mono text-[0.625rem] text-text-muted">
+      <span className="break-all">
+        SHA256: {expanded ? hash : short}
+      </span>
+      <button
+        type="button"
+        onClick={() => setExpanded((v) => !v)}
+        className="rounded border border-border-subtle px-2 py-0.5 text-text-secondary transition-colors duration-200 hover:border-accent-red hover:text-accent-red-light"
+      >
+        {expanded ? 'Gizle' : "Tam hash'i göster"}
+      </button>
+      <button
+        type="button"
+        onClick={onCopy}
+        aria-label="Hash'i kopyala"
+        className="inline-flex items-center gap-1 rounded border border-border-subtle px-2 py-0.5 text-text-secondary transition-colors duration-200 hover:border-accent-red hover:text-accent-red-light"
+      >
+        {copied ? <Check className="h-3 w-3 text-safe-green" /> : <Copy className="h-3 w-3" />}
+        {copied ? 'Kopyalandı' : 'Kopyala'}
+      </button>
+    </div>
+  )
+}
+
+/* ------------------------------------------------------------------ */
+/*  Installer preview — image with mock fallback                       */
+/* ------------------------------------------------------------------ */
+function InstallerPreview() {
+  const [imgFailed, setImgFailed] = useState(false)
+
+  if (imgFailed) {
+    return (
+      <div className="space-y-4">
+        <div className="flex items-center gap-3">
+          <div className="h-3 w-3 rounded-full bg-accent-red" />
+          <div className="h-3 w-3 rounded-full bg-warn-yellow" />
+          <div className="h-3 w-3 rounded-full bg-safe-green" />
+        </div>
+        <div className="rounded border border-border-subtle bg-bg-obsidian p-6">
+          <h3 className="font-display text-lg font-bold text-text-primary">
+            OllamaTR Kurulum Sihirbazı
+          </h3>
+          <p className="mt-2 text-sm text-text-secondary">Kuruluma Hoş Geldiniz</p>
+          <div className="mt-4 space-y-2">
+            <div className="h-2 w-full rounded bg-bg-charcoal" />
+            <div className="h-2 w-3/4 rounded bg-bg-charcoal" />
+          </div>
+          <div className="mt-4 flex gap-2">
+            <span className="inline-block rounded bg-accent-red px-3 py-1.5 font-body text-xs font-semibold text-white">
+              İleri
+            </span>
+            <span className="inline-block rounded border border-border-subtle px-3 py-1.5 font-body text-xs text-text-secondary">
+              İptal
+            </span>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  return (
+    <img
+      src="/installer-preview.png"
+      alt="OllamaTR installer screenshot"
+      loading="lazy"
+      onError={() => setImgFailed(true)}
+      className="block w-full rounded"
+    />
+  )
+}
+
 /* ------------------------------------------------------------------ */
 /*  Component                                                          */
 /* ------------------------------------------------------------------ */
@@ -129,7 +281,7 @@ export default function Indir() {
   const detectedOS = useDetectedOS()
 
   const otherOS = useMemo<OS[]>(
-    () => ['Windows', 'macOS', 'Linux'].filter((o) => o !== detectedOS) as OS[],
+    () => (['Windows', 'macOS', 'Linux'] as OS[]).filter((o) => o !== detectedOS),
     [detectedOS]
   )
 
@@ -181,7 +333,7 @@ export default function Indir() {
             variants={staggerContainer}
           >
             <motion.div
-              variants={staggerItem}
+              variants={staggerChild}
               className="mb-4 inline-flex items-center gap-2 rounded bg-bg-surface px-3 py-1.5 font-mono text-xs uppercase tracking-wider text-text-muted"
             >
               <Monitor className="h-3.5 w-3.5" />
@@ -189,15 +341,13 @@ export default function Indir() {
             </motion.div>
 
             <motion.a
-              variants={staggerItem}
+              variants={staggerChild}
               href="#"
               className="group flex items-center gap-4 rounded bg-accent-red px-8 py-5 text-white transition-all duration-200 hover:scale-[1.02] hover:bg-accent-red-light"
             >
               <Download className="h-8 w-8 shrink-0" />
               <div>
-                <div className="font-display text-xl font-bold">
-                  OllamaTR İndir
-                </div>
+                <div className="font-display text-xl font-bold">OllamaTR İndir</div>
                 <div className="mt-0.5 font-body text-xs text-white/70">
                   v1.2.0 — 180 MB — Ücretsiz
                 </div>
@@ -205,10 +355,11 @@ export default function Indir() {
             </motion.a>
 
             {/* Secondary OS buttons */}
-            <motion.div variants={staggerItem} className="mt-6 flex flex-wrap gap-3">
+            <motion.div variants={staggerChild} className="mt-6 flex flex-wrap gap-3">
               {otherOS.map((o) => (
                 <button
                   key={o}
+                  type="button"
                   className="rounded border border-border-subtle bg-transparent px-4 py-2 font-body text-sm font-medium text-text-primary transition-colors duration-200 hover:border-accent-red hover:text-accent-red-light"
                 >
                   {o}
@@ -217,12 +368,9 @@ export default function Indir() {
             </motion.div>
 
             {/* Checksum */}
-            <motion.p
-              variants={staggerItem}
-              className="mt-4 break-all font-mono text-[0.625rem] text-text-muted"
-            >
-              SHA256: a1b2c3d4e5f6789abcdef0123456789abcdef0123456789abcdef0123456789
-            </motion.p>
+            <motion.div variants={staggerChild}>
+              <ChecksumBlock hash={CHECKSUM_PLACEHOLDER} />
+            </motion.div>
           </motion.div>
 
           {/* Right — Installer preview */}
@@ -233,33 +381,7 @@ export default function Indir() {
             transition={{ duration: 0.8, delay: 0.3, ease: easeExpoOut }}
             className="rounded-lg border border-border-subtle bg-bg-surface p-8"
           >
-            <div className="space-y-4">
-              <div className="flex items-center gap-3">
-                <div className="h-3 w-3 rounded-full bg-accent-red" />
-                <div className="h-3 w-3 rounded-full bg-warn-yellow" />
-                <div className="h-3 w-3 rounded-full bg-safe-green" />
-              </div>
-              <div className="rounded border border-border-subtle bg-bg-obsidian p-6">
-                <h3 className="font-display text-lg font-bold text-text-primary">
-                  OllamaTR Kurulum Sihirbazı
-                </h3>
-                <p className="mt-2 text-sm text-text-secondary">
-                  Kuruluma Hoş Geldiniz
-                </p>
-                <div className="mt-4 space-y-2">
-                  <div className="h-2 w-full rounded bg-bg-charcoal" />
-                  <div className="h-2 w-3/4 rounded bg-bg-charcoal" />
-                </div>
-                <div className="mt-4 flex gap-2">
-                  <span className="inline-block rounded bg-accent-red px-3 py-1.5 font-body text-xs font-semibold text-white">
-                    İleri
-                  </span>
-                  <span className="inline-block rounded border border-border-subtle px-3 py-1.5 font-body text-xs text-text-secondary">
-                    İptal
-                  </span>
-                </div>
-              </div>
-            </div>
+            <InstallerPreview />
           </motion.div>
         </div>
       </section>
@@ -281,30 +403,14 @@ export default function Indir() {
 
           <div className="space-y-12">
             {steps.map((step, i) => (
-              <motion.div
+              <StepRow
                 key={step.num}
-                custom={i}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, margin: '-80px' }}
-                variants={fadeUp}
-                className="flex gap-6 border-l border-border-subtle pl-6 transition-colors duration-500 hover:border-accent-red"
-              >
-                <span className="shrink-0 pt-1 font-display text-2xl font-bold text-accent-red">
-                  {step.num}
-                </span>
-                <div>
-                  <div className="mb-1 flex items-center gap-3">
-                    <step.icon className="h-5 w-5 text-text-secondary" />
-                    <h3 className="font-display text-xl font-bold text-text-primary">
-                      {step.title}
-                    </h3>
-                  </div>
-                  <p className="text-base leading-relaxed text-text-secondary">
-                    {step.desc}
-                  </p>
-                </div>
-              </motion.div>
+                num={step.num}
+                title={step.title}
+                desc={step.desc}
+                icon={step.icon}
+                index={i}
+              />
             ))}
           </div>
         </div>
@@ -378,20 +484,20 @@ export default function Indir() {
           variants={staggerContainer}
           className="relative mx-auto max-w-2xl text-center"
         >
-          <motion.div variants={staggerItem}>
+          <motion.div variants={staggerChild}>
             <Shield className="mx-auto h-12 w-12 text-safe-green" />
           </motion.div>
           <motion.h3
-            variants={staggerItem}
+            variants={staggerChild}
             className="mt-6 font-display text-2xl font-bold text-text-primary"
           >
             KVKK Uyumlu — Verileriniz Sizde Kalır
           </motion.h3>
-          <motion.p variants={staggerItem} className="mt-4 text-base leading-relaxed text-text-secondary">
+          <motion.p variants={staggerChild} className="mt-4 text-base leading-relaxed text-text-secondary">
             Tüm model çalıştırma yerel donanımda gerçekleşir. Hiçbir veri sunucularımıza gönderilmez.
             KVKK kapsamında tam uyumlu.
           </motion.p>
-          <motion.div variants={staggerItem} className="mt-8 flex flex-wrap justify-center gap-3">
+          <motion.div variants={staggerChild} className="mt-8 flex flex-wrap justify-center gap-3">
             {trustPoints.map((pt) => (
               <span
                 key={pt}
@@ -402,7 +508,7 @@ export default function Indir() {
               </span>
             ))}
           </motion.div>
-          <motion.div variants={staggerItem} className="mt-8">
+          <motion.div variants={staggerChild} className="mt-8">
             <Link
               to="/kvkk"
               className="inline-flex items-center gap-2 rounded border border-border-subtle px-5 py-2.5 font-body text-sm font-medium text-text-primary transition-colors duration-200 hover:border-accent-red hover:text-accent-red-light"
@@ -443,9 +549,7 @@ export default function Indir() {
                 <h3 className="mt-4 font-display text-base font-bold text-text-primary">
                   {item.title}
                 </h3>
-                <p className="mt-2 text-sm leading-relaxed text-text-secondary">
-                  {item.desc}
-                </p>
+                <p className="mt-2 text-sm leading-relaxed text-text-secondary">{item.desc}</p>
               </motion.div>
             ))}
           </div>

@@ -14,30 +14,7 @@ import {
   Cpu,
   Users,
 } from 'lucide-react'
-
-const easeExpoOut = [0.16, 1, 0.3, 1] as [number, number, number, number]
-
-/* ------------------------------------------------------------------ */
-/*  Animation helpers                                                  */
-/* ------------------------------------------------------------------ */
-const fadeUp = {
-  hidden: { opacity: 0, y: 40 },
-  visible: (i: number) => ({
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.6, delay: i * 0.12, ease: easeExpoOut },
-  }),
-}
-
-const staggerContainer = {
-  hidden: {},
-  visible: { transition: { staggerChildren: 0.1 } },
-}
-
-const staggerItem = {
-  hidden: { opacity: 0, y: 30 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: easeExpoOut } },
-}
+import { easeExpoOut, fadeUp, staggerContainer, staggerChild } from '@/lib/animations'
 
 /* ------------------------------------------------------------------ */
 /*  Data                                                               */
@@ -47,21 +24,18 @@ const quickStartCards = [
     icon: Download,
     title: 'İlk Kurulum',
     desc: "Windows, macOS veya Linux'a 2 dakikada kurulum. Adım adım rehber.",
-    link: '#/dokumantasyon/ilk-kurulum',
     linkText: 'Başla →',
   },
   {
     icon: Play,
     title: 'İlk Modelinizi Çalıştırın',
     desc: "Llama-3-Turkish indirin, sohbet edin. Yerel AI'nin nasıl çalıştığını görün.",
-    link: '#/dokumantasyon/ilk-model',
     linkText: 'Öğren →',
   },
   {
     icon: Code,
     title: 'API Entegrasyonu',
     desc: 'OpenAI uyumlu API ile kendi uygulamanıza entegre edin. Python, JS, cURL örnekleri.',
-    link: '#/dokumantasyon/api',
     linkText: 'Keşfet →',
   },
 ]
@@ -188,27 +162,28 @@ export default function Dokumantasyon() {
 
           <div className="grid gap-6 md:grid-cols-3">
             {quickStartCards.map((card, i) => (
-              <motion.a
+              <motion.button
                 key={card.title}
-                href={card.link}
+                type="button"
+                aria-label={`${card.title} — Yakında`}
+                title="Yakında"
+                disabled
                 custom={i}
                 initial="hidden"
                 whileInView="visible"
                 viewport={{ once: true, margin: '-60px' }}
                 variants={fadeUp}
-                className="group block rounded-lg border border-border-subtle bg-bg-charcoal p-6 transition-all duration-200 hover:-translate-y-1 hover:border-accent-red/40"
+                className="group block cursor-not-allowed rounded-lg border border-border-subtle bg-bg-charcoal p-6 text-left opacity-70 transition-all duration-200"
               >
                 <card.icon className="h-8 w-8 text-accent-red" />
                 <h3 className="mt-4 font-display text-lg font-bold text-text-primary">
                   {card.title}
                 </h3>
-                <p className="mt-2 text-sm leading-relaxed text-text-secondary">
-                  {card.desc}
-                </p>
-                <span className="mt-4 inline-block font-body text-sm font-medium text-accent-red transition-transform duration-200 group-hover:translate-x-1">
+                <p className="mt-2 text-sm leading-relaxed text-text-secondary">{card.desc}</p>
+                <span className="mt-4 inline-block font-body text-sm font-medium text-accent-red">
                   {card.linkText}
                 </span>
-              </motion.a>
+              </motion.button>
             ))}
           </div>
         </div>
@@ -230,7 +205,7 @@ export default function Dokumantasyon() {
           </motion.h2>
 
           {filteredCategories.length > 0 ? (
-            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="grid gap-6 grid-cols-1 sm:grid-cols-2">
               {filteredCategories.map((cat, i) => (
                 <motion.div
                   key={cat.title}
@@ -248,9 +223,7 @@ export default function Dokumantasyon() {
                     <h3 className="font-display text-base font-bold text-text-primary">
                       {cat.title}
                     </h3>
-                    <p className="mt-1 text-sm leading-relaxed text-text-secondary">
-                      {cat.desc}
-                    </p>
+                    <p className="mt-1 text-sm leading-relaxed text-text-secondary">{cat.desc}</p>
                     <span className="mt-2 inline-block font-body text-xs font-medium text-text-muted">
                       {cat.count} makale
                     </span>
@@ -282,9 +255,11 @@ export default function Dokumantasyon() {
           {filteredArticles.length > 0 ? (
             <div className="divide-y divide-border-subtle rounded-lg border border-border-subtle bg-bg-charcoal">
               {filteredArticles.map((article, i) => (
-                <motion.a
+                <motion.button
                   key={article.title}
-                  href="#"
+                  type="button"
+                  aria-label={`${article.title} — Yakında`}
+                  title="Yakında"
                   custom={i}
                   initial="hidden"
                   whileInView="visible"
@@ -297,7 +272,7 @@ export default function Dokumantasyon() {
                       transition: { duration: 0.3, delay: i * 0.06, ease: easeExpoOut },
                     },
                   }}
-                  className="group flex items-center justify-between px-5 py-4 transition-all duration-200 hover:border-l-2 hover:border-l-accent-red hover:bg-[rgba(217,30,54,0.03)]"
+                  className="group flex w-full items-center justify-between px-5 py-4 text-left transition-colors duration-200 hover:border-l-2 hover:border-l-accent-red hover:bg-[rgba(217,30,54,0.03)]"
                 >
                   <div>
                     <h4 className="font-body text-base font-medium text-text-primary transition-colors group-hover:text-accent-red-light">
@@ -308,7 +283,7 @@ export default function Dokumantasyon() {
                     </p>
                   </div>
                   <ArrowRight className="h-4 w-4 shrink-0 text-text-muted transition-all duration-200 group-hover:translate-x-1 group-hover:text-accent-red" />
-                </motion.a>
+                </motion.button>
               ))}
             </div>
           ) : (
@@ -328,20 +303,20 @@ export default function Dokumantasyon() {
           variants={staggerContainer}
           className="mx-auto max-w-xl text-center"
         >
-          <motion.div variants={staggerItem}>
+          <motion.div variants={staggerChild}>
             <Users className="mx-auto h-10 w-10 text-accent-red" />
           </motion.div>
           <motion.h2
-            variants={staggerItem}
+            variants={staggerChild}
             className="mt-5 font-display text-2xl font-bold text-text-primary md:text-3xl"
           >
             Cevabı Bulamadınız mı?
           </motion.h2>
-          <motion.p variants={staggerItem} className="mt-4 text-base leading-relaxed text-text-secondary">
+          <motion.p variants={staggerChild} className="mt-4 text-base leading-relaxed text-text-secondary">
             Topluluğumuza katılın ve diğer geliştiricilerden yardım alın.
           </motion.p>
           <motion.div
-            variants={staggerItem}
+            variants={staggerChild}
             className="mt-8 flex flex-wrap justify-center gap-4"
           >
             <Link
@@ -359,7 +334,7 @@ export default function Dokumantasyon() {
               GitHub'da Sor
             </a>
           </motion.div>
-          <motion.p variants={staggerItem} className="mt-6 text-sm text-text-muted">
+          <motion.p variants={staggerChild} className="mt-6 text-sm text-text-muted">
             Telegram grubumuzda 5.000+ geliştirici seni bekliyor.
           </motion.p>
         </motion.div>
