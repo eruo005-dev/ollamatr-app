@@ -25,11 +25,13 @@ interface Tier {
   label: string
   price: string
   period: string
+  kdvLabel: string
   description: string
   features: Feature[]
   cta: string
   ctaStyle: 'primary' | 'ghost'
   ctaLink?: string
+  ctaDescribedBy?: string
   featured?: boolean
   borderColor?: string
 }
@@ -40,6 +42,7 @@ const tiers: Tier[] = [
     label: 'ÜCRETSİZ',
     price: '0₺',
     period: '/ay',
+    kdvLabel: '(KDV dahil)',
     description: 'Bireysel kullanıcılar ve hobiler için',
     features: [
       { text: '50+ model erişimi', included: true },
@@ -59,9 +62,11 @@ const tiers: Tier[] = [
     label: 'PRO',
     price: '149₺',
     period: '/ay',
+    kdvLabel: '(KDV dahil)',
     description: 'Profesyonel geliştiriciler için',
     featured: true,
     borderColor: 'border-accent-red',
+    ctaDescribedBy: 'cayma-hakki',
     features: [
       { text: "Ücretsiz'deki her şey", included: true },
       { text: 'Gelişmiş WebUI + temalar', included: true },
@@ -81,7 +86,8 @@ const tiers: Tier[] = [
     name: 'KOBİ Paketi',
     label: 'KOBİ / KURUMSAL',
     price: '25.000₺ — 60.000₺',
-    period: 'tek seferlik kurulum',
+    period: '+ KDV (tek seferlik kurulum)',
+    kdvLabel: '(+ KDV)',
     description: 'Kurumsal ve KOBİ çözümleri',
     borderColor: 'border-[#FFB800]',
     features: [
@@ -278,6 +284,11 @@ export default function Fiyatlandirma() {
                 )}
               </div>
 
+              {/* KDV label */}
+              <p className="mt-1 font-mono text-xs text-text-muted">
+                {tier.kdvLabel}
+              </p>
+
               {/* Description */}
               <p className="mt-2 font-body text-sm text-text-secondary">
                 {tier.description}
@@ -288,6 +299,7 @@ export default function Fiyatlandirma() {
                 {tier.ctaStyle === 'primary' ? (
                   <button
                     type="button"
+                    aria-describedby={tier.ctaDescribedBy}
                     className="w-full rounded bg-accent-red py-3.5 font-body text-sm font-semibold uppercase tracking-wider text-white transition-all duration-200 hover:bg-accent-red-light hover:scale-[1.02]"
                   >
                     {tier.cta}
@@ -295,6 +307,7 @@ export default function Fiyatlandirma() {
                 ) : tier.ctaLink ? (
                   <Link
                     to={tier.ctaLink}
+                    aria-describedby={tier.ctaDescribedBy}
                     className="flex w-full items-center justify-center rounded border border-border-subtle bg-transparent py-3.5 font-body text-sm font-semibold uppercase tracking-wider text-text-primary transition-all duration-200 hover:border-accent-red hover:text-accent-red-light"
                   >
                     {tier.cta}
@@ -302,12 +315,21 @@ export default function Fiyatlandirma() {
                 ) : (
                   <button
                     type="button"
+                    aria-describedby={tier.ctaDescribedBy}
                     className="flex w-full items-center justify-center rounded border border-border-subtle bg-transparent py-3.5 font-body text-sm font-semibold uppercase tracking-wider text-text-primary transition-all duration-200 hover:border-accent-red hover:text-accent-red-light"
                   >
                     {tier.cta}
                   </button>
                 )}
               </div>
+
+              {/* Pro tier: mesafeli satış disclosure note */}
+              {tier.featured && (
+                <p className="mt-3 font-body text-xs leading-relaxed text-text-muted">
+                  Pro aboneliğine geçerek mesafeli satış sözleşmesini ve cayma
+                  hakkı koşullarını okuyup kabul etmiş sayılırsınız.
+                </p>
+              )}
 
               {/* Features */}
               <ul className="mt-8 flex flex-col gap-3">
@@ -471,6 +493,113 @@ export default function Fiyatlandirma() {
             ))}
           </motion.div>
         </div>
+      </section>
+
+      {/* ========== CAYMA HAKKI / MESAFELİ SATIŞ ========== */}
+      <section
+        id="cayma-hakki"
+        className="px-6 py-24 lg:px-10 lg:py-32"
+        aria-labelledby="cayma-hakki-heading"
+      >
+        <motion.div
+          className="mx-auto max-w-4xl rounded-lg border border-border-subtle bg-bg-charcoal/40 p-8 md:p-10"
+          variants={fadeUp}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: '-80px' }}
+          custom={0}
+        >
+          <h2
+            id="cayma-hakki-heading"
+            className="mb-3 font-display text-2xl font-bold uppercase tracking-wide text-text-primary"
+          >
+            Cayma Hakkınız ve Mesafeli Satış
+          </h2>
+          <p className="mb-8 font-body text-sm leading-relaxed text-text-secondary">
+            6502 Sayılı Tüketici Kanunu ve Mesafeli Sözleşmeler Yönetmeliği
+            kapsamında bilgilendirmeleriniz:
+          </p>
+
+          <div className="flex flex-col gap-8">
+            <div>
+              <h3 className="mb-2 font-display text-base font-semibold text-text-primary">
+                Cayma Hakkı (14 Gün)
+              </h3>
+              <p className="font-body text-sm leading-relaxed text-text-secondary">
+                Pro tarifesine abone olduktan sonra 14 (on dört) gün içinde
+                herhangi bir gerekçe göstermeksizin ve cezai şart ödemeksizin
+                cayma hakkınızı kullanabilirsiniz. Cayma hakkınızı kullanmak
+                için cayma süresi içinde{' '}
+                <span className="font-mono text-text-primary">
+                  privacy@ollamatr.com
+                </span>{' '}
+                adresine yazılı olarak başvurmanız yeterlidir.
+              </p>
+            </div>
+
+            <div>
+              <h3 className="mb-2 font-display text-base font-semibold text-text-primary">
+                Cayma Hakkının İstisnası
+              </h3>
+              <p className="font-body text-sm leading-relaxed text-text-secondary">
+                Yönetmelik Madde 15/1-ğ uyarınca, elektronik ortamda anında ifa
+                edilen ve tüketiciye anında teslim edilen dijital içerik
+                sözleşmelerinde, tüketicinin onayı ile ifaya başlanmışsa cayma
+                hakkı sona erer. Pro abonelik ilk kullanımı bu istisna
+                kapsamına girebilir; ilk girişinizden önce açık onay vermeniz
+                istenecektir.
+              </p>
+            </div>
+
+            <div>
+              <h3 className="mb-2 font-display text-base font-semibold text-text-primary">
+                İade Süreci
+              </h3>
+              <p className="font-body text-sm leading-relaxed text-text-secondary">
+                Cayma talebinizi takip eden 14 gün içerisinde ödemeniz iade
+                edilir. İade, ödemenin yapıldığı kanal üzerinden gerçekleştirilir.
+              </p>
+            </div>
+
+            <div>
+              <h3 className="mb-2 font-display text-base font-semibold text-text-primary">
+                KOBİ Paketi
+              </h3>
+              <p className="font-body text-sm leading-relaxed text-text-secondary">
+                KOBİ paketleri, ticari faaliyet kapsamında düzenlenen B2B
+                sözleşmelerdir; tüketici işlemi niteliği taşımaz. KOBİ
+                paketleri için ayrıca düzenlenmiş özel sözleşme şartları
+                geçerlidir. Detaylı bilgi için:{' '}
+                <span className="font-mono text-text-primary">
+                  privacy@ollamatr.com
+                </span>
+              </p>
+            </div>
+
+            <div>
+              <h3 className="mb-2 font-display text-base font-semibold text-text-primary">
+                Müşteri Hizmetleri
+              </h3>
+              <div className="rounded border border-border-subtle bg-bg-obsidian/60 p-4 font-mono text-sm text-text-secondary">
+                <p>E-posta: support@ollamatr.com</p>
+                <p>Çağrı Merkezi: [TODO: 0 (XXX) XXX XX XX]</p>
+                <p>KEP: [TODO]@hs01.kep.tr</p>
+                <p>Cevap süresi: 5 iş günü içerisinde</p>
+              </div>
+            </div>
+
+            <div>
+              <h3 className="mb-2 font-display text-base font-semibold text-text-primary">
+                Tüketici Hakem Heyeti
+              </h3>
+              <p className="font-body text-sm leading-relaxed text-text-secondary">
+                Uyuşmazlık halinde tüketici Hakem Heyetlerine veya Tüketici
+                Mahkemelerine başvurabilirsiniz. 2024 yılı parasal sınırları
+                için Ticaret Bakanlığı&rsquo;nın güncel listesi geçerlidir.
+              </p>
+            </div>
+          </div>
+        </motion.div>
       </section>
 
       {/* ========== BOTTOM CTA ========== */}
