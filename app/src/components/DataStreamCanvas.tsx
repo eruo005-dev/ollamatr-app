@@ -1,4 +1,4 @@
-import { useRef, useEffect, useState, useCallback } from 'react'
+import { useRef, useEffect, useCallback, useSyncExternalStore } from 'react'
 
 interface Particle {
   x: number
@@ -13,18 +13,25 @@ export default function DataStreamCanvas() {
   const particlesRef = useRef<Particle[]>([])
   const animFrameRef = useRef<number>(0)
   const isMobileRef = useRef(false)
-  const [isMobile, setIsMobile] = useState<boolean>(
-    typeof window !== 'undefined' ? window.innerWidth < 768 : false
+  // Subscribe to viewport width via the external store API — keeps setState
+  // out of the resize effect so render stays a pure function of state.
+  const isMobile = useSyncExternalStore(
+    (onChange) => {
+      window.addEventListener('resize', onChange)
+      return () => window.removeEventListener('resize', onChange)
+    },
+    () => window.innerWidth < 768,
+    () => false,
   )
+  useEffect(() => {
+    isMobileRef.current = isMobile
+  }, [isMobile])
 
   const resize = useCallback(() => {
     const canvas = canvasRef.current
     if (!canvas) return
     canvas.width = window.innerWidth
     canvas.height = window.innerHeight
-    const mobile = window.innerWidth < 768
-    isMobileRef.current = mobile
-    setIsMobile(mobile)
   }, [])
 
   useEffect(() => {

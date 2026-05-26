@@ -32,10 +32,7 @@ function detectOS(): OS {
 }
 
 function useDetectedOS(): OS {
-  const [os, setOs] = useState<OS>('Windows')
-  useEffect(() => {
-    setOs(detectOS())
-  }, [])
+  const [os] = useState<OS>(() => detectOS())
   return os
 }
 

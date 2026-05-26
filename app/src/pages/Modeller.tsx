@@ -947,10 +947,12 @@ export default function Modeller() {
     filteredModels,
   } = useModelFilters()
 
-  // Reset to page 1 whenever filters change.
-  useEffect(() => {
+  // Reset to page 1 whenever filters change. React 19 "derive during render" pattern.
+  const [lastFilter, setLastFilter] = useState(filteredModels)
+  if (lastFilter !== filteredModels) {
+    setLastFilter(filteredModels)
     setPage(1)
-  }, [filteredModels])
+  }
 
   const pageCount = Math.max(1, Math.ceil(filteredModels.length / PAGE_SIZE))
   const currentPage = Math.min(page, pageCount)
