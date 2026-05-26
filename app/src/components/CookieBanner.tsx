@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Cookie, X } from 'lucide-react'
 import { Link } from 'react-router'
@@ -67,18 +67,11 @@ function readConsent(): Consent | null {
 }
 
 export default function CookieBanner() {
-  const [visible, setVisible] = useState(false)
+  const [visible, setVisible] = useState<boolean>(() => readConsent() === null)
   const [showPreferences, setShowPreferences] = useState(false)
   const [analytics, setAnalytics] = useState(false)
   const [marketing, setMarketing] = useState(false)
   const [preferences, setPreferences] = useState(false)
-
-  useEffect(() => {
-    const existing = readConsent()
-    if (!existing) {
-      setVisible(true)
-    }
-  }, [])
 
   const buildConsent = (
     a: boolean,
