@@ -105,7 +105,7 @@ const comparisonRows: ComparisonRow[] = [
   { feature: 'KVKK Uyumu', ollamatr: 'Doğal uyum', cloud: 'Riskli (transfer)', cloudRisk: true },
   { feature: 'Veri Silme', ollamatr: 'Anlık, yerel', cloud: 'Talep gerekli' },
   { feature: '3. Taraf Paylaşım', ollamatr: 'Sadece sizin', cloud: '3. taraflarla paylaşılabilir', cloudRisk: true },
-  { feature: 'Maliyet', ollamatr: 'Ücretsiz/149₺', cloud: '$20/ay+' },
+  { feature: 'Maliyet', ollamatr: 'Ücretsiz', cloud: '$20/ay+' },
 ]
 
 const trustPillars = [

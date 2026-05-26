@@ -219,15 +219,11 @@ export default function CerezPolitikasi() {
           </div>
 
           <p className="mt-4 text-xs leading-relaxed text-text-muted">
-            Not: Analitik ve pazarlama kategorilerindeki sağlayıcılar (
-            <code className="rounded bg-bg-charcoal px-1.5 py-0.5 font-mono text-[0.6875rem] text-warn-yellow">
-              [TODO: Analitik sağlayıcı]
-            </code>{' '}
-            ,{' '}
-            <code className="rounded bg-bg-charcoal px-1.5 py-0.5 font-mono text-[0.6875rem] text-warn-yellow">
-              [TODO: Pazarlama sağlayıcı]
-            </code>
-            ) etkinleştirildiğinde bu alana eklenecektir.
+            Not: Topluluk Edisyonu şu anda yalnızca zorunlu (oturum) ve tercih
+            (çerez onayı) çerezlerini kullanmaktadır. İleride analitik veya
+            pazarlama çerezleri eklenirse, ilgili sağlayıcı bilgileri bu
+            sayfada açıkça belirtilecek ve açık rızanız alınmadan
+            etkinleştirilmeyecektir.
           </p>
         </div>
       </section>
