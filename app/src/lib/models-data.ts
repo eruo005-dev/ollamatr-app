@@ -10,6 +10,17 @@ export type UseCase =
 
 export type RamBucket = '< 8GB' | '8-16GB' | '16GB+'
 
+export type ModelLicense =
+  | 'Meta Llama 3 Community'
+  | 'Apache 2.0'
+  | 'MIT'
+  | 'Google Gemma Terms'
+  | 'Tongyi Qianwen'
+  | 'DeepSeek License'
+  | 'CC-BY-NC 4.0'
+  | 'CC-BY-SA 4.0'
+  | 'Custom (Topluluk)'
+
 export type Model = {
   id: number
   name: string
@@ -23,6 +34,9 @@ export type Model = {
   releasedAt: string
   downloads: string
   rating: number
+  license: ModelLicense
+  commercialUse: boolean
+  attribution: string
 }
 
 export const USE_CASES: UseCase[] = [
@@ -57,6 +71,9 @@ export const MODELS: Model[] = [
     releasedAt: '2024-08-12',
     downloads: '24.5K',
     rating: 4.7,
+    license: 'Meta Llama 3 Community',
+    commercialUse: true,
+    attribution: 'Built with Meta Llama 3',
   },
   {
     id: 2,
@@ -72,6 +89,9 @@ export const MODELS: Model[] = [
     releasedAt: '2024-06-03',
     downloads: '19.2K',
     rating: 4.5,
+    license: 'Apache 2.0',
+    commercialUse: true,
+    attribution: 'Mistral 7B (Apache 2.0)',
   },
   {
     id: 3,
@@ -87,6 +107,9 @@ export const MODELS: Model[] = [
     releasedAt: '2024-09-21',
     downloads: '12.8K',
     rating: 4.4,
+    license: 'Custom (Topluluk)',
+    commercialUse: true,
+    attribution: 'Topluluk lisansı',
   },
   {
     id: 4,
@@ -102,6 +125,9 @@ export const MODELS: Model[] = [
     releasedAt: '2024-07-15',
     downloads: '21.7K',
     rating: 4.6,
+    license: 'Apache 2.0',
+    commercialUse: true,
+    attribution: 'Trendyol Group — Apache 2.0',
   },
   {
     id: 5,
@@ -117,6 +143,9 @@ export const MODELS: Model[] = [
     releasedAt: '2024-05-08',
     downloads: '9.6K',
     rating: 4.5,
+    license: 'Custom (Topluluk)',
+    commercialUse: true,
+    attribution: 'Topluluk lisansı',
   },
   {
     id: 6,
@@ -132,6 +161,9 @@ export const MODELS: Model[] = [
     releasedAt: '2024-08-30',
     downloads: '17.3K',
     rating: 4.4,
+    license: 'Google Gemma Terms',
+    commercialUse: true,
+    attribution: 'Gemma is provided under and subject to the Gemma Terms of Use',
   },
   {
     id: 7,
@@ -147,6 +179,9 @@ export const MODELS: Model[] = [
     releasedAt: '2024-04-19',
     downloads: '11.4K',
     rating: 4.3,
+    license: 'Apache 2.0',
+    commercialUse: true,
+    attribution: 'Mistral 7B (Apache 2.0)',
   },
   {
     id: 8,
@@ -162,6 +197,9 @@ export const MODELS: Model[] = [
     releasedAt: '2024-10-05',
     downloads: '14.9K',
     rating: 4.2,
+    license: 'MIT',
+    commercialUse: true,
+    attribution: 'Microsoft Phi-3 (MIT)',
   },
   {
     id: 9,
@@ -177,6 +215,9 @@ export const MODELS: Model[] = [
     releasedAt: '2024-09-12',
     downloads: '10.1K',
     rating: 4.3,
+    license: 'Tongyi Qianwen',
+    commercialUse: true,
+    attribution: 'Qwen2 — Tongyi Qianwen License',
   },
   {
     id: 10,
@@ -192,6 +233,9 @@ export const MODELS: Model[] = [
     releasedAt: '2024-03-27',
     downloads: '5.4K',
     rating: 4.6,
+    license: 'CC-BY-NC 4.0',
+    commercialUse: false,
+    attribution: 'Cohere Command-R — CC-BY-NC 4.0 (yalnızca araştırma)',
   },
   {
     id: 11,
@@ -207,6 +251,9 @@ export const MODELS: Model[] = [
     releasedAt: '2024-11-02',
     downloads: '8.2K',
     rating: 4.4,
+    license: 'DeepSeek License',
+    commercialUse: true,
+    attribution: 'DeepSeek License',
   },
   {
     id: 12,
@@ -222,5 +269,11 @@ export const MODELS: Model[] = [
     releasedAt: '2024-10-22',
     downloads: '4.7K',
     rating: 4.5,
+    license: 'CC-BY-SA 4.0',
+    commercialUse: true,
+    attribution: 'Defog SQLCoder — CC-BY-SA 4.0',
   },
 ]
+
+export const COMMERCIAL_MODELS: Model[] = MODELS.filter((m) => m.commercialUse)
+export const NON_COMMERCIAL_MODELS: Model[] = MODELS.filter((m) => !m.commercialUse)

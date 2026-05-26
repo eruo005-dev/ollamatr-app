@@ -131,9 +131,16 @@ function ModelCard({ model, onSelect }: ModelCardProps) {
     >
       {/* Top row: name + RAM badge */}
       <div className="flex items-start justify-between gap-3">
-        <h3 className="font-display text-lg font-bold leading-tight text-text-primary md:text-xl">
-          {model.name}
-        </h3>
+        <div className="flex min-w-0 flex-col gap-1.5">
+          <h3 className="font-display text-lg font-bold leading-tight text-text-primary md:text-xl">
+            {model.name}
+          </h3>
+          {!model.commercialUse && (
+            <span className="inline-flex w-fit items-center rounded-sm border border-warn-yellow/30 bg-warn-yellow/15 px-2 py-0.5 font-mono text-xs uppercase text-warn-yellow">
+              Ticari Olmayan
+            </span>
+          )}
+        </div>
         <span
           className={`flex shrink-0 items-center gap-1 rounded-sm bg-bg-surface px-2 py-1 font-mono text-xs uppercase tracking-wide ${getRamColorClass(model.ramGB)}`}
           style={{ border: '1px solid rgba(244, 244, 245, 0.08)' }}
@@ -146,6 +153,11 @@ function ModelCard({ model, onSelect }: ModelCardProps) {
       {/* Description */}
       <p className="mt-3 line-clamp-2 font-body text-sm leading-relaxed text-text-secondary">
         {model.description}
+      </p>
+
+      {/* Attribution */}
+      <p className="mt-2 font-mono text-xs text-text-muted">
+        {model.attribution}
       </p>
 
       {/* Tags */}
@@ -354,6 +366,11 @@ function DetailModal({ model, onClose }: DetailModalProps) {
           <h2 id="model-detail-title" className="font-display text-2xl font-bold text-text-primary md:text-3xl">
             {model.name}
           </h2>
+          {!model.commercialUse && (
+            <span className="inline-flex items-center rounded-sm border border-warn-yellow/30 bg-warn-yellow/15 px-2 py-0.5 font-mono text-xs uppercase text-warn-yellow">
+              Ticari Olmayan
+            </span>
+          )}
           <span
             className={`flex items-center gap-1 rounded-sm bg-bg-surface px-3 py-1.5 font-mono text-xs uppercase tracking-wide ${ramColor}`}
             style={{ border: `1px solid ${ramHex}40`, boxShadow: `0 0 8px ${ramHex}25` }}
@@ -416,6 +433,22 @@ function DetailModal({ model, onClose }: DetailModalProps) {
               {tag}
             </span>
           ))}
+        </div>
+
+        {/* License section */}
+        <div className="mt-6 rounded-sm border border-border-subtle bg-bg-surface p-4">
+          <p className="font-mono text-[10px] uppercase tracking-wider text-text-muted">Lisans</p>
+          <p className="mt-1 font-body text-sm font-semibold text-text-primary">
+            {model.license}
+            {!model.commercialUse && (
+              <span className="ml-2 inline-flex items-center rounded-sm border border-warn-yellow/30 bg-warn-yellow/15 px-2 py-0.5 font-mono text-[10px] uppercase text-warn-yellow">
+                Ticari Olmayan
+              </span>
+            )}
+          </p>
+          <p className="mt-2 font-body text-xs leading-relaxed text-text-secondary">
+            {model.attribution}
+          </p>
         </div>
 
         {/* Performance note */}

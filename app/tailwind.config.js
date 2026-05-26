@@ -12,7 +12,7 @@ module.exports = {
         'accent-red-light': '#FF3B5C',
         'text-primary': '#F4F4F5',
         'text-secondary': '#8A8A93',
-        'text-muted': '#5A5A63',
+        'text-muted': '#80808A',
         'border-subtle': 'rgba(244, 244, 245, 0.08)',
         'border-active': 'rgba(217, 30, 54, 0.5)',
         'wizard-bg': '#0A0A0F',
