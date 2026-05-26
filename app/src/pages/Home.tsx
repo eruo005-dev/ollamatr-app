@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback, useMemo } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { Link } from 'react-router'
 import {
   Shield,
@@ -10,30 +10,8 @@ import {
   ArrowRight,
 } from 'lucide-react'
 import DataStreamCanvas from '@/components/DataStreamCanvas'
-
-/* ───────────────────────── Scroll reveal hook ───────────────────────── */
-function useScrollReveal(threshold = 0.15) {
-  const ref = useRef<HTMLDivElement>(null)
-  const [visible, setVisible] = useState(false)
-
-  useEffect(() => {
-    const el = ref.current
-    if (!el) return
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setVisible(true)
-          observer.disconnect()
-        }
-      },
-      { threshold }
-    )
-    observer.observe(el)
-    return () => observer.disconnect()
-  }, [threshold])
-
-  return { ref, visible }
-}
+import TiltCard from '@/components/TiltCard'
+import { useScrollReveal } from '@/hooks/useScrollReveal'
 
 /* ───────────────────────── Animated counter ───────────────────────── */
 function useCountUp(end: number, duration: number, start: boolean) {
@@ -59,46 +37,6 @@ function useCountUp(end: number, duration: number, start: boolean) {
   }, [end, duration, start])
 
   return value
-}
-
-/* ───────────────────────── 3D Tilt Card ───────────────────────── */
-interface TiltCardProps {
-  children: React.ReactNode
-  className?: string
-}
-
-function TiltCard({ children, className = '' }: TiltCardProps) {
-  const cardRef = useRef<HTMLDivElement>(null)
-  const [transform, setTransform] = useState('perspective(1000px) rotateX(0deg) rotateY(0deg)')
-
-  const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
-    const card = cardRef.current
-    if (!card) return
-    const rect = card.getBoundingClientRect()
-    const x = e.clientX - rect.left
-    const y = e.clientY - rect.top
-    const centerX = rect.width / 2
-    const centerY = rect.height / 2
-    const rotateX = ((y - centerY) / centerY) * -5
-    const rotateY = ((x - centerX) / centerX) * 5
-    setTransform(`perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`)
-  }, [])
-
-  const handleMouseLeave = useCallback(() => {
-    setTransform('perspective(1000px) rotateX(0deg) rotateY(0deg)')
-  }, [])
-
-  return (
-    <div
-      ref={cardRef}
-      className={className}
-      style={{ transform, transition: 'transform 0.15s ease-out' }}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-    >
-      {children}
-    </div>
-  )
 }
 
 /* ═══════════════════════════ MODEL DATA ═══════════════════════════ */
@@ -181,7 +119,7 @@ const STATUS_CONFIG: Record<
     glowClass: 'shadow-glow-yellow',
   },
   danger: {
-    text: 'YETERSİZ: RAM ARTIRILMALI',
+    text: 'YETERSİZ: RAM ARTTIRILMALI',
     colorClass: 'text-accent-red border-accent-red',
     glowClass: 'shadow-glow-red',
   },
@@ -209,7 +147,12 @@ export default function Home() {
 }
 
 /* ═══════════════════════════ SECTION 1: HERO ═══════════════════════════ */
+const HERO_TITLE = 'YAPAY ZEKA, TÜRKÇE KONUŞSUN.'
+
 function HeroSection() {
+  const chars = Array.from(HERO_TITLE)
+  const midpoint = (chars.length - 1) / 2
+
   return (
     <section className="relative flex min-h-[100dvh] items-center justify-center overflow-hidden">
       {/* Gradient overlay for text readability */}
@@ -221,10 +164,23 @@ function HeroSection() {
       {/* Hero content */}
       <div className="relative z-10 mx-auto max-w-[800px] px-6 pt-16 text-center">
         <h1
-          className="hero-title font-display text-4xl font-bold uppercase leading-[1.05] tracking-tight text-text-primary sm:text-5xl md:text-[4.5rem]"
+          className="font-display text-4xl font-bold uppercase leading-[1.05] tracking-tight text-text-primary sm:text-5xl md:text-[4.5rem]"
           style={{ letterSpacing: '-0.02em' }}
+          aria-label={HERO_TITLE}
         >
-          YAPAY ZEKA, TÜRKÇE KONUŞSUN.
+          {chars.map((char, index) => {
+            const delay = Math.abs(index - midpoint) * 0.04 + 0.3
+            return (
+              <span
+                key={`${char}-${index}`}
+                className="hero-char"
+                style={{ animationDelay: `${delay}s` }}
+                aria-hidden="true"
+              >
+                {char === ' ' ? ' ' : char}
+              </span>
+            )
+          })}
         </h1>
 
         <p
@@ -256,34 +212,6 @@ function HeroSection() {
           </Link>
         </div>
       </div>
-
-      {/* Hero entrance animations */}
-      <style>{`
-        .hero-title {
-          opacity: 0;
-          transform: translateY(40px);
-          animation: heroFadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards;
-        }
-        .hero-subtitle {
-          opacity: 0;
-          transform: translateY(30px);
-          animation: heroFadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.8s forwards;
-        }
-        .hero-cta {
-          opacity: 0;
-          transform: translateY(20px) scale(0.95);
-          animation: heroFadeUpScale 0.5s cubic-bezier(0.16, 1, 0.3, 1) 1.0s forwards;
-        }
-        .hero-cta > *:nth-child(2) {
-          animation-delay: 1.12s;
-        }
-        @keyframes heroFadeUp {
-          to { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes heroFadeUpScale {
-          to { opacity: 1; transform: translateY(0) scale(1); }
-        }
-      `}</style>
     </section>
   )
 }
@@ -293,7 +221,7 @@ function ProblemSection() {
   const { ref, visible } = useScrollReveal()
 
   return (
-    <section ref={ref} className="bg-bg-obsidian py-24 md:py-32 lg:py-40">
+    <section ref={ref} className="bg-bg-obsidian py-24 md:py-32 lg:py-[120px]">
       <div
         className="mx-auto max-w-[720px] px-6 text-center lg:px-10"
         style={{
@@ -323,7 +251,7 @@ function ModelShowcaseSection() {
   const row2 = MODELS.slice(3, 6)
 
   return (
-    <section ref={ref} className="bg-bg-obsidian py-24 md:py-32 lg:py-40">
+    <section ref={ref} className="bg-bg-obsidian py-24 md:py-32 lg:py-[120px]">
       <div className="mx-auto max-w-7xl px-6 lg:px-10">
         <div
           style={{
@@ -442,7 +370,7 @@ function RAMCalculatorSection() {
   const config = STATUS_CONFIG[status]
 
   return (
-    <section ref={ref} className="bg-bg-charcoal py-24 md:py-32 lg:py-40">
+    <section ref={ref} className="bg-bg-charcoal py-24 md:py-32 lg:py-[120px]">
       <div
         className="mx-auto max-w-[600px] px-6 lg:px-10"
         style={{
@@ -542,7 +470,7 @@ function SocialProofSection() {
   const { ref, visible } = useScrollReveal()
 
   return (
-    <section ref={ref} className="bg-bg-obsidian py-24 md:py-32 lg:py-40">
+    <section ref={ref} className="bg-bg-obsidian py-24 md:py-32 lg:py-[120px]">
       <div className="mx-auto max-w-7xl px-6 lg:px-10">
         <h2
           className="text-center font-display text-2xl font-bold uppercase tracking-tight text-text-primary md:text-3xl lg:text-[2.5rem]"
@@ -648,7 +576,7 @@ function FeaturesSection() {
   const { ref, visible } = useScrollReveal()
 
   return (
-    <section ref={ref} className="bg-bg-charcoal py-24 md:py-32 lg:py-40">
+    <section ref={ref} className="bg-bg-charcoal py-24 md:py-32 lg:py-[120px]">
       <div className="mx-auto max-w-7xl px-6 lg:px-10">
         <h2
           className="text-center font-display text-2xl font-bold uppercase tracking-tight text-text-primary md:text-3xl lg:text-[2.5rem]"
