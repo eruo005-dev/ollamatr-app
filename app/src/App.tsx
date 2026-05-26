@@ -13,6 +13,7 @@ const Topluluk = lazy(() => import('./pages/Topluluk'))
 const Indir = lazy(() => import('./pages/Indir'))
 const Hakkimizda = lazy(() => import('./pages/Hakkimizda'))
 const KVKK = lazy(() => import('./pages/KVKK'))
+const CerezPolitikasi = lazy(() => import('./pages/CerezPolitikasi'))
 
 function RouteLoader() {
   return (
@@ -41,6 +42,7 @@ export default function App() {
             <Route path="/fiyatlandirma" element={<Fiyatlandirma />} />
             <Route path="/hakkimizda" element={<Hakkimizda />} />
             <Route path="/kvkk" element={<KVKK />} />
+            <Route path="/cerez-politikasi" element={<CerezPolitikasi />} />
             <Route path="/topluluk" element={<Topluluk />} />
           </Routes>
         </Suspense>

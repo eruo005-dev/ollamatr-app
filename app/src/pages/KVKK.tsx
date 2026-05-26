@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect } from 'react'
 import { Link } from 'react-router'
 import { AnimatePresence, motion } from 'framer-motion'
 import {
@@ -13,69 +13,53 @@ import {
   ArrowRight,
   XCircle,
   Monitor,
+  ScrollText,
 } from 'lucide-react'
 import { easeExpoOut } from '@/lib/animations'
+import { useScrollReveal } from '@/hooks/useScrollReveal'
 import { ErrorBoundary } from '@/components/ErrorBoundary'
-
-/* ------------------------------------------------------------------ */
-/*  Scroll reveal hook (from Modeller.tsx pattern)                    */
-/* ------------------------------------------------------------------ */
-function useScrollReveal(threshold = 0.15) {
-  const ref = useRef<HTMLDivElement>(null)
-  const [visible, setVisible] = useState(false)
-
-  useEffect(() => {
-    const el = ref.current
-    if (!el) return
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setVisible(true)
-          observer.disconnect()
-        }
-      },
-      { threshold }
-    )
-    observer.observe(el)
-    return () => observer.disconnect()
-  }, [threshold])
-
-  return { ref, visible }
-}
 
 /* ------------------------------------------------------------------ */
 /*  Data                                                               */
 /* ------------------------------------------------------------------ */
-const checklistItems = [
+interface ChecklistItem {
+  article: string
+  title: string
+  desc: string
+  /** Neutral label — NOT a compliance assertion. */
+  label: string
+}
+
+const checklistItems: ChecklistItem[] = [
   {
-    article: 'Madde 4/2',
-    title: "Veri işleme faaliyetinin yurt içinde gerçekleştirilmesi",
-    desc: "Tüm veri işleme yerel donanımda.",
-    status: 'UYUMLU',
+    article: 'Madde 4',
+    title: 'Genel İlkeler',
+    desc: 'Kişisel verilerin hukuka ve dürüstlük kurallarına uygun olarak; doğru ve gerektiğinde güncel; belirli, açık ve meşru amaçlar için; işlendikleri amaçla bağlantılı, sınırlı ve ölçülü olarak; ilgili mevzuatta öngörülen veya işlendikleri amaç için gerekli olan süre kadar muhafaza edilmesi gerekir. OllamaTR masaüstü ürünü tüm AI işlemlerini cihazınızda yerel olarak gerçekleştirir; bu durum genel ilkelere uyumu kolaylaştırır.',
+    label: 'MADDE 4: GENEL İLKELER',
   },
   {
     article: 'Madde 10',
-    title: 'Aydınlatma yükümlülüğü',
-    desc: 'Kurulumda açık izin akışı.',
-    status: 'UYUMLU',
+    title: 'Aydınlatma Yükümlülüğü',
+    desc: 'Veri sorumlusu, kişisel verilerin elde edilmesi sırasında ilgili kişileri aydınlatmakla yükümlüdür. Bu sayfanın alt kısmında yer alan Aydınlatma Metni bölümünde bu yükümlülüğü karşılayan bilgiler sunulmaktadır.',
+    label: 'MADDE 10: AYDINLATMA YÜKÜMLÜLÜĞÜ',
   },
   {
     article: 'Madde 11',
-    title: "Veri sahibinin hakları",
-    desc: 'Kullanıcı tüm verilerini dilediği zaman silebilir.',
-    status: 'UYUMLU',
+    title: 'Veri Sahibinin Hakları',
+    desc: 'İlgili kişilerin sahip olduğu 8 yasal hak Aydınlatma Metni bölümünde tek tek sıralanmıştır. Talepleriniz için privacy@ollamatr.com adresine başvurabilirsiniz.',
+    label: 'MADDE 11: VERİ SAHİBİ HAKLARI',
   },
   {
     article: 'Madde 12',
-    title: 'Veri güvenliği',
-    desc: 'Yerel şifreleme, hiçbir veri iletimi yok.',
-    status: 'UYUMLU',
+    title: 'Veri Güvenliği',
+    desc: 'Veri sorumlusu; kişisel verilerin hukuka aykırı işlenmesini ve erişilmesini önlemek, muhafazasını sağlamak amacıyla uygun güvenlik düzeyini temin etmeye yönelik gerekli her türlü teknik ve idari tedbirleri almakla yükümlüdür. OllamaTR masaüstü ürünü için yerel şifreleme ve internetten yalıtılmış işleme; web sitesi için TLS, erişim kontrolleri ve güncel altyapı uygulanmaktadır.',
+    label: 'MADDE 12: VERİ GÜVENLİĞİ',
   },
   {
     article: 'Madde 15',
-    title: 'Veri ihlali bildirimi',
-    desc: 'Yerel işleme nedeniyle veri ihlali riski sıfır.',
-    status: 'UYUMLU',
+    title: 'Veri İhlali Bildirimi',
+    desc: 'Yerel işleme veri ihlali riskini önemli ölçüde azaltır; ancak risk asla sıfır değildir. Veri ihlali halinde KVKK Kurulu’na 72 saat içinde bildirimde bulunma yükümlülüğümüz vardır ve bir İhlal Müdahale Planı sürdürülmektedir.',
+    label: 'MADDE 15: VERİ İHLALİ BİLDİRİMİ',
   },
 ]
 
@@ -131,9 +115,23 @@ const trustPillars = [
 ]
 
 /* ------------------------------------------------------------------ */
+/*  Aydınlatma Metni — Article 11 rights enumeration                    */
+/* ------------------------------------------------------------------ */
+const article11Rights: string[] = [
+  'Kişisel verilerinin işlenip işlenmediğini öğrenme,',
+  'Kişisel verileri işlenmişse buna ilişkin bilgi talep etme,',
+  'Kişisel verilerin işlenme amacını ve bunların amacına uygun kullanılıp kullanılmadığını öğrenme,',
+  'Yurt içinde veya yurt dışında kişisel verilerin aktarıldığı üçüncü kişileri bilme,',
+  'Kişisel verilerin eksik veya yanlış işlenmiş olması hâlinde bunların düzeltilmesini isteme,',
+  'KVKK’nın 7. maddesinde öngörülen şartlar çerçevesinde kişisel verilerin silinmesini veya yok edilmesini isteme,',
+  '(5) ve (6) bentleri uyarınca yapılan işlemlerin, kişisel verilerin aktarıldığı üçüncü kişilere bildirilmesini isteme,',
+  'İşlenen verilerin münhasıran otomatik sistemler vasıtasıyla analiz edilmesi suretiyle kişinin kendisi aleyhine bir sonucun ortaya çıkmasına itiraz etme ve kişisel verilerin kanuna aykırı olarak işlenmesi sebebiyle zarara uğraması hâlinde zararın giderilmesini talep etme.',
+]
+
+/* ------------------------------------------------------------------ */
 /*  Sub-components                                                     */
 /* ------------------------------------------------------------------ */
-function TrustPillarCard({ pillar, index }: { pillar: typeof trustPillars[number]; index: number }) {
+function TrustPillarCard({ pillar, index }: { pillar: (typeof trustPillars)[number]; index: number }) {
   const { ref, visible } = useScrollReveal()
   return (
     <div
@@ -145,21 +143,13 @@ function TrustPillarCard({ pillar, index }: { pillar: typeof trustPillars[number
       }}
       className="rounded-lg border border-border-subtle bg-bg-obsidian p-6"
     >
-      <h3 className="font-display text-lg font-bold text-text-primary">
-        {pillar.title}
-      </h3>
-      <p className="mt-2 text-sm leading-relaxed text-text-secondary">
-        {pillar.desc}
-      </p>
+      <h3 className="font-display text-lg font-bold text-text-primary">{pillar.title}</h3>
+      <p className="mt-2 text-sm leading-relaxed text-text-secondary">{pillar.desc}</p>
     </div>
   )
 }
 
-function ExpandableChecklistItem({
-  item,
-}: {
-  item: (typeof checklistItems)[number]
-}) {
+function ExpandableChecklistItem({ item }: { item: ChecklistItem }) {
   const [open, setOpen] = useState(false)
 
   return (
@@ -173,15 +163,12 @@ function ExpandableChecklistItem({
             {item.article}
           </span>
           <div>
-            <h4 className="font-body text-base font-medium text-text-primary">
-              {item.title}
-            </h4>
+            <h4 className="font-body text-base font-medium text-text-primary">{item.title}</h4>
           </div>
         </div>
         <div className="flex shrink-0 items-center gap-3">
-          <span className="inline-flex items-center gap-1 rounded bg-safe-green/10 px-2 py-1 font-mono text-[0.625rem] font-medium uppercase tracking-wider text-safe-green">
-            <CheckCircle2 className="h-3 w-3" />
-            {item.status}
+          <span className="inline-flex items-center gap-1 rounded border border-border-subtle bg-bg-charcoal px-2 py-1 font-mono text-[0.625rem] font-medium uppercase tracking-wider text-text-secondary">
+            {item.label}
           </span>
           <ChevronDown
             className={`h-4 w-4 text-text-muted transition-transform duration-200 ${open ? 'rotate-180' : ''}`}
@@ -212,7 +199,10 @@ function ExpandableChecklistItem({
 /*  Heavy below-fold content (deferred mount)                          */
 /* ------------------------------------------------------------------ */
 interface HeavyContentProps {
-  sectionStyle: (visible: boolean, delay?: number) => {
+  sectionStyle: (
+    visible: boolean,
+    delay?: number
+  ) => {
     opacity: number
     transform: string
     transition: string
@@ -225,6 +215,7 @@ function KVKKHeavyContent({ sectionStyle }: HeavyContentProps) {
   const { ref: checklistRef, visible: checklistVisible } = useScrollReveal()
   const { ref: installerRef, visible: installerVisible } = useScrollReveal()
   const { ref: comparisonRef, visible: comparisonVisible } = useScrollReveal()
+  const { ref: aydinlatmaRef, visible: aydinlatmaVisible } = useScrollReveal()
   const { ref: ctaRef, visible: ctaVisible } = useScrollReveal()
 
   return (
@@ -246,14 +237,14 @@ function KVKKHeavyContent({ sectionStyle }: HeavyContentProps) {
               style={sectionStyle(promiseVisible, 0.1)}
               className="mt-6 text-base leading-relaxed text-text-secondary"
             >
-              Tüm verileriniz cihazınızda işlenir. Hiçbir veri sunucularımıza gönderilmez.
-              Geleneksel AI hizmetleri (ChatGPT, Claude vb.) sorgularınızı kendi sunucularına gönderir
-              ve verilerinizi saklar. OllamaTR tamamen farklıdır:
+              OllamaTR <strong>masaüstü uygulaması</strong> (Ollama + Open WebUI paketi) tüm AI işlemlerini
+              cihazınızda yerel olarak gerçekleştirir. Geleneksel AI hizmetleri (ChatGPT, Claude vb.) sorgularınızı
+              kendi sunucularına gönderir ve verilerinizi saklar. Masaüstü ürünümüz tamamen farklıdır:
             </p>
             <ul className="mt-6 space-y-3">
               {[
                 'Tüm model çalıştırma yerel bilgisayarınızda gerçekleşir',
-                'Hiçbir prompt, yanıt veya kullanım verisi internete çıkmaz',
+                'Hiçbir prompt, yanıt veya model kullanım verisi internete çıkmaz',
                 'Kurulum sonrası internet bağlantısı bile gerekmez',
                 'Verileriniz 3. taraflarla paylaşılmaz, satılmaz, işlenmez',
               ].map((pt, i) => (
@@ -267,6 +258,23 @@ function KVKKHeavyContent({ sectionStyle }: HeavyContentProps) {
                 </li>
               ))}
             </ul>
+
+            {/* Carve-out box */}
+            <div
+              style={sectionStyle(promiseVisible, 0.4)}
+              className="mt-6 rounded-lg border border-warn-yellow/30 bg-warn-yellow/5 p-4"
+            >
+              <p className="text-xs leading-relaxed text-text-secondary">
+                <strong className="text-warn-yellow">Önemli kapsam:</strong> Bu taahhüt OllamaTR{' '}
+                <strong>masaüstü ürününün</strong> AI işleme bileşenini kapsar. Bu{' '}
+                <strong>web sitesi</strong> ve yol haritasındaki olası bulut hizmetleri ise aşağıda yer alan
+                Aydınlatma Metni ile{' '}
+                <Link to="/cerez-politikasi" className="text-accent-red-light underline hover:text-accent-red">
+                  Çerez Politikası
+                </Link>{' '}
+                kapsamındadır.
+              </p>
+            </div>
 
             {/* Visual diagram */}
             <div ref={diagramRef} className="mt-8">
@@ -306,16 +314,24 @@ function KVKKHeavyContent({ sectionStyle }: HeavyContentProps) {
       </section>
 
       {/* ============================================================ */}
-      {/* SECTION 3 — Compliance Checklist                               */}
+      {/* SECTION 3 — KVKK Article Reference List                       */}
       {/* ============================================================ */}
       <section className="bg-bg-obsidian px-6 py-24 lg:px-10">
         <div ref={checklistRef} className="mx-auto max-w-4xl">
           <h2
             style={sectionStyle(checklistVisible)}
-            className="mb-10 font-display text-2xl font-bold text-text-primary md:text-3xl"
+            className="mb-3 font-display text-2xl font-bold text-text-primary md:text-3xl"
           >
-            KVKK UYUMLULUK KONTROL LİSTESİ
+            KVKK MADDE REFERANSLARI
           </h2>
+          <p
+            style={sectionStyle(checklistVisible, 0.05)}
+            className="mb-10 text-sm leading-relaxed text-text-secondary"
+          >
+            6698 sayılı Kanun'un OllamaTR ile doğrudan ilgili maddelerine ait yasal özet. Bu liste bir
+            uyumluluk beyanı değil, sayfanın altındaki Aydınlatma Metni ile birlikte okunması gereken yasal
+            referanslardır.
+          </p>
 
           <div
             style={sectionStyle(checklistVisible, 0.15)}
@@ -363,12 +379,8 @@ function KVKKHeavyContent({ sectionStyle }: HeavyContentProps) {
                 <div className="flex items-start gap-3">
                   <step.icon className="mt-0.5 h-5 w-5 text-text-secondary" />
                   <div>
-                    <h4 className="font-display text-base font-bold text-text-primary">
-                      {step.title}
-                    </h4>
-                    <p className="mt-1 text-sm leading-relaxed text-text-secondary">
-                      {step.desc}
-                    </p>
+                    <h4 className="font-display text-base font-bold text-text-primary">{step.title}</h4>
+                    <p className="mt-1 text-sm leading-relaxed text-text-secondary">{step.desc}</p>
                   </div>
                 </div>
               </div>
@@ -404,10 +416,7 @@ function KVKKHeavyContent({ sectionStyle }: HeavyContentProps) {
             KARŞILAŞTIRMA
           </h2>
 
-          <div
-            style={sectionStyle(comparisonVisible, 0.15)}
-            className="overflow-x-auto"
-          >
+          <div style={sectionStyle(comparisonVisible, 0.15)} className="overflow-x-auto">
             <table className="w-full min-w-[640px] border-collapse rounded-lg border border-border-subtle">
               <thead>
                 <tr className="bg-bg-charcoal">
@@ -426,11 +435,11 @@ function KVKKHeavyContent({ sectionStyle }: HeavyContentProps) {
                 {comparisonRows.map((row, i) => (
                   <tr
                     key={row.feature}
-                    className={`transition-colors duration-150 ${i % 2 === 0 ? 'bg-bg-obsidian' : 'bg-bg-charcoal/50'}`}
+                    className={`transition-colors duration-150 ${
+                      i % 2 === 0 ? 'bg-bg-obsidian' : 'bg-bg-charcoal/50'
+                    }`}
                   >
-                    <td className="px-5 py-4 font-body text-sm font-medium text-text-primary">
-                      {row.feature}
-                    </td>
+                    <td className="px-5 py-4 font-body text-sm font-medium text-text-primary">{row.feature}</td>
                     <td className="border-l-2 border-l-accent-red px-5 py-4 font-body text-sm font-medium text-safe-green">
                       {row.ollamatr}
                     </td>
@@ -450,7 +459,192 @@ function KVKKHeavyContent({ sectionStyle }: HeavyContentProps) {
       </section>
 
       {/* ============================================================ */}
-      {/* SECTION 6 — CTA                                              */}
+      {/* SECTION 6 — AYDINLATMA METNİ (Art. 10 formal disclosure)     */}
+      {/* ============================================================ */}
+      <section
+        id="aydinlatma-metni"
+        className="border-t border-border-subtle bg-bg-charcoal px-6 py-24 lg:px-10"
+      >
+        <div ref={aydinlatmaRef} className="mx-auto max-w-3xl">
+          <div
+            style={sectionStyle(aydinlatmaVisible)}
+            className="mb-4 inline-flex items-center gap-2 rounded border border-border-subtle bg-bg-obsidian px-3 py-1.5"
+          >
+            <ScrollText className="h-3.5 w-3.5 text-accent-red" />
+            <span className="font-mono text-[0.625rem] uppercase tracking-wider text-text-muted">
+              6698 Sayılı KVKK Madde 10
+            </span>
+          </div>
+
+          <h2
+            style={sectionStyle(aydinlatmaVisible, 0.05)}
+            className="font-display text-3xl font-bold leading-tight text-text-primary md:text-4xl"
+          >
+            Aydınlatma Metni
+          </h2>
+
+          <p
+            style={sectionStyle(aydinlatmaVisible, 0.1)}
+            className="mt-6 text-base leading-relaxed text-text-secondary"
+          >
+            6698 Sayılı Kişisel Verilerin Korunması Kanunu Madde 10 kapsamında, OllamaTR olarak veri işleme
+            faaliyetlerimize ilişkin sizleri bilgilendirme yükümlülüğümüz vardır. Aşağıdaki açıklamalar, bu
+            internet sitesi ve sunulan hizmetler bağlamında geçerlidir.
+          </p>
+
+          {/* Subsection (a) — Veri Sorumlusu */}
+          <div style={sectionStyle(aydinlatmaVisible, 0.15)} className="mt-10">
+            <h3 className="font-display text-xl font-bold text-text-primary">a) Veri Sorumlusu</h3>
+            <p className="mt-3 text-sm leading-relaxed text-text-secondary">
+              KVKK kapsamında veri sorumlusu sıfatıyla hareket eden tüzel kişilik aşağıdaki gibidir:
+            </p>
+            <ul className="mt-3 space-y-1.5 text-sm leading-relaxed text-text-secondary">
+              <li>
+                Ünvan: <code className="rounded bg-bg-obsidian px-1.5 py-0.5 font-mono text-xs text-warn-yellow">[TODO: Şirket Tam Ünvanı]</code>
+              </li>
+              <li>
+                MERSİS No: <code className="rounded bg-bg-obsidian px-1.5 py-0.5 font-mono text-xs text-warn-yellow">[TODO: MERSİS]</code>
+              </li>
+              <li>
+                Adres: <code className="rounded bg-bg-obsidian px-1.5 py-0.5 font-mono text-xs text-warn-yellow">[TODO: Tebligata Esas Adres]</code>
+              </li>
+              <li>
+                E-posta:{' '}
+                <a
+                  href="mailto:privacy@ollamatr.com"
+                  className="text-accent-red-light underline hover:text-accent-red"
+                >
+                  privacy@ollamatr.com
+                </a>
+              </li>
+              <li>
+                KEP: <code className="rounded bg-bg-obsidian px-1.5 py-0.5 font-mono text-xs text-warn-yellow">[TODO: kep-adresi]@hs01.kep.tr</code>
+              </li>
+              <li>
+                VERBİS Sicil No:{' '}
+                <code className="rounded bg-bg-obsidian px-1.5 py-0.5 font-mono text-xs text-warn-yellow">
+                  [TODO: VERBİS] (veya muafiyet gerekçesi)
+                </code>
+              </li>
+            </ul>
+          </div>
+
+          {/* Subsection (b) — İşleme Amaçları */}
+          <div style={sectionStyle(aydinlatmaVisible, 0.2)} className="mt-10">
+            <h3 className="font-display text-xl font-bold text-text-primary">b) İşleme Amaçları</h3>
+            <p className="mt-3 text-sm leading-relaxed text-text-secondary">
+              Kişisel verileriniz aşağıdaki amaçlarla işlenmektedir:
+            </p>
+            <ol className="mt-3 list-decimal space-y-2 pl-6 text-sm leading-relaxed text-text-secondary marker:text-text-muted">
+              <li>Hizmetlerimizin sunulması, sürdürülmesi ve geliştirilmesi,</li>
+              <li>Müşteri ilişkilerinin yönetimi (Pro ve KOBİ abonelikleri kapsamında),</li>
+              <li>Yasal yükümlülüklerin yerine getirilmesi (vergi, ticaret hukuku, KVKK),</li>
+              <li>Talep, soru ve şikayetlerin değerlendirilmesi ve cevaplanması.</li>
+            </ol>
+          </div>
+
+          {/* Subsection (c) — Aktarılan Taraflar */}
+          <div style={sectionStyle(aydinlatmaVisible, 0.25)} className="mt-10">
+            <h3 className="font-display text-xl font-bold text-text-primary">c) Aktarılan Taraflar</h3>
+            <p className="mt-3 text-sm leading-relaxed text-text-secondary">
+              Web sitemizin ziyaretçi verileri (IP, tarayıcı bilgileri) yurt dışında bulunan hiçbir tedarikçiye
+              aktarılmamaktadır. Aşağıdaki sınırlı durumlarda aktarım söz konusu olabilir:
+            </p>
+            <ul className="mt-3 list-disc space-y-2 pl-6 text-sm leading-relaxed text-text-secondary marker:text-text-muted">
+              <li>
+                Ödeme sağlayıcıları (yalnızca Pro/KOBİ abonelik sözleşmesi söz konusu olduğunda; ödeme
+                bilgileriniz doğrudan ilgili ödeme kuruluşuna iletilir).
+              </li>
+              <li>
+                Faturalandırma ve muhasebe yükümlülükleri kapsamında yetkili mali müşavir ve resmi kurumlar.
+              </li>
+              <li>
+                Yasal yükümlülükler nedeniyle bilgi talep eden yetkili kurumlar (Vergi Dairesi, KVKK Kurulu,
+                mahkemeler).
+              </li>
+            </ul>
+            <p className="mt-3 text-sm leading-relaxed text-text-secondary">
+              Not: Geçmiş sürümlerde web sitesinde Google Fonts CDN kullanılmıştı; mevcut sürümde tüm yazı
+              tipleri kendi sunucumuzdan sunulmaktadır ve bu nedenle ziyaretçi verisinin Google LLC'ye
+              aktarımı söz konusu değildir.
+            </p>
+          </div>
+
+          {/* Subsection (d) — Yöntem ve Hukuki Sebep */}
+          <div style={sectionStyle(aydinlatmaVisible, 0.3)} className="mt-10">
+            <h3 className="font-display text-xl font-bold text-text-primary">d) Yöntem ve Hukuki Sebep</h3>
+            <p className="mt-3 text-sm leading-relaxed text-text-secondary">
+              Kişisel verileriniz; web sitemiz, e-posta yazışmaları ve sözleşmesel süreçler üzerinden elektronik
+              ortamda toplanmaktadır. İşleme faaliyetlerinin hukuki sebepleri aşağıdaki gibidir:
+            </p>
+            <ul className="mt-3 list-disc space-y-2 pl-6 text-sm leading-relaxed text-text-secondary marker:text-text-muted">
+              <li>
+                <strong>Web sitesi ziyaretleri:</strong> KVKK Madde 5/2-(f) — temel hak ve özgürlüklerinize zarar
+                vermemek kaydıyla, veri sorumlusunun meşru menfaatleri.
+              </li>
+              <li>
+                <strong>Pro ve KOBİ abonelikleri:</strong> KVKK Madde 5/2-(a) — sözleşmenin kurulması veya
+                ifasıyla doğrudan doğruya ilgili olması.
+              </li>
+              <li>
+                <strong>Müşteri iletişimi ve pazarlama:</strong> KVKK Madde 5/1 — ilgili kişinin açık rızası.
+              </li>
+              <li>
+                <strong>Yasal saklama yükümlülüğü:</strong> KVKK Madde 5/2-(ç) — veri sorumlusunun hukuki
+                yükümlülüğünü yerine getirebilmesi.
+              </li>
+            </ul>
+          </div>
+
+          {/* Subsection (e) — Article 11 Rights */}
+          <div style={sectionStyle(aydinlatmaVisible, 0.35)} className="mt-10">
+            <h3 className="font-display text-xl font-bold text-text-primary">
+              e) İlgili Kişi Hakları (Madde 11)
+            </h3>
+            <p className="mt-3 text-sm leading-relaxed text-text-secondary">
+              KVKK'nın 11. maddesi uyarınca veri sorumlusuna başvurarak aşağıdaki haklarınızı kullanabilirsiniz.
+              Her ilgili kişi:
+            </p>
+            <ol className="mt-3 list-decimal space-y-2 pl-6 text-sm leading-relaxed text-text-secondary marker:text-accent-red">
+              {article11Rights.map((right) => (
+                <li key={right}>{right}</li>
+              ))}
+            </ol>
+            <p className="mt-5 rounded-lg border border-border-subtle bg-bg-obsidian p-4 text-sm leading-relaxed text-text-secondary">
+              Bu haklarınızı kullanmak için{' '}
+              <a
+                href="mailto:privacy@ollamatr.com"
+                className="text-accent-red-light underline hover:text-accent-red"
+              >
+                privacy@ollamatr.com
+              </a>{' '}
+              adresine başvurabilirsiniz. Talepler en geç 30 gün içerisinde cevaplanacaktır (KVKK Madde 13).
+            </p>
+          </div>
+
+          {/* Brand promise carve-out */}
+          <div style={sectionStyle(aydinlatmaVisible, 0.4)} className="mt-10">
+            <h3 className="font-display text-xl font-bold text-text-primary">Marka Vaadi Kapsamı</h3>
+            <p className="mt-3 text-sm leading-relaxed text-text-secondary">
+              "Verileriniz cihazınızda kalır" şeklindeki taahhüdümüz, özel olarak OllamaTR{' '}
+              <strong>masaüstü ürününe</strong> (Ollama + Open WebUI paketi) işaret etmektedir. Tüm AI işlemleri
+              (prompt'lar, yanıtlar, model çalıştırma) kullanıcının cihazında yerel olarak gerçekleşir ve
+              sunucularımıza iletilmez.
+            </p>
+            <p className="mt-3 text-sm leading-relaxed text-text-secondary">
+              Bu <strong>web sitesi</strong>, hesap yönetimi, faturalandırma ve müşteri iletişimi gibi
+              faaliyetler ile yol haritasındaki olası bulut hizmetleri; işbu Aydınlatma Metni ve{' '}
+              <Link to="/cerez-politikasi" className="text-accent-red-light underline hover:text-accent-red">
+                Çerez Politikası
+              </Link>{' '}
+              kapsamındadır.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* ============================================================ */}
+      {/* SECTION 7 — CTA                                              */}
       {/* ============================================================ */}
       <section className="bg-bg-charcoal px-6 py-24 lg:px-10">
         <div ref={ctaRef} className="mx-auto max-w-xl text-center">
@@ -481,7 +675,7 @@ function KVKKHeavyContent({ sectionStyle }: HeavyContentProps) {
             }}
             className="mt-4 text-lg leading-relaxed text-text-secondary"
           >
-            KVKK uyumlu, yerel, ücretsiz AI deneyimini hemen başlatın.
+            KVKK ilkelerine uygun, yerel, ücretsiz AI deneyimini hemen başlatın.
           </p>
           <div
             style={{
@@ -496,7 +690,7 @@ function KVKKHeavyContent({ sectionStyle }: HeavyContentProps) {
               className="inline-flex items-center gap-2 rounded bg-accent-red px-7 py-3.5 font-body text-sm font-semibold uppercase tracking-wider text-white transition-all duration-200 hover:scale-[1.02] hover:bg-accent-red-light"
             >
               <Download className="h-4 w-4" />
-              KVKK Uyumlu Kurulum
+              Yerel Kurulum
             </Link>
             <a
               href="mailto:privacy@ollamatr.com"
@@ -565,15 +759,31 @@ export default function KVKK() {
             style={heroStyle(0.1)}
             className="font-display text-4xl font-bold leading-tight text-text-primary md:text-5xl lg:text-6xl"
           >
-            KVKK Uyumlu Yerel AI
+            KVKK ve OllamaTR
           </h1>
           <p
             style={heroStyle(0.22)}
             className="mt-6 max-w-xl text-lg leading-relaxed text-text-secondary"
           >
-            OllamaTR'de verileriniz asla sunucularımıza gitmez. Tüm işleme yerel donanımda gerçekleşir.
-            6698 sayılı KVKK kanununa tam uyum.
+            OllamaTR masaüstü ürününde tüm AI işlemleri yerel donanımınızda gerçekleşir. Bu sayfada hem ürün
+            yaklaşımımızı hem de bu web sitesi için geçerli olan resmi Aydınlatma Metni'ni bulabilirsiniz
+            (6698 sayılı KVKK Madde 10).
           </p>
+          <div style={heroStyle(0.32)} className="mt-6 flex flex-wrap gap-3">
+            <a
+              href="#aydinlatma-metni"
+              className="inline-flex items-center gap-2 rounded border border-border-subtle px-4 py-2 font-body text-xs font-medium uppercase tracking-wider text-text-primary transition-colors hover:border-accent-red hover:text-accent-red-light"
+            >
+              <ScrollText className="h-3.5 w-3.5" />
+              Aydınlatma Metni'ne Atla
+            </a>
+            <Link
+              to="/cerez-politikasi"
+              className="inline-flex items-center gap-2 rounded border border-border-subtle px-4 py-2 font-body text-xs font-medium uppercase tracking-wider text-text-primary transition-colors hover:border-accent-red hover:text-accent-red-light"
+            >
+              Çerez Politikası
+            </Link>
+          </div>
         </div>
       </section>
 
