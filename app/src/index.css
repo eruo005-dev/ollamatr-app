@@ -1,3 +1,14 @@
+/* Self-hosted fonts (no yurt dışı veri aktarımı) */
+@import '@fontsource/inter/400.css';
+@import '@fontsource/inter/500.css';
+@import '@fontsource/inter/600.css';
+@import '@fontsource/inter/700.css';
+@import '@fontsource/space-grotesk/400.css';
+@import '@fontsource/space-grotesk/700.css';
+@import '@fontsource/jetbrains-mono/400.css';
+@import '@fontsource/jetbrains-mono/500.css';
+@import '@fontsource/jetbrains-mono/600.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -111,4 +122,20 @@
 
 .hero-cta > *:nth-child(2) {
   animation-delay: 1.12s;
+}
+
+/* === Reduced motion accommodation (WCAG 2.3.3) === */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .hero-char {
+    animation: none !important;
+    opacity: 1 !important;
+  }
 }

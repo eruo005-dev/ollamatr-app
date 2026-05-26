@@ -2,6 +2,7 @@ import { useEffect, type ReactNode } from 'react'
 import type LenisType from 'lenis'
 import Navbar from './Navbar'
 import Footer from './Footer'
+import CookieBanner from './CookieBanner'
 
 interface LayoutProps {
   children: ReactNode
@@ -43,8 +44,15 @@ export default function Layout({ children }: LayoutProps) {
 
   return (
     <div className="relative min-h-[100dvh]">
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-md focus:bg-accent-red focus:px-4 focus:py-2 focus:font-mono focus:text-sm focus:font-semibold focus:text-white"
+      >
+        İçeriğe geç
+      </a>
       <Navbar />
-      <main>{children}</main>
+      <main id="main-content">{children}</main>
+      <CookieBanner />
       <Footer />
     </div>
   )
