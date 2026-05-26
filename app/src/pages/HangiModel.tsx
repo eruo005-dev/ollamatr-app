@@ -1,19 +1,21 @@
 import { useState, useRef, useCallback, useEffect } from 'react'
 import { useNavigate } from 'react-router'
 import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useGSAP } from '@gsap/react'
 import {
   MessageSquare,
   Terminal,
-  Briefcase,
-  BookOpen,
+  FileText,
+  Database,
+  Languages,
   Star,
   Zap,
   Cpu,
   Target,
   Globe,
-  Shield,
-  Coins,
+  Award,
+  Gauge,
   ArrowLeft,
   ArrowRight,
   Download,
@@ -24,6 +26,7 @@ import {
   Rocket,
   HelpCircle,
 } from 'lucide-react'
+import type { LucideIcon } from 'lucide-react'
 import { Link } from 'react-router'
 
 /* ------------------------------------------------------------------ */
@@ -39,178 +42,257 @@ interface ModelData {
   description: string
 }
 
+interface UseCaseOption {
+  id: string
+  icon: LucideIcon
+  title: string
+  desc: string
+}
+
+interface RamOption {
+  value: number
+  label: string
+}
+
+interface SkillOption {
+  id: string
+  icon: LucideIcon
+  title: string
+  desc: string
+}
+
+interface PriorityOption {
+  id: string
+  icon: LucideIcon
+}
+
 const modelDatabase: ModelData[] = [
   {
     name: 'Phi-3 Mini TR 4B',
     ram: 4,
-    useCases: ['Genel Sohbet & Yazma', 'Öğrenme & Araştırma'],
-    skill: 'Başlangıç',
-    priorityMatch: ['Hız', 'Ücretsiz', 'Gizlilik'],
+    useCases: ['Genel Sohbet & Asistan', 'Çeviri & Özetleme'],
+    skill: 'Yeni Başlayan',
+    priorityMatch: [
+      'Hız (düşük latency)',
+      'Düşük kaynak tüketimi',
+    ],
     description:
       "Düşük RAM ile harika performans. Microsoft'un kompakt modeli Türkçe'ye uyarlandı.",
   },
   {
     name: 'Llama 3.1 Turkuaz 8B',
     ram: 8,
-    useCases: ['Genel Sohbet & Yazma', 'Profesyonel & İş'],
-    skill: 'Orta',
-    priorityMatch: ['Türkçe Kalitesi', 'Doğruluk', 'Gizlilik'],
+    useCases: ['Genel Sohbet & Asistan', 'İçerik Üretimi'],
+    skill: 'Orta Seviye',
+    priorityMatch: [
+      'Çok dilli (İngilizce + Türkçe)',
+      'Doğruluk (en iyi cevaplar)',
+    ],
     description:
       'Türkçe metin üretiminin kralı. Meta\'nın güçlü modeli Türkçe için optimize edildi.',
   },
   {
     name: 'Mistral TrFine 7B',
     ram: 7,
-    useCases: ['Genel Sohbet & Yazma', 'Öğrenme & Araştırma'],
-    skill: 'Orta',
-    priorityMatch: ['Hız', 'Türkçe Kalitesi'],
+    useCases: ['Genel Sohbet & Asistan', 'Çeviri & Özetleme'],
+    skill: 'Orta Seviye',
+    priorityMatch: [
+      'Hız (düşük latency)',
+      'Çok dilli (İngilizce + Türkçe)',
+    ],
     description: 'Hızlı ve verimli. Mistral mimarisi Türkçe corpus ile buluştu.',
   },
   {
     name: 'CodeLlama TR 13B',
     ram: 16,
-    useCases: ['Kod & Geliştirme'],
-    skill: 'İleri',
-    priorityMatch: ['Doğruluk', 'Türkçe Kalitesi'],
+    useCases: ['Kod Yazma & Teknik'],
+    skill: 'İleri Seviye',
+    priorityMatch: [
+      'Doğruluk (en iyi cevaplar)',
+      'Kod yeteneği',
+    ],
     description:
       'Türkçe yorumlar ve değişken isimleriyle eğitilmiş kod üretim uzmanı.',
   },
   {
     name: 'DeepSeek-R1 TR 14B',
     ram: 16,
-    useCases: ['Öğrenme & Araştırma', 'Profesyonel & İş'],
-    skill: 'İleri',
-    priorityMatch: ['Doğruluk', 'Çok Dilli'],
+    useCases: ['Kod Yazma & Teknik', 'Veri Analizi & SQL'],
+    skill: 'İleri Seviye',
+    priorityMatch: [
+      'Doğruluk (en iyi cevaplar)',
+      'Kod yeteneği',
+      'Çok dilli (İngilizce + Türkçe)',
+    ],
     description: 'Mantıksal akıl yürütme ve problem çözme dehası.',
   },
   {
     name: 'Llama 3.1 Turkuaz 70B',
     ram: 48,
-    useCases: ['Genel Sohbet & Yazma', 'Profesyonel & İş', 'Öğrenme & Araştırma'],
-    skill: 'İleri',
-    priorityMatch: ['Doğruluk', 'Türkçe Kalitesi', 'Çok Dilli'],
+    useCases: [
+      'Genel Sohbet & Asistan',
+      'İçerik Üretimi',
+      'Çeviri & Özetleme',
+    ],
+    skill: 'Uzman',
+    priorityMatch: [
+      'Doğruluk (en iyi cevaplar)',
+      'Çok dilli (İngilizce + Türkçe)',
+    ],
     description: 'En gelişmiş Türkçe model. Mükemmel anlama ve üretim kalitesi.',
   },
   {
     name: 'Qwen2.5 TR 7B',
     ram: 8,
-    useCases: ['Genel Sohbet & Yazma', 'Profesyonel & İş'],
-    skill: 'Orta',
-    priorityMatch: ['Çok Dilli', 'Hız'],
+    useCases: ['Genel Sohbet & Asistan', 'İçerik Üretimi'],
+    skill: 'Orta Seviye',
+    priorityMatch: [
+      'Çok dilli (İngilizce + Türkçe)',
+      'Hız (düşük latency)',
+    ],
     description:
       "Türkçe ve İngilizce çift dilli performans. Alibaba'nın güçlü modeli.",
   },
   {
     name: 'LLaVA-TR 7B',
     ram: 8,
-    useCases: ['Öğrenme & Araştırma'],
-    skill: 'Orta',
-    priorityMatch: ['Doğruluk'],
+    useCases: ['İçerik Üretimi'],
+    skill: 'Orta Seviye',
+    priorityMatch: ['Doğruluk (en iyi cevaplar)'],
     description:
       'Görüntüleri anlayıp Türkçe açıklama üretebilen vizyon modeli.',
   },
   {
     name: 'Gemma 2 TR 9B',
     ram: 10,
-    useCases: ['Öğrenme & Araştırma', 'Profesyonel & İş'],
-    skill: 'Orta',
-    priorityMatch: ['Doğruluk', 'Türkçe Kalitesi'],
+    useCases: ['İçerik Üretimi', 'Çeviri & Özetleme'],
+    skill: 'Orta Seviye',
+    priorityMatch: [
+      'Doğruluk (en iyi cevaplar)',
+      'Çok dilli (İngilizce + Türkçe)',
+    ],
     description:
       'Google Gemma 2 üzerine Türkçe akademik ve bilimsel metinlerle eğitilmiş model.',
   },
   {
     name: 'Hukuk-BERT TR 1B',
     ram: 2,
-    useCases: ['Profesyonel & İş'],
-    skill: 'Başlangıç',
-    priorityMatch: ['Hız', 'Gizlilik'],
+    useCases: ['İçerik Üretimi'],
+    skill: 'Yeni Başlayan',
+    priorityMatch: [
+      'Hız (düşük latency)',
+      'Düşük kaynak tüketimi',
+    ],
     description:
       'Türk hukuk metinleri üzerine uzmanlaşmış, sözleşme ve karar analizi modeli.',
   },
   {
     name: 'SQLCoder TR 7B',
     ram: 8,
-    useCases: ['Kod & Geliştirme'],
-    skill: 'Orta',
-    priorityMatch: ['Doğruluk', 'Hız'],
+    useCases: ['Veri Analizi & SQL', 'Kod Yazma & Teknik'],
+    skill: 'Orta Seviye',
+    priorityMatch: [
+      'Doğruluk (en iyi cevaplar)',
+      'Kod yeteneği',
+    ],
     description:
       'Türkçe doğal dil sorgularını SQL\'e çeviren uzmanlaşmış model.',
   },
   {
     name: 'Mixtral TR 47B',
     ram: 32,
-    useCases: ['Genel Sohbet & Yazma', 'Profesyonel & İş', 'Öğrenme & Araştırma'],
-    skill: 'İleri',
-    priorityMatch: ['Doğruluk', 'Çok Dilli', 'Türkçe Kalitesi'],
+    useCases: [
+      'Genel Sohbet & Asistan',
+      'İçerik Üretimi',
+      'Veri Analizi & SQL',
+    ],
+    skill: 'Uzman',
+    priorityMatch: [
+      'Doğruluk (en iyi cevaplar)',
+      'Çok dilli (İngilizce + Türkçe)',
+    ],
     description:
       'Mixture of Experts mimarisi. Türkçe için en gelişmiş açık modellerden biri.',
   },
 ]
 
-const useCaseOptions = [
+const useCaseOptions: UseCaseOption[] = [
   {
-    id: 'Genel Sohbet & Yazma',
+    id: 'Genel Sohbet & Asistan',
     icon: MessageSquare,
-    title: 'Genel Sohbet & Yazma',
-    desc: 'Günlük sorular, brainstorming, metin üretimi',
+    title: 'Genel Sohbet & Asistan',
+    desc: 'Günlük sohbet ve genel yardımcı',
   },
   {
-    id: 'Kod & Geliştirme',
+    id: 'Kod Yazma & Teknik',
     icon: Terminal,
-    title: 'Kod & Geliştirme',
-    desc: 'Programlama, debugging, teknik dökümantasyon',
+    title: 'Kod Yazma & Teknik',
+    desc: 'Kod üretimi, debugging, teknik yardım',
   },
   {
-    id: 'Profesyonel & İş',
-    icon: Briefcase,
-    title: 'Profesyonel & İş',
-    desc: 'İş süreçleri, raporlama, profesyonel iletişim',
+    id: 'İçerik Üretimi',
+    icon: FileText,
+    title: 'İçerik Üretimi',
+    desc: 'Blog, makale, pazarlama metni',
   },
   {
-    id: 'Öğrenme & Araştırma',
-    icon: BookOpen,
-    title: 'Öğrenme & Araştırma',
-    desc: ' Akademik çalışma, araştırma, özetleme',
+    id: 'Veri Analizi & SQL',
+    icon: Database,
+    title: 'Veri Analizi & SQL',
+    desc: 'Veri sorgulama ve analiz',
+  },
+  {
+    id: 'Çeviri & Özetleme',
+    icon: Languages,
+    title: 'Çeviri & Özetleme',
+    desc: 'Döküman çevirisi, metin özetleme',
   },
 ]
 
-const ramOptions = [
-  { value: 4, label: '4GB' },
-  { value: 8, label: '8GB' },
+const ramOptions: RamOption[] = [
+  { value: 8, label: '8GB ve altı' },
   { value: 16, label: '16GB' },
   { value: 32, label: '32GB' },
   { value: 64, label: '64GB+' },
+  { value: 0, label: 'Bilmiyorum' },
 ]
 
-const skillOptions = [
+const skillOptions: SkillOption[] = [
   {
-    id: 'Başlangıç',
+    id: 'Yeni Başlayan',
     icon: Star,
-    title: 'Başlangıç',
+    title: 'Yeni Başlayan',
     desc: 'Yeni başlıyorum, kolay kurulum istiyorum',
   },
   {
-    id: 'Orta',
+    id: 'Orta Seviye',
     icon: Zap,
-    title: 'Orta',
+    title: 'Orta Seviye',
     desc: 'Teknik bilgim var, ayarları yapabilirim',
   },
   {
-    id: 'İleri',
+    id: 'İleri Seviye',
     icon: Cpu,
-    title: 'İleri',
+    title: 'İleri Seviye',
+    desc: 'Komut satırı ve yapılandırmaya hâkimim',
+  },
+  {
+    id: 'Uzman',
+    icon: Award,
+    title: 'Uzman',
     desc: 'Uzmanım, en iyi performansı isterim',
   },
 ]
 
-const priorityOptions = [
-  { id: 'Hız', icon: Zap },
-  { id: 'Doğruluk', icon: Target },
-  { id: 'Türkçe Kalitesi', icon: MessageSquare },
-  { id: 'Çok Dilli', icon: Globe },
-  { id: 'Gizlilik', icon: Shield },
-  { id: 'Ücretsiz', icon: Coins },
+const priorityOptions: PriorityOption[] = [
+  { id: 'Hız (düşük latency)', icon: Zap },
+  { id: 'Doğruluk (en iyi cevaplar)', icon: Target },
+  { id: 'Çok dilli (İngilizce + Türkçe)', icon: Globe },
+  { id: 'Kod yeteneği', icon: Terminal },
+  { id: 'Düşük kaynak tüketimi', icon: Gauge },
 ]
+
+const MAX_PRIORITIES = 2
 
 /* ------------------------------------------------------------------ */
 /*  Matching Algorithm                                                */
@@ -222,14 +304,17 @@ function findBestModel(
   skill: string,
   priorities: string[]
 ): { best: ModelData; alternatives: ModelData[]; matchPercent: number } {
+  // Treat "Bilmiyorum" (0) as 16GB default for matching
+  const effectiveRam = ram > 0 ? ram : 16
+
   // Filter: RAM must fit, useCase must match
   let candidates = modelDatabase.filter(
-    (m) => m.ram <= ram && m.useCases.includes(useCase)
+    (m) => m.ram <= effectiveRam && m.useCases.includes(useCase)
   )
 
   if (candidates.length === 0) {
     // Fallback: just RAM fit
-    candidates = modelDatabase.filter((m) => m.ram <= ram)
+    candidates = modelDatabase.filter((m) => m.ram <= effectiveRam)
     if (candidates.length === 0) {
       // Ultimate fallback: smallest models
       candidates = modelDatabase.filter((m) => m.ram <= 8)
@@ -240,15 +325,16 @@ function findBestModel(
   // Score each candidate
   const scored = candidates.map((m) => {
     let score = 0
-    // Skill match (0-30)
+    // Skill match (0-30) — 4-tier mapping
     const skillLevels: Record<string, number> = {
-      Başlangıç: 1,
-      Orta: 2,
-      İleri: 3,
+      'Yeni Başlayan': 1,
+      'Orta Seviye': 2,
+      'İleri Seviye': 3,
+      Uzman: 4,
     }
     const userSkill = skillLevels[skill] || 1
     const modelSkill = skillLevels[m.skill] || 1
-    score += 30 - Math.abs(userSkill - modelSkill) * 10
+    score += 30 - Math.abs(userSkill - modelSkill) * 8
 
     // Priority matches (0-50)
     const priorityMatches = priorities.filter((p) =>
@@ -256,9 +342,8 @@ function findBestModel(
     ).length
     score += (priorityMatches / Math.max(priorities.length, 1)) * 50
 
-    // RAM efficiency bonus — prefer models that use closer to available RAM
-    // but not too close (0-20)
-    const ramUtilization = m.ram / ram
+    // RAM efficiency bonus (0-20)
+    const ramUtilization = m.ram / effectiveRam
     score += ramUtilization * 20
 
     return { model: m, score }
@@ -308,20 +393,46 @@ function getRamShadow(ram: number): string {
 }
 
 /* ------------------------------------------------------------------ */
+/*  Refs container type                                               */
+/* ------------------------------------------------------------------ */
+
+interface DomRefs {
+  container: HTMLDivElement | null
+  wizard: HTMLDivElement | null
+  stepContent: HTMLDivElement | null
+  loadingBar: HTMLDivElement | null
+  loadingText: HTMLSpanElement | null
+  resultCard: HTMLDivElement | null
+  hero: HTMLDivElement | null
+  nasil: HTMLDivElement | null
+  cta: HTMLDivElement | null
+}
+
+/* ------------------------------------------------------------------ */
 /*  Main Component                                                    */
 /* ------------------------------------------------------------------ */
 
 export default function HangiModel() {
   const navigate = useNavigate()
-  const containerRef = useRef<HTMLDivElement>(null)
-  const wizardRef = useRef<HTMLDivElement>(null)
-  const stepContentRef = useRef<HTMLDivElement>(null)
-  const loadingBarRef = useRef<HTMLDivElement>(null)
-  const loadingTextRef = useRef<HTMLSpanElement>(null)
-  const resultCardRef = useRef<HTMLDivElement>(null)
-  const heroRef = useRef<HTMLDivElement>(null)
-  const nasilRef = useRef<HTMLDivElement>(null)
-  const ctaRef = useRef<HTMLDivElement>(null)
+
+  // Consolidated DOM refs in a single useRef object
+  const domRefs = useRef<DomRefs>({
+    container: null,
+    wizard: null,
+    stepContent: null,
+    loadingBar: null,
+    loadingText: null,
+    resultCard: null,
+    hero: null,
+    nasil: null,
+    cta: null,
+  })
+
+  // Scope refs for useGSAP — must be standalone refs for useGSAP scope
+  const heroScope = useRef<HTMLDivElement>(null)
+  const wizardScope = useRef<HTMLDivElement>(null)
+  const nasilScope = useRef<HTMLDivElement>(null)
+  const ctaScope = useRef<HTMLDivElement>(null)
 
   const [step, setStep] = useState(1)
   const [useCase, setUseCase] = useState('')
@@ -335,11 +446,26 @@ export default function HangiModel() {
     matchPercent: number
   } | null>(null)
 
+  // Cancellation ref for async loading flow
+  const cancelledRef = useRef(false)
+
+  /* ---- Register GSAP plugins as a side effect, not at module load ---- */
+  useEffect(() => {
+    gsap.registerPlugin(ScrollTrigger)
+  }, [])
+
+  /* ---- Unmount cancellation flag ---- */
+  useEffect(() => {
+    return () => {
+      cancelledRef.current = true
+    }
+  }, [])
+
   /* ---- GSAP: Hero entrance ---- */
   useGSAP(
     () => {
-      if (!heroRef.current) return
-      const els = heroRef.current.querySelectorAll('.hero-animate')
+      if (!heroScope.current) return
+      const els = heroScope.current.querySelectorAll('.hero-animate')
       gsap.from(els, {
         y: 40,
         opacity: 0,
@@ -349,14 +475,14 @@ export default function HangiModel() {
         delay: 0.2,
       })
     },
-    { scope: heroRef }
+    { scope: heroScope }
   )
 
   /* ---- GSAP: Wizard entrance ---- */
   useGSAP(
     () => {
-      if (!wizardRef.current) return
-      gsap.from(wizardRef.current, {
+      if (!wizardScope.current) return
+      gsap.from(wizardScope.current, {
         y: 20,
         opacity: 0,
         duration: 0.6,
@@ -364,15 +490,15 @@ export default function HangiModel() {
         delay: 0.5,
       })
     },
-    { scope: wizardRef }
+    { scope: wizardScope }
   )
 
   /* ---- GSAP: Nasıl Çalışır scroll ---- */
   useGSAP(
     () => {
-      if (!nasilRef.current) return
-      const steps = nasilRef.current.querySelectorAll('.process-step')
-      const line = nasilRef.current.querySelector('.process-line-fill')
+      if (!nasilScope.current) return
+      const steps = nasilScope.current.querySelectorAll('.process-step')
+      const line = nasilScope.current.querySelector('.process-line-fill')
 
       gsap.from(steps, {
         y: 30,
@@ -382,66 +508,72 @@ export default function HangiModel() {
         stagger: 0.15,
         ease: 'expo.out',
         scrollTrigger: {
-          trigger: nasilRef.current,
+          trigger: nasilScope.current,
           start: 'top 80%',
           once: true,
         },
       })
 
       if (line) {
-        gsap.from(line, {
-          scaleX: 0,
-          duration: 1.2,
-          ease: 'expo.out',
-          scrollTrigger: {
-            trigger: nasilRef.current,
-            start: 'top 80%',
-            once: true,
-          },
-        })
+        // scrub: true → line fills progressively with scroll position
+        gsap.fromTo(
+          line,
+          { scaleX: 0 },
+          {
+            scaleX: 1,
+            ease: 'none',
+            scrollTrigger: {
+              trigger: nasilScope.current,
+              start: 'top 85%',
+              end: 'bottom 60%',
+              scrub: true,
+            },
+          }
+        )
       }
     },
-    { scope: nasilRef }
+    { scope: nasilScope }
   )
 
   /* ---- GSAP: CTA scroll ---- */
   useGSAP(
     () => {
-      if (!ctaRef.current) return
-      gsap.from(ctaRef.current.querySelectorAll('.cta-animate'), {
+      if (!ctaScope.current) return
+      gsap.from(ctaScope.current.querySelectorAll('.cta-animate'), {
         y: 30,
         opacity: 0,
         duration: 0.6,
         stagger: 0.12,
         ease: 'expo.out',
         scrollTrigger: {
-          trigger: ctaRef.current,
+          trigger: ctaScope.current,
           start: 'top 85%',
           once: true,
         },
       })
     },
-    { scope: ctaRef }
+    { scope: ctaScope }
   )
 
   /* ---- Step transition ---- */
   const animateStepTransition = useCallback(
     (direction: 'forward' | 'backward', onComplete: () => void) => {
-      if (!stepContentRef.current) {
+      const target = domRefs.current.stepContent
+      if (!target) {
         onComplete()
         return
       }
       const tl = gsap.timeline({ onComplete })
-      tl.to(stepContentRef.current, {
+      tl.to(target, {
         opacity: 0,
         x: direction === 'forward' ? -20 : 20,
         duration: 0.25,
         ease: 'power2.in',
       })
-      tl.set(stepContentRef.current, {
+      tl.set(target, {
         x: direction === 'forward' ? 20 : -20,
       })
-      tl.to(stepContentRef.current, {
+      tl.to(target, {
         opacity: 1,
         x: 0,
         duration: 0.35,
@@ -453,16 +585,19 @@ export default function HangiModel() {
 
   /* ---- Loading animation ---- */
   const runLoadingAnimation = useCallback(() => {
-    if (!loadingBarRef.current || !loadingTextRef.current) return
+    const bar = domRefs.current.loadingBar
+    const textEl = domRefs.current.loadingText
+    if (!bar || !textEl) return
 
-    const loadingText = 'Modeller analiz ediliyor...'
-    loadingTextRef.current.textContent = ''
+    const loadingText = 'Modeliniz analiz ediliyor...'
+    textEl.textContent = ''
 
     // Typewriter effect
     let charIndex = 0
     const typeInterval = setInterval(() => {
-      if (charIndex < loadingText.length && loadingTextRef.current) {
-        loadingTextRef.current.textContent += loadingText[charIndex]
+      const current = domRefs.current.loadingText
+      if (charIndex < loadingText.length && current) {
+        current.textContent += loadingText[charIndex]
         charIndex++
       } else {
         clearInterval(typeInterval)
@@ -471,7 +606,7 @@ export default function HangiModel() {
 
     // Progress bar
     gsap.fromTo(
-      loadingBarRef.current,
+      bar,
       { width: '0%' },
       { width: '100%', duration: 1.5, ease: 'power2.inOut' }
     )
@@ -479,8 +614,9 @@ export default function HangiModel() {
 
   /* ---- Result animation ---- */
   const animateResult = useCallback(() => {
-    if (!resultCardRef.current) return
-    gsap.from(resultCardRef.current, {
+    const card = domRefs.current.resultCard
+    if (!card) return
+    gsap.from(card, {
       scale: 0.9,
       opacity: 0,
       duration: 0.5,
@@ -488,8 +624,7 @@ export default function HangiModel() {
       delay: 0.1,
     })
 
-    // Stagger alternatives
-    const altCards = resultCardRef.current.querySelectorAll('.alt-card')
+    const altCards = card.querySelectorAll('.alt-card')
     gsap.from(altCards, {
       y: 20,
       opacity: 0,
@@ -509,23 +644,35 @@ export default function HangiModel() {
     animateStepTransition('backward', () => setStep((s) => s - 1))
   }, [animateStepTransition])
 
+  /* ---- Submit (async, cancellable) ---- */
   const handleStep4Submit = useCallback(() => {
     setIsLoading(true)
     setStep(5)
 
-    // Run loading animation after a tick so DOM is ready
-    setTimeout(() => {
+    const wait = (ms: number): Promise<void> =>
+      new Promise((resolve) => setTimeout(resolve, ms))
+
+    const run = async (): Promise<void> => {
+      // Tick so DOM is ready for refs
+      await wait(50)
+      if (cancelledRef.current) return
       runLoadingAnimation()
 
-      // After 1.7s show result
-      setTimeout(() => {
-        const res = findBestModel(useCase, ram || 8, skill, priorities)
-        setResult(res)
-        setIsLoading(false)
-        // Animate result after DOM update
-        setTimeout(() => animateResult(), 50)
-      }, 1700)
-    }, 50)
+      // Loading window
+      await wait(1700)
+      if (cancelledRef.current) return
+
+      const res = findBestModel(useCase, ram ?? 16, skill, priorities)
+      setResult(res)
+      setIsLoading(false)
+
+      // Allow DOM update before animating
+      await wait(50)
+      if (cancelledRef.current) return
+      animateResult()
+    }
+
+    void run()
   }, [useCase, ram, skill, priorities, runLoadingAnimation, animateResult])
 
   const resetWizard = useCallback(() => {
@@ -538,42 +685,117 @@ export default function HangiModel() {
     setStep(1)
   }, [])
 
+  /* ---- Priority toggle with max-2 enforcement ---- */
   const togglePriority = useCallback((id: string) => {
-    setPriorities((prev) =>
-      prev.includes(id) ? prev.filter((p) => p !== id) : [...prev, id]
-    )
+    setPriorities((prev) => {
+      if (prev.includes(id)) {
+        return prev.filter((p) => p !== id)
+      }
+      if (prev.length >= MAX_PRIORITIES) {
+        // Refuse to add — max reached
+        return prev
+      }
+      return [...prev, id]
+    })
   }, [])
 
-  /* ---- Keyboard support ---- */
+  /* ---- Keyboard support: ref-based, register ONCE on mount ---- */
+  interface KeyboardState {
+    step: number
+    useCase: string
+    ram: number | null
+    skill: string
+    priorities: string[]
+    isLoading: boolean
+    goForward: () => void
+    handleStep4Submit: () => void
+    resetWizard: () => void
+  }
+
+  const keyboardStateRef = useRef<KeyboardState>({
+    step,
+    useCase,
+    ram,
+    skill,
+    priorities,
+    isLoading,
+    goForward,
+    handleStep4Submit,
+    resetWizard,
+  })
+
+  // Sync state into the ref each render — handler reads latest via ref
   useEffect(() => {
-    const handler = (e: KeyboardEvent) => {
-      if (step === 5 && !isLoading) {
-        if (e.key === 'r' || e.key === 'R') resetWizard()
+    keyboardStateRef.current = {
+      step,
+      useCase,
+      ram,
+      skill,
+      priorities,
+      isLoading,
+      goForward,
+      handleStep4Submit,
+      resetWizard,
+    }
+  }, [
+    step,
+    useCase,
+    ram,
+    skill,
+    priorities,
+    isLoading,
+    goForward,
+    handleStep4Submit,
+    resetWizard,
+  ])
+
+  // Register handler exactly ONCE
+  useEffect(() => {
+    const handler = (e: KeyboardEvent): void => {
+      const s = keyboardStateRef.current
+
+      if (s.step === 5 && !s.isLoading) {
+        if (e.key === 'r' || e.key === 'R') s.resetWizard()
         return
       }
-      if (step === 1 && e.key >= '1' && e.key <= '4') {
-        setUseCase(useCaseOptions[parseInt(e.key) - 1].id)
+
+      // Numeric step-1 shortcut with bounds check
+      if (s.step === 1 && /^[0-9]$/.test(e.key)) {
+        const idx = parseInt(e.key, 10) - 1
+        if (idx >= 0 && idx < useCaseOptions.length) {
+          setUseCase(useCaseOptions[idx].id)
+        }
+        return
       }
+
       if (e.key === 'Enter') {
-        if (step === 1 && useCase) goForward()
-        else if (step === 2 && ram !== null) goForward()
-        else if (step === 3 && skill) goForward()
-        else if (step === 4 && priorities.length > 0) handleStep4Submit()
+        if (s.step === 1 && s.useCase) s.goForward()
+        else if (s.step === 2 && s.ram !== null) s.goForward()
+        else if (s.step === 3 && s.skill) s.goForward()
+        else if (s.step === 4 && s.priorities.length > 0)
+          s.handleStep4Submit()
       }
     }
     window.addEventListener('keydown', handler)
     return () => window.removeEventListener('keydown', handler)
-  }, [step, useCase, ram, skill, priorities, goForward, handleStep4Submit, isLoading, resetWizard])
+  }, [])
 
   /* ---------------------------------------------------------------- */
   /*  Render                                                          */
   /* ---------------------------------------------------------------- */
 
   return (
-    <div ref={containerRef}>
+    <div
+      ref={(el) => {
+        domRefs.current.container = el
+      }}
+    >
       {/* ======== HERO SECTION ======== */}
       <section
-        ref={heroRef}
+        ref={(el) => {
+          domRefs.current.hero = el
+          heroScope.current = el
+        }}
         className="relative bg-bg-obsidian px-6 pt-40 pb-20 lg:px-10"
       >
         <div className="mx-auto max-w-4xl text-center">
@@ -594,7 +816,10 @@ export default function HangiModel() {
       <section className="bg-bg-charcoal px-6 py-20 lg:px-10">
         <div className="mx-auto max-w-[800px]">
           <div
-            ref={wizardRef}
+            ref={(el) => {
+              domRefs.current.wizard = el
+              wizardScope.current = el
+            }}
             className="relative overflow-hidden rounded-xl border border-[rgba(217,30,54,0.3)] p-6 md:p-12"
             style={{
               backgroundColor: '#0A0A0F',
@@ -606,7 +831,7 @@ export default function HangiModel() {
               <div className="flex items-center gap-2">
                 <span className="inline-block h-3 w-3 rounded-full bg-[#FF5F56]" />
                 <span className="inline-block h-3 w-3 rounded-full bg-[#FFBD2E]" />
-                <span className="inline-block h-3 w-3 rounded-full bg-[#27CA40]" />
+                <span className="inline-block h-3 w-3 rounded-full bg-[#27C93F]" />
               </div>
               <span className="ml-4 font-mono text-xs uppercase tracking-wider text-text-muted">
                 ollamatr-wizard
@@ -616,11 +841,18 @@ export default function HangiModel() {
               </span>
             </div>
 
-            {/* Progress indicator */}
-            <div className="mb-8 flex items-center gap-2">
+            {/* Progress indicator / stepper — tablist semantics */}
+            <div
+              role="tablist"
+              aria-label="Sihirbaz adımları"
+              className="mb-8 flex items-center gap-2"
+            >
               {[1, 2, 3, 4, 5].map((s) => (
                 <div
                   key={s}
+                  role="tab"
+                  aria-selected={step === s}
+                  aria-label={`Adım ${s}`}
                   className="h-1 flex-1 rounded-full transition-all duration-300"
                   style={{
                     backgroundColor:
@@ -636,8 +868,15 @@ export default function HangiModel() {
               ))}
             </div>
 
-            {/* Step content */}
-            <div ref={stepContentRef}>
+            {/* Step content panel */}
+            <div
+              ref={(el) => {
+                domRefs.current.stepContent = el
+              }}
+              role="tabpanel"
+              aria-label={`Adım ${step}`}
+              aria-live="polite"
+            >
               {/* ---- STEP 1: USE CASE ---- */}
               {step === 1 && (
                 <div>
@@ -657,6 +896,7 @@ export default function HangiModel() {
                         <button
                           key={opt.id}
                           onClick={() => setUseCase(opt.id)}
+                          aria-pressed={selected}
                           className="group relative flex flex-col items-start gap-3 rounded-lg border p-5 text-left transition-all duration-200"
                           style={{
                             backgroundColor: 'var(--bg-surface)',
@@ -725,14 +965,17 @@ export default function HangiModel() {
                   <div className="flex flex-wrap gap-3">
                     {ramOptions.map((opt) => {
                       const selected = ram === opt.value
-                      const glowColor =
-                        opt.value < 8
+                      const isUnknown = opt.value === 0
+                      const glowColor = isUnknown
+                        ? 'rgba(244, 244, 245, 0.15)'
+                        : opt.value <= 8
                           ? 'rgba(0, 229, 160, 0.3)'
                           : opt.value <= 16
                             ? 'rgba(255, 184, 0, 0.3)'
                             : 'rgba(217, 30, 54, 0.3)'
-                      const borderColor =
-                        opt.value < 8
+                      const borderColor = isUnknown
+                        ? 'var(--text-muted)'
+                        : opt.value <= 8
                           ? '#00E5A0'
                           : opt.value <= 16
                             ? '#FFB800'
@@ -742,6 +985,7 @@ export default function HangiModel() {
                         <button
                           key={opt.value}
                           onClick={() => setRam(opt.value)}
+                          aria-pressed={selected}
                           className="relative rounded-lg border px-8 py-4 font-mono text-sm uppercase tracking-wider transition-all duration-200"
                           style={{
                             backgroundColor: selected
@@ -818,6 +1062,7 @@ export default function HangiModel() {
                         <button
                           key={opt.id}
                           onClick={() => setSkill(opt.id)}
+                          aria-pressed={selected}
                           className="group flex items-center gap-4 rounded-lg border p-5 text-left transition-all duration-200"
                           style={{
                             backgroundColor: 'var(--bg-surface)',
@@ -900,26 +1145,35 @@ export default function HangiModel() {
                 </div>
               )}
 
-              {/* ---- STEP 4: PRIORITIES ---- */}
+              {/* ---- STEP 4: PRIORITIES (max 2) ---- */}
               {step === 4 && (
                 <div>
                   <h3 className="mb-2 font-display text-xl font-bold text-text-primary">
                     Sizin için en önemli olan nedir?
                   </h3>
                   <p className="mb-6 text-sm text-text-secondary">
-                    Birden fazla seçebilirsiniz. Size en uygun modeli
-                    belirlememize yardımcı olun.
+                    En fazla 2 öncelik seçebilirsiniz. Size en uygun
+                    modeli belirlememize yardımcı olun.
                   </p>
 
                   <div className="flex flex-wrap gap-3">
                     {priorityOptions.map((opt) => {
                       const Icon = opt.icon
                       const selected = priorities.includes(opt.id)
+                      const maxReached =
+                        priorities.length >= MAX_PRIORITIES && !selected
                       return (
                         <button
                           key={opt.id}
                           onClick={() => togglePriority(opt.id)}
-                          className="inline-flex items-center gap-2 rounded-lg border px-5 py-3 text-sm font-medium transition-all duration-200"
+                          disabled={maxReached}
+                          aria-pressed={selected}
+                          aria-disabled={maxReached}
+                          className={`inline-flex items-center gap-2 rounded-lg border px-5 py-3 text-sm font-medium transition-all duration-200 ${
+                            maxReached
+                              ? 'opacity-50 cursor-not-allowed'
+                              : ''
+                          }`}
                           style={{
                             backgroundColor: selected
                               ? 'rgba(217, 30, 54, 0.15)'
@@ -945,7 +1199,8 @@ export default function HangiModel() {
                   <div className="mt-6 flex items-center gap-2 text-xs text-text-muted">
                     <Sparkles className="h-3.5 w-3.5" />
                     <span>
-                      {priorities.length} öncelik seçildi
+                      {priorities.length} / {MAX_PRIORITIES} öncelik
+                      seçildi
                     </span>
                   </div>
 
@@ -982,7 +1237,9 @@ export default function HangiModel() {
                     <div className="flex flex-col items-center justify-center py-12">
                       <div className="mb-6 h-1 w-64 overflow-hidden rounded-full bg-bg-surface">
                         <div
-                          ref={loadingBarRef}
+                          ref={(el) => {
+                            domRefs.current.loadingBar = el
+                          }}
                           className="h-full rounded-full"
                           style={{
                             backgroundColor: 'var(--accent-red)',
@@ -991,14 +1248,20 @@ export default function HangiModel() {
                         />
                       </div>
                       <span
-                        ref={loadingTextRef}
+                        ref={(el) => {
+                          domRefs.current.loadingText = el
+                        }}
                         className="font-mono text-sm text-text-secondary"
                       />
                     </div>
                   )}
 
                   {!isLoading && result && (
-                    <div ref={resultCardRef}>
+                    <div
+                      ref={(el) => {
+                        domRefs.current.resultCard = el
+                      }}
+                    >
                       {/* Main result card */}
                       <div
                         className="relative overflow-hidden rounded-xl border p-6 md:p-8"
@@ -1135,7 +1398,10 @@ export default function HangiModel() {
 
       {/* ======== NASIL ÇALIŞIR? ======== */}
       <section
-        ref={nasilRef}
+        ref={(el) => {
+          domRefs.current.nasil = el
+          nasilScope.current = el
+        }}
         className="bg-bg-obsidian px-6 py-24 lg:px-10"
       >
         <div className="mx-auto max-w-[1000px]">
@@ -1144,7 +1410,7 @@ export default function HangiModel() {
           </h2>
 
           <div className="relative">
-            {/* Connecting line (desktop) */}
+            {/* Connecting line (desktop) — scrubs with scroll */}
             <div className="absolute top-8 left-0 right-0 hidden h-px md:block">
               <div className="h-full w-full bg-border-subtle" />
               <div
@@ -1222,7 +1488,10 @@ export default function HangiModel() {
 
       {/* ======== CTA SECTION ======== */}
       <section
-        ref={ctaRef}
+        ref={(el) => {
+          domRefs.current.cta = el
+          ctaScope.current = el
+        }}
         className="bg-bg-charcoal px-6 py-24 lg:px-10"
       >
         <div className="mx-auto max-w-2xl text-center">
