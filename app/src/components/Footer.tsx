@@ -15,6 +15,21 @@ const RESOURCES = [
   { label: 'KVKK', to: '/kvkk' },
 ]
 
+const LEGAL_LINKS: { label: string; to: string }[] = [
+  { label: 'KVKK & Gizlilik', to: '/kvkk' },
+  { label: 'Çerez Politikası', to: '/cerez-politikasi' },
+]
+
+const LEGAL_INFO: { label: string; value: string }[] = [
+  { label: 'Veri Sorumlusu', value: '[TODO: Şirket Tam Ünvanı A.Ş.]' },
+  { label: 'MERSİS', value: '[TODO: 16-haneli MERSİS No]' },
+  { label: 'KEP', value: '[TODO]@hs01.kep.tr' },
+  { label: 'Çağrı Merkezi', value: '0 (XXX) XXX XX XX' },
+  { label: 'Adres', value: '[TODO: Tam adres]' },
+  { label: 'Vergi Dairesi / No', value: '[TODO: Vergi Dairesi / No]' },
+  { label: 'VERBİS Kaydı', value: '[TODO: VERBİS No]' },
+]
+
 export default function Footer() {
   return (
     <footer className="bg-bg-charcoal">
@@ -110,10 +125,68 @@ export default function Footer() {
           </div>
         </div>
 
+        {/* Legal information block — KVKK Art.10 + TKHK Art.48 compliance */}
+        <section
+          aria-labelledby="yasal-bilgiler-heading"
+          className="mt-16 border-t border-border-subtle pt-10"
+        >
+          <div className="grid grid-cols-1 gap-10 lg:grid-cols-3">
+            <div>
+              <h3
+                id="yasal-bilgiler-heading"
+                className="mb-4 font-display text-sm font-bold uppercase tracking-wider text-text-primary"
+              >
+                Yasal Bilgiler
+              </h3>
+              <p className="text-xs leading-relaxed text-text-muted">
+                6698 sayılı KVKK md.10 ve 6502 sayılı TKHK md.48 uyarınca veri sorumlusu ve satıcı bilgileri aşağıda yer almaktadır.
+              </p>
+            </div>
+
+            <dl
+              aria-label="Yasal bilgiler"
+              className="grid grid-cols-1 gap-x-6 gap-y-2 sm:grid-cols-2 lg:col-span-2"
+            >
+              {LEGAL_INFO.map((item) => (
+                <div key={item.label} className="flex flex-col">
+                  <dt className="font-mono text-xs uppercase tracking-wide text-text-secondary">
+                    {item.label}
+                  </dt>
+                  <dd className="font-mono text-xs text-text-muted">
+                    <code className="bg-transparent">{item.value}</code>
+                  </dd>
+                </div>
+              ))}
+            </dl>
+          </div>
+
+          {/* Legal pages links */}
+          <nav
+            aria-label="Yasal sayfalar"
+            className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-2"
+          >
+            <h4 className="font-display text-xs font-bold uppercase tracking-wider text-text-primary">
+              Yasal Sayfalar
+            </h4>
+            <ul className="flex flex-wrap items-center gap-x-6 gap-y-2">
+              {LEGAL_LINKS.map((link) => (
+                <li key={link.to}>
+                  <Link
+                    to={link.to}
+                    className="text-xs text-text-secondary underline-offset-2 transition-colors hover:text-accent-red-light hover:underline"
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        </section>
+
         {/* Bottom bar */}
-        <div className="mt-16 flex flex-col items-center justify-between gap-4 border-t border-border-subtle pt-8 sm:flex-row">
-          <p className="text-xs text-text-muted">
-            &copy; 2025 OllamaTR. Tüm hakları saklıdır.
+        <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-border-subtle pt-8 sm:flex-row">
+          <p className="text-xs leading-relaxed text-text-muted">
+            &copy; 2025 [TODO: Şirket Tam Ünvanı] &mdash; Tüm hakları saklıdır. | İçerikte yer alan üçüncü taraf model isimleri (Llama, Gemma, Mistral, Qwen, Phi-3, Command-R, DeepSeek, Trendyol vb.) ilgili sahiplerinin markalarıdır.
           </p>
           <div className="flex items-center gap-6">
             <a
@@ -133,6 +206,22 @@ export default function Footer() {
               <span className="text-xs text-text-muted">Tüm Sistemler Çalışıyor</span>
             </div>
           </div>
+        </div>
+
+        {/* Ollama Inc. trademark disclaimer — SMK Art.6 compliance */}
+        <div className="mt-8 space-y-2 border-t border-border-subtle pt-6">
+          <p
+            lang="tr"
+            className="text-xs leading-relaxed text-text-muted"
+          >
+            OllamaTR bağımsız bir Türk projesidir. &ldquo;Ollama&rdquo; Ollama Inc. firmasının tescilli markasıdır. Bu proje topluluk tarafından geliştirilmektedir; Ollama Inc. ile resmi bir bağı, onayı veya sponsorluğu yoktur. Açık kaynaklı Ollama runtime üzerine inşa edilmiştir.
+          </p>
+          <p
+            lang="en"
+            className="text-xs leading-relaxed text-text-muted"
+          >
+            OllamaTR is an independent Turkish project. &ldquo;Ollama&rdquo; is a trademark of Ollama Inc. This project is community-driven and not affiliated with, endorsed by, or sponsored by Ollama Inc. Built on top of the open-source Ollama runtime.
+          </p>
         </div>
       </div>
     </footer>
