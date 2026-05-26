@@ -220,12 +220,12 @@ interface HeavyContentProps {
 }
 
 function KVKKHeavyContent({ sectionStyle }: HeavyContentProps) {
-  const promiseReveal = useScrollReveal()
-  const diagramReveal = useScrollReveal()
-  const checklistReveal = useScrollReveal()
-  const installerReveal = useScrollReveal()
-  const comparisonReveal = useScrollReveal()
-  const ctaReveal = useScrollReveal()
+  const { ref: promiseRef, visible: promiseVisible } = useScrollReveal()
+  const { ref: diagramRef, visible: diagramVisible } = useScrollReveal()
+  const { ref: checklistRef, visible: checklistVisible } = useScrollReveal()
+  const { ref: installerRef, visible: installerVisible } = useScrollReveal()
+  const { ref: comparisonRef, visible: comparisonVisible } = useScrollReveal()
+  const { ref: ctaRef, visible: ctaVisible } = useScrollReveal()
 
   return (
     <>
@@ -235,15 +235,15 @@ function KVKKHeavyContent({ sectionStyle }: HeavyContentProps) {
       <section className="bg-bg-charcoal px-6 py-28 lg:px-10">
         <div className="mx-auto grid max-w-5xl items-start gap-12 lg:grid-cols-2">
           {/* Left */}
-          <div ref={promiseReveal.ref}>
+          <div ref={promiseRef}>
             <h2
-              style={sectionStyle(promiseReveal.visible)}
+              style={sectionStyle(promiseVisible)}
               className="font-display text-3xl font-bold leading-tight text-text-primary md:text-4xl"
             >
               VERİLERİNİZ SİZDE KALIR
             </h2>
             <p
-              style={sectionStyle(promiseReveal.visible, 0.1)}
+              style={sectionStyle(promiseVisible, 0.1)}
               className="mt-6 text-base leading-relaxed text-text-secondary"
             >
               Tüm verileriniz cihazınızda işlenir. Hiçbir veri sunucularımıza gönderilmez.
@@ -259,7 +259,7 @@ function KVKKHeavyContent({ sectionStyle }: HeavyContentProps) {
               ].map((pt, i) => (
                 <li
                   key={pt}
-                  style={sectionStyle(promiseReveal.visible, 0.15 + i * 0.05)}
+                  style={sectionStyle(promiseVisible, 0.15 + i * 0.05)}
                   className="flex items-start gap-3 text-sm leading-relaxed text-text-secondary"
                 >
                   <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-safe-green" />
@@ -269,9 +269,9 @@ function KVKKHeavyContent({ sectionStyle }: HeavyContentProps) {
             </ul>
 
             {/* Visual diagram */}
-            <div ref={diagramReveal.ref} className="mt-8">
+            <div ref={diagramRef} className="mt-8">
               <div
-                style={sectionStyle(diagramReveal.visible, 0.2)}
+                style={sectionStyle(diagramVisible, 0.2)}
                 className="flex items-center gap-3 rounded-lg bg-bg-surface p-4"
               >
                 <div className="flex items-center gap-2 rounded bg-bg-obsidian px-3 py-2 font-body text-xs text-text-primary">
@@ -309,16 +309,16 @@ function KVKKHeavyContent({ sectionStyle }: HeavyContentProps) {
       {/* SECTION 3 — Compliance Checklist                               */}
       {/* ============================================================ */}
       <section className="bg-bg-obsidian px-6 py-24 lg:px-10">
-        <div ref={checklistReveal.ref} className="mx-auto max-w-4xl">
+        <div ref={checklistRef} className="mx-auto max-w-4xl">
           <h2
-            style={sectionStyle(checklistReveal.visible)}
+            style={sectionStyle(checklistVisible)}
             className="mb-10 font-display text-2xl font-bold text-text-primary md:text-3xl"
           >
             KVKK UYUMLULUK KONTROL LİSTESİ
           </h2>
 
           <div
-            style={sectionStyle(checklistReveal.visible, 0.15)}
+            style={sectionStyle(checklistVisible, 0.15)}
             className="rounded-lg border border-border-subtle bg-bg-charcoal"
           >
             {checklistItems.map((item) => (
@@ -332,15 +332,15 @@ function KVKKHeavyContent({ sectionStyle }: HeavyContentProps) {
       {/* SECTION 4 — Installer KVKK Flow                              */}
       {/* ============================================================ */}
       <section className="bg-bg-charcoal px-6 py-28 lg:px-10">
-        <div ref={installerReveal.ref} className="mx-auto max-w-3xl">
+        <div ref={installerRef} className="mx-auto max-w-3xl">
           <h2
-            style={sectionStyle(installerReveal.visible)}
+            style={sectionStyle(installerVisible)}
             className="mb-4 font-display text-2xl font-bold text-text-primary"
           >
             KURULUM SIRASINDA KVKK
           </h2>
           <p
-            style={sectionStyle(installerReveal.visible, 0.1)}
+            style={sectionStyle(installerVisible, 0.1)}
             className="mb-10 text-base leading-relaxed text-text-secondary"
           >
             Tauri installer'ımız ilk kurulumda KVKK uyumlu bir yapılandırma akışı sunar:
@@ -351,8 +351,8 @@ function KVKKHeavyContent({ sectionStyle }: HeavyContentProps) {
               <div
                 key={step.num}
                 style={{
-                  opacity: installerReveal.visible ? 1 : 0,
-                  transform: installerReveal.visible ? 'translateY(0)' : 'translateY(25px)',
+                  opacity: installerVisible ? 1 : 0,
+                  transform: installerVisible ? 'translateY(0)' : 'translateY(25px)',
                   transition: `all 0.4s cubic-bezier(0.16, 1, 0.3, 1) ${i * 0.12}s`,
                 }}
                 className="flex items-start gap-4"
@@ -377,8 +377,8 @@ function KVKKHeavyContent({ sectionStyle }: HeavyContentProps) {
             {/* Final checkmark */}
             <div
               style={{
-                opacity: installerReveal.visible ? 1 : 0,
-                transform: installerReveal.visible ? 'scale(1)' : 'scale(0.8)',
+                opacity: installerVisible ? 1 : 0,
+                transform: installerVisible ? 'scale(1)' : 'scale(0.8)',
                 transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.5s',
               }}
               className="flex items-center gap-3 rounded-lg border border-safe-green/30 bg-safe-green/5 p-4"
@@ -396,16 +396,16 @@ function KVKKHeavyContent({ sectionStyle }: HeavyContentProps) {
       {/* SECTION 5 — Comparison Table                                 */}
       {/* ============================================================ */}
       <section className="bg-bg-obsidian px-6 py-24 lg:px-10">
-        <div ref={comparisonReveal.ref} className="mx-auto max-w-4xl">
+        <div ref={comparisonRef} className="mx-auto max-w-4xl">
           <h2
-            style={sectionStyle(comparisonReveal.visible)}
+            style={sectionStyle(comparisonVisible)}
             className="mb-10 font-display text-2xl font-bold text-text-primary"
           >
             KARŞILAŞTIRMA
           </h2>
 
           <div
-            style={sectionStyle(comparisonReveal.visible, 0.15)}
+            style={sectionStyle(comparisonVisible, 0.15)}
             className="overflow-x-auto"
           >
             <table className="w-full min-w-[640px] border-collapse rounded-lg border border-border-subtle">
@@ -453,11 +453,11 @@ function KVKKHeavyContent({ sectionStyle }: HeavyContentProps) {
       {/* SECTION 6 — CTA                                              */}
       {/* ============================================================ */}
       <section className="bg-bg-charcoal px-6 py-24 lg:px-10">
-        <div ref={ctaReveal.ref} className="mx-auto max-w-xl text-center">
+        <div ref={ctaRef} className="mx-auto max-w-xl text-center">
           <div
             style={{
-              opacity: ctaReveal.visible ? 1 : 0,
-              transform: ctaReveal.visible ? 'translateY(0)' : 'translateY(30px)',
+              opacity: ctaVisible ? 1 : 0,
+              transform: ctaVisible ? 'translateY(0)' : 'translateY(30px)',
               transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
             }}
           >
@@ -465,8 +465,8 @@ function KVKKHeavyContent({ sectionStyle }: HeavyContentProps) {
           </div>
           <h2
             style={{
-              opacity: ctaReveal.visible ? 1 : 0,
-              transform: ctaReveal.visible ? 'translateY(0)' : 'translateY(30px)',
+              opacity: ctaVisible ? 1 : 0,
+              transform: ctaVisible ? 'translateY(0)' : 'translateY(30px)',
               transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.1s',
             }}
             className="mt-6 font-display text-3xl font-bold text-text-primary md:text-4xl"
@@ -475,8 +475,8 @@ function KVKKHeavyContent({ sectionStyle }: HeavyContentProps) {
           </h2>
           <p
             style={{
-              opacity: ctaReveal.visible ? 1 : 0,
-              transform: ctaReveal.visible ? 'translateY(0)' : 'translateY(30px)',
+              opacity: ctaVisible ? 1 : 0,
+              transform: ctaVisible ? 'translateY(0)' : 'translateY(30px)',
               transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.2s',
             }}
             className="mt-4 text-lg leading-relaxed text-text-secondary"
@@ -485,8 +485,8 @@ function KVKKHeavyContent({ sectionStyle }: HeavyContentProps) {
           </p>
           <div
             style={{
-              opacity: ctaReveal.visible ? 1 : 0,
-              transform: ctaReveal.visible ? 'translateY(0)' : 'translateY(30px)',
+              opacity: ctaVisible ? 1 : 0,
+              transform: ctaVisible ? 'translateY(0)' : 'translateY(30px)',
               transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.3s',
             }}
             className="mt-8 flex flex-wrap justify-center gap-4"
@@ -515,7 +515,7 @@ function KVKKHeavyContent({ sectionStyle }: HeavyContentProps) {
 /*  Main Component                                                     */
 /* ------------------------------------------------------------------ */
 export default function KVKK() {
-  const heroReveal = useScrollReveal()
+  const { ref: heroRef, visible: heroVisible } = useScrollReveal()
 
   /**
    * Deferred mount for heavy below-fold sections.
@@ -534,8 +534,8 @@ export default function KVKK() {
   }, [])
 
   const heroStyle = (delay = 0): { opacity: number; transform: string; transition: string } => ({
-    opacity: heroReveal.visible ? 1 : 0,
-    transform: heroReveal.visible ? 'translateY(0)' : 'translateY(30px)',
+    opacity: heroVisible ? 1 : 0,
+    transform: heroVisible ? 'translateY(0)' : 'translateY(30px)',
     transition: `all 0.6s cubic-bezier(0.16, 1, 0.3, 1) ${delay}s`,
   })
 
@@ -554,7 +554,7 @@ export default function KVKK() {
       {/* SECTION 1 — Hero (mounts synchronously)                      */}
       {/* ============================================================ */}
       <section className="bg-bg-obsidian px-6 pt-40 pb-16 lg:px-10">
-        <div ref={heroReveal.ref} className="mx-auto max-w-7xl">
+        <div ref={heroRef} className="mx-auto max-w-7xl">
           <span
             style={heroStyle(0)}
             className="mb-4 inline-block font-body text-sm font-medium uppercase tracking-wider text-accent-red"

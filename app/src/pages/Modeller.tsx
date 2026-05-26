@@ -640,7 +640,16 @@ interface ModelGridProps {
 function ModelGrid({ models: gridModels, onSelect }: ModelGridProps) {
   const cardRefs = useRef<Map<number, HTMLElement>>(new Map())
   const [visibleCards, setVisibleCards] = useState<Set<number>>(new Set())
+  const [prevGridModels, setPrevGridModels] = useState(gridModels)
   const [isMobile, setIsMobile] = useState(false)
+
+  // Reset visible-card entrance animations when filter inputs change.
+  // React docs: derived-state-on-input-change is computed during render,
+  // not in an effect, to avoid cascading renders.
+  if (prevGridModels !== gridModels) {
+    setPrevGridModels(gridModels)
+    setVisibleCards(new Set())
+  }
 
   // Track mobile breakpoint to flatten the per-row rotateY perspective.
   useEffect(() => {
@@ -651,11 +660,6 @@ function ModelGrid({ models: gridModels, onSelect }: ModelGridProps) {
     mq.addEventListener('change', update)
     return () => mq.removeEventListener('change', update)
   }, [])
-
-  // Reset visible-card entrance animations when filter inputs change.
-  useEffect(() => {
-    setVisibleCards(new Set())
-  }, [gridModels])
 
   // Observe whichever cards are currently mounted via refs.
   useEffect(() => {

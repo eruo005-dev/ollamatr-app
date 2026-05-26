@@ -403,9 +403,9 @@ interface DomRefs {
   loadingBar: HTMLDivElement | null
   loadingText: HTMLSpanElement | null
   resultCard: HTMLDivElement | null
-  hero: HTMLDivElement | null
-  nasil: HTMLDivElement | null
-  cta: HTMLDivElement | null
+  hero: HTMLElement | null
+  nasil: HTMLElement | null
+  cta: HTMLElement | null
 }
 
 /* ------------------------------------------------------------------ */
@@ -429,10 +429,10 @@ export default function HangiModel() {
   })
 
   // Scope refs for useGSAP — must be standalone refs for useGSAP scope
-  const heroScope = useRef<HTMLDivElement>(null)
+  const heroScope = useRef<HTMLElement>(null)
   const wizardScope = useRef<HTMLDivElement>(null)
-  const nasilScope = useRef<HTMLDivElement>(null)
-  const ctaScope = useRef<HTMLDivElement>(null)
+  const nasilScope = useRef<HTMLElement>(null)
+  const ctaScope = useRef<HTMLElement>(null)
 
   const [step, setStep] = useState(1)
   const [useCase, setUseCase] = useState('')
