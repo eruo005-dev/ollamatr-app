@@ -394,12 +394,21 @@ export default function Hakkimizda() {
         <div className="mx-auto max-w-4xl text-center">
           <ScrollReveal>
             <h2 className="mb-4 font-display text-2xl font-bold uppercase tracking-wide text-text-primary">
-              EKOSİSTEM ORTAKLARIMIZ
+              İLGİLİ EKOSİSTEM
             </h2>
           </ScrollReveal>
           <ScrollReveal delay={0.1}>
-            <p className="mb-12 font-body text-base text-text-secondary">
-              Türkiye&apos;nin AI ekosistemini birlikte büyütüyoruz.
+            <p className="mb-6 font-body text-base text-text-secondary">
+              Türkiye&apos;nin AI ekosistemine ilham veren kuruluşlar.
+            </p>
+          </ScrollReveal>
+          <ScrollReveal delay={0.15}>
+            <p className="mt-6 mb-12 text-center text-xs text-text-muted max-w-2xl mx-auto font-body">
+              Bu kuruluşlarla OllamaTR projesinin resmi bir ortaklığı veya
+              destek sözleşmesi bulunmamaktadır. Logolar, projemizi
+              destekleyebilecek ekosistem üyelerini göstermek amacıyla
+              bilgilendirme için kullanılmaktadır. Resmi iş birliklerimiz
+              duyurulduğunda bu bölüm güncellenecektir.
             </p>
           </ScrollReveal>
 
@@ -463,7 +472,7 @@ export default function Hakkimizda() {
       <section className="bg-bg-charcoal px-6 py-24 lg:px-10 lg:py-32">
         <ScrollReveal className="mx-auto max-w-2xl text-center">
           <h2 className="font-display text-3xl font-bold text-text-primary lg:text-4xl">
-            Bizimle Yol Almağa Hazır mısınız?
+            Bizimle Yol Almaya Hazır mısınız?
           </h2>
           <p className="mt-4 font-body text-lg text-text-secondary">
             Türkiye&apos;nin AI devriminin bir parçası olun.

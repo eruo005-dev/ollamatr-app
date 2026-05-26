@@ -28,19 +28,11 @@ import {
 } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 import { Link } from 'react-router'
+import { COMMERCIAL_MODELS, type Model, type UseCase } from '@/lib/models-data'
 
 /* ------------------------------------------------------------------ */
 /*  Data                                                              */
 /* ------------------------------------------------------------------ */
-
-interface ModelData {
-  name: string
-  ram: number
-  useCases: string[]
-  skill: string
-  priorityMatch: string[]
-  description: string
-}
 
 interface UseCaseOption {
   id: string
@@ -66,155 +58,31 @@ interface PriorityOption {
   icon: LucideIcon
 }
 
-const modelDatabase: ModelData[] = [
-  {
-    name: 'Phi-3 Mini TR 4B',
-    ram: 4,
-    useCases: ['Genel Sohbet & Asistan', 'Çeviri & Özetleme'],
-    skill: 'Yeni Başlayan',
-    priorityMatch: [
-      'Hız (düşük latency)',
-      'Düşük kaynak tüketimi',
-    ],
-    description:
-      "Düşük RAM ile harika performans. Microsoft'un kompakt modeli Türkçe'ye uyarlandı.",
-  },
-  {
-    name: 'Llama 3.1 Turkuaz 8B',
-    ram: 8,
-    useCases: ['Genel Sohbet & Asistan', 'İçerik Üretimi'],
-    skill: 'Orta Seviye',
-    priorityMatch: [
-      'Çok dilli (İngilizce + Türkçe)',
-      'Doğruluk (en iyi cevaplar)',
-    ],
-    description:
-      'Türkçe metin üretiminin kralı. Meta\'nın güçlü modeli Türkçe için optimize edildi.',
-  },
-  {
-    name: 'Mistral TrFine 7B',
-    ram: 7,
-    useCases: ['Genel Sohbet & Asistan', 'Çeviri & Özetleme'],
-    skill: 'Orta Seviye',
-    priorityMatch: [
-      'Hız (düşük latency)',
-      'Çok dilli (İngilizce + Türkçe)',
-    ],
-    description: 'Hızlı ve verimli. Mistral mimarisi Türkçe corpus ile buluştu.',
-  },
-  {
-    name: 'CodeLlama TR 13B',
-    ram: 16,
-    useCases: ['Kod Yazma & Teknik'],
-    skill: 'İleri Seviye',
-    priorityMatch: [
-      'Doğruluk (en iyi cevaplar)',
-      'Kod yeteneği',
-    ],
-    description:
-      'Türkçe yorumlar ve değişken isimleriyle eğitilmiş kod üretim uzmanı.',
-  },
-  {
-    name: 'DeepSeek-R1 TR 14B',
-    ram: 16,
-    useCases: ['Kod Yazma & Teknik', 'Veri Analizi & SQL'],
-    skill: 'İleri Seviye',
-    priorityMatch: [
-      'Doğruluk (en iyi cevaplar)',
-      'Kod yeteneği',
-      'Çok dilli (İngilizce + Türkçe)',
-    ],
-    description: 'Mantıksal akıl yürütme ve problem çözme dehası.',
-  },
-  {
-    name: 'Llama 3.1 Turkuaz 70B',
-    ram: 48,
-    useCases: [
-      'Genel Sohbet & Asistan',
-      'İçerik Üretimi',
-      'Çeviri & Özetleme',
-    ],
-    skill: 'Uzman',
-    priorityMatch: [
-      'Doğruluk (en iyi cevaplar)',
-      'Çok dilli (İngilizce + Türkçe)',
-    ],
-    description: 'En gelişmiş Türkçe model. Mükemmel anlama ve üretim kalitesi.',
-  },
-  {
-    name: 'Qwen2.5 TR 7B',
-    ram: 8,
-    useCases: ['Genel Sohbet & Asistan', 'İçerik Üretimi'],
-    skill: 'Orta Seviye',
-    priorityMatch: [
-      'Çok dilli (İngilizce + Türkçe)',
-      'Hız (düşük latency)',
-    ],
-    description:
-      "Türkçe ve İngilizce çift dilli performans. Alibaba'nın güçlü modeli.",
-  },
-  {
-    name: 'LLaVA-TR 7B',
-    ram: 8,
-    useCases: ['İçerik Üretimi'],
-    skill: 'Orta Seviye',
-    priorityMatch: ['Doğruluk (en iyi cevaplar)'],
-    description:
-      'Görüntüleri anlayıp Türkçe açıklama üretebilen vizyon modeli.',
-  },
-  {
-    name: 'Gemma 2 TR 9B',
-    ram: 10,
-    useCases: ['İçerik Üretimi', 'Çeviri & Özetleme'],
-    skill: 'Orta Seviye',
-    priorityMatch: [
-      'Doğruluk (en iyi cevaplar)',
-      'Çok dilli (İngilizce + Türkçe)',
-    ],
-    description:
-      'Google Gemma 2 üzerine Türkçe akademik ve bilimsel metinlerle eğitilmiş model.',
-  },
-  {
-    name: 'Hukuk-BERT TR 1B',
-    ram: 2,
-    useCases: ['İçerik Üretimi'],
-    skill: 'Yeni Başlayan',
-    priorityMatch: [
-      'Hız (düşük latency)',
-      'Düşük kaynak tüketimi',
-    ],
-    description:
-      'Türk hukuk metinleri üzerine uzmanlaşmış, sözleşme ve karar analizi modeli.',
-  },
-  {
-    name: 'SQLCoder TR 7B',
-    ram: 8,
-    useCases: ['Veri Analizi & SQL', 'Kod Yazma & Teknik'],
-    skill: 'Orta Seviye',
-    priorityMatch: [
-      'Doğruluk (en iyi cevaplar)',
-      'Kod yeteneği',
-    ],
-    description:
-      'Türkçe doğal dil sorgularını SQL\'e çeviren uzmanlaşmış model.',
-  },
-  {
-    name: 'Mixtral TR 47B',
-    ram: 32,
-    useCases: [
-      'Genel Sohbet & Asistan',
-      'İçerik Üretimi',
-      'Veri Analizi & SQL',
-    ],
-    skill: 'Uzman',
-    priorityMatch: [
-      'Doğruluk (en iyi cevaplar)',
-      'Çok dilli (İngilizce + Türkçe)',
-    ],
-    description:
-      'Mixture of Experts mimarisi. Türkçe için en gelişmiş açık modellerden biri.',
-  },
-]
+/* ---- Wizard use-case → canonical UseCase taxonomy mapping ---- */
+const WIZARD_USECASE_MAP: Record<string, UseCase[]> = {
+  'Genel Sohbet & Asistan': ['Sohbet', 'Genel Amaçlı', 'Soru-Cevap'],
+  'Kod Yazma & Teknik': ['Kod'],
+  'İçerik Üretimi': ['Genel Amaçlı', 'Özetleme'],
+  'Veri Analizi & SQL': ['Kod', 'Soru-Cevap'],
+  'Çeviri & Özetleme': ['Çeviri', 'Özetleme'],
+}
+
+/* ---- Multilingual / translation-capable model heuristic ---- */
+const MULTILINGUAL_TAGS = new Set([
+  'Çok Dilli',
+  'Çeviri',
+  'Multilingual',
+])
+
+function isMultilingual(model: Model): boolean {
+  if (model.useCases.includes('Çeviri')) return true
+  return model.tags.some((t) => MULTILINGUAL_TAGS.has(t))
+}
+
+/* ---- Code-capable model heuristic ---- */
+function isCodeCapable(model: Model): boolean {
+  return model.useCases.includes('Kod')
+}
 
 const useCaseOptions: UseCaseOption[] = [
   {
@@ -298,80 +166,121 @@ const MAX_PRIORITIES = 2
 /*  Matching Algorithm                                                */
 /* ------------------------------------------------------------------ */
 
+/* ---- Skill → expected RAM tier (heavier model for advanced users) ---- */
+const SKILL_RAM_TARGET: Record<string, number> = {
+  'Yeni Başlayan': 6,
+  'Orta Seviye': 9,
+  'İleri Seviye': 13,
+  Uzman: 16,
+}
+
 function findBestModel(
-  useCase: string,
+  wizardUseCase: string,
   ram: number,
   skill: string,
   priorities: string[]
-): { best: ModelData; alternatives: ModelData[]; matchPercent: number } {
+): { best: Model; alternatives: Model[]; matchPercent: number } {
   // Treat "Bilmiyorum" (0) as 16GB default for matching
   const effectiveRam = ram > 0 ? ram : 16
 
-  // Filter: RAM must fit, useCase must match
-  let candidates = modelDatabase.filter(
-    (m) => m.ram <= effectiveRam && m.useCases.includes(useCase)
+  // Canonical use cases mapped from the wizard question
+  const targetUseCases = WIZARD_USECASE_MAP[wizardUseCase] ?? ['Genel Amaçlı']
+
+  // Filter: RAM must fit, at least one canonical use case must match
+  let candidates = COMMERCIAL_MODELS.filter(
+    (m) =>
+      m.ramGB <= effectiveRam &&
+      m.useCases.some((uc) => targetUseCases.includes(uc))
   )
 
   if (candidates.length === 0) {
     // Fallback: just RAM fit
-    candidates = modelDatabase.filter((m) => m.ram <= effectiveRam)
+    candidates = COMMERCIAL_MODELS.filter((m) => m.ramGB <= effectiveRam)
     if (candidates.length === 0) {
-      // Ultimate fallback: smallest models
-      candidates = modelDatabase.filter((m) => m.ram <= 8)
-      if (candidates.length === 0) candidates = [modelDatabase[0]]
+      // Ultimate fallback: smallest commercial models
+      candidates = COMMERCIAL_MODELS.filter((m) => m.ramGB <= 8)
+      if (candidates.length === 0) candidates = [COMMERCIAL_MODELS[0]]
     }
   }
+
+  const targetRam = SKILL_RAM_TARGET[skill] ?? 8
 
   // Score each candidate
   const scored = candidates.map((m) => {
     let score = 0
-    // Skill match (0-30) — 4-tier mapping
-    const skillLevels: Record<string, number> = {
-      'Yeni Başlayan': 1,
-      'Orta Seviye': 2,
-      'İleri Seviye': 3,
-      Uzman: 4,
-    }
-    const userSkill = skillLevels[skill] || 1
-    const modelSkill = skillLevels[m.skill] || 1
-    score += 30 - Math.abs(userSkill - modelSkill) * 8
 
-    // Priority matches (0-50)
-    const priorityMatches = priorities.filter((p) =>
-      m.priorityMatch.includes(p)
+    // Use-case match strength (0-30): how many of the mapped canonical
+    // use cases the model covers
+    const ucOverlap = m.useCases.filter((uc) =>
+      targetUseCases.includes(uc)
     ).length
-    score += (priorityMatches / Math.max(priorities.length, 1)) * 50
+    score += Math.min(30, ucOverlap * 15)
 
-    // RAM efficiency bonus (0-20)
-    const ramUtilization = m.ram / effectiveRam
-    score += ramUtilization * 20
+    // Skill ↔ model-size affinity (0-25): models whose ramGB is close to
+    // the skill's target RAM tier (and still fits) score higher
+    const cappedTarget = Math.min(targetRam, effectiveRam)
+    const skillDelta = Math.abs(m.ramGB - cappedTarget)
+    score += Math.max(0, 25 - skillDelta * 3)
+
+    // Priority matches (0-30)
+    if (priorities.length > 0) {
+      let pScore = 0
+      for (const p of priorities) {
+        switch (p) {
+          case 'Hız (düşük latency)':
+            // Smaller models are faster
+            pScore += m.ramGB <= 8 ? 15 : m.ramGB <= 12 ? 8 : 0
+            break
+          case 'Doğruluk (en iyi cevaplar)':
+            // Higher popularity/rating = better answers
+            pScore += (m.popularity / 100) * 10 + (m.rating - 4) * 5
+            break
+          case 'Çok dilli (İngilizce + Türkçe)':
+            pScore += isMultilingual(m) ? 15 : 0
+            break
+          case 'Kod yeteneği':
+            pScore += isCodeCapable(m) ? 15 : 0
+            break
+          case 'Düşük kaynak tüketimi':
+            pScore += m.ramGB < 8 ? 15 : m.ramGB <= 10 ? 8 : 0
+            break
+          default:
+            break
+        }
+      }
+      score += Math.min(30, (pScore / priorities.length) * 2)
+    }
+
+    // RAM efficiency bonus (0-15): reward using available RAM
+    const ramUtilization = Math.min(1, m.ramGB / effectiveRam)
+    score += ramUtilization * 15
+
+    // Popularity tiebreaker (0-5)
+    score += (m.popularity / 100) * 5
 
     return { model: m, score }
   })
 
   scored.sort((a, b) => b.score - a.score)
 
-  const best = scored[0]?.model || modelDatabase[0]
-  const alternatives = scored
+  const best = scored[0]?.model ?? COMMERCIAL_MODELS[0]
+  const alternatives: Model[] = scored
     .slice(1, 3)
     .map((s) => s.model)
-    .filter((m) => m.name !== best.name)
+    .filter((m) => m.id !== best.id)
 
   // Ensure we have 2 alternatives
   while (alternatives.length < 2) {
-    const fallback = modelDatabase.find(
+    const fallback = COMMERCIAL_MODELS.find(
       (m) =>
-        m.name !== best.name &&
-        !alternatives.some((a) => a.name === m.name)
+        m.id !== best.id &&
+        !alternatives.some((a) => a.id === m.id)
     )
     if (fallback) alternatives.push(fallback)
     else break
   }
 
-  const matchPercent = Math.min(
-    99,
-    Math.round(scored[0]?.score || 85)
-  )
+  const matchPercent = Math.min(99, Math.round(scored[0]?.score ?? 85))
 
   return { best, alternatives, matchPercent }
 }
@@ -441,8 +350,8 @@ export default function HangiModel() {
   const [priorities, setPriorities] = useState<string[]>([])
   const [isLoading, setIsLoading] = useState(false)
   const [result, setResult] = useState<{
-    best: ModelData
-    alternatives: ModelData[]
+    best: Model
+    alternatives: Model[]
     matchPercent: number
   } | null>(null)
 
@@ -1281,16 +1190,16 @@ export default function HangiModel() {
                           <span
                             className="inline-flex items-center gap-1 rounded border px-2 py-0.5 font-mono text-xs uppercase"
                             style={{
-                              color: getRamColor(result.best.ram),
+                              color: getRamColor(result.best.ramGB),
                               borderColor: getRamColor(
-                                result.best.ram
+                                result.best.ramGB
                               ),
                               boxShadow: getRamShadow(
-                                result.best.ram
+                                result.best.ramGB
                               ),
                             }}
                           >
-                            {result.best.ram}GB RAM
+                            {result.best.ramGB}GB RAM
                           </span>
                         </div>
 
@@ -1304,17 +1213,15 @@ export default function HangiModel() {
 
                         {/* Key features */}
                         <div className="mt-5 flex flex-wrap gap-2">
-                          {result.best.priorityMatch.map(
-                            (p) => (
-                              <span
-                                key={p}
-                                className="inline-flex items-center gap-1 rounded bg-bg-surface px-2.5 py-1 text-xs text-text-secondary"
-                              >
-                                <Zap className="h-3 w-3 text-accent-red" />
-                                {p}
-                              </span>
-                            )
-                          )}
+                          {result.best.tags.slice(0, 3).map((t) => (
+                            <span
+                              key={t}
+                              className="inline-flex items-center gap-1 rounded bg-bg-surface px-2.5 py-1 text-xs text-text-secondary"
+                            >
+                              <Zap className="h-3 w-3 text-accent-red" />
+                              {t}
+                            </span>
+                          ))}
                           {result.best.useCases.map((uc) => (
                             <span
                               key={uc}
@@ -1324,6 +1231,22 @@ export default function HangiModel() {
                               {uc}
                             </span>
                           ))}
+                        </div>
+
+                        {/* License + attribution */}
+                        <div className="mt-5 rounded-md border border-border-subtle bg-bg-surface/60 px-3 py-2 font-mono text-[11px] leading-relaxed text-text-muted">
+                          <div>
+                            <span className="text-text-secondary">Lisans:</span>{' '}
+                            {result.best.license}
+                            {result.best.commercialUse && (
+                              <span className="ml-2 inline-flex items-center rounded bg-safe-green/10 px-1.5 py-0.5 text-[10px] uppercase tracking-wider text-safe-green">
+                                Ticari kullanım
+                              </span>
+                            )}
+                          </div>
+                          <div className="mt-1">
+                            {result.best.attribution}
+                          </div>
                         </div>
 
                         {/* Actions */}
@@ -1353,7 +1276,7 @@ export default function HangiModel() {
                         <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
                           {result.alternatives.map((alt) => (
                             <div
-                              key={alt.name}
+                              key={alt.id}
                               className="alt-card rounded-lg border border-border-subtle bg-bg-charcoal p-4 transition-all duration-200 hover:border-[rgba(217,30,54,0.3)]"
                             >
                               <div className="flex items-center justify-between">
@@ -1363,14 +1286,17 @@ export default function HangiModel() {
                                 <span
                                   className="font-mono text-xs"
                                   style={{
-                                    color: getRamColor(alt.ram),
+                                    color: getRamColor(alt.ramGB),
                                   }}
                                 >
-                                  {alt.ram}GB
+                                  {alt.ramGB}GB
                                 </span>
                               </div>
                               <p className="mt-1 text-xs text-text-secondary line-clamp-2">
                                 {alt.description}
+                              </p>
+                              <p className="mt-1.5 font-mono text-[10px] text-text-muted">
+                                {alt.license}
                               </p>
                             </div>
                           ))}
