@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Link } from 'react-router'
-import { Check, X } from 'lucide-react'
+import { Check, X, Clock, Info, Heart, ExternalLink } from 'lucide-react'
 import { motion } from 'framer-motion'
 import {
   Accordion,
@@ -15,9 +15,11 @@ import ScrollReveal from '@/components/ScrollReveal'
 /*  Pricing tiers data                                                  */
 /* ------------------------------------------------------------------ */
 
+type FeatureStatus = 'included' | 'excluded' | 'coming-soon'
+
 interface Feature {
   text: string
-  included: boolean
+  status: FeatureStatus
 }
 
 interface Tier {
@@ -25,85 +27,75 @@ interface Tier {
   label: string
   price: string
   period: string
-  kdvLabel: string
   description: string
   features: Feature[]
   cta: string
   ctaStyle: 'primary' | 'ghost'
   ctaLink?: string
-  ctaDescribedBy?: string
+  ctaHref?: string
+  secondaryCta?: { label: string; href: string }
   featured?: boolean
   borderColor?: string
+  comingSoon?: boolean
 }
 
 const tiers: Tier[] = [
   {
-    name: 'Ücretsiz',
-    label: 'ÜCRETSİZ',
-    price: '0₺',
-    period: '/ay',
-    kdvLabel: '(KDV dahil)',
-    description: 'Bireysel kullanıcılar ve hobiler için',
+    name: 'Topluluk',
+    label: 'TOPLULUK',
+    price: 'Ücretsiz',
+    period: 'açık kaynak',
+    description: 'Bireysel kullanıcılar, hobiler, geliştiriciler',
     features: [
-      { text: '50+ model erişimi', included: true },
-      { text: 'Yerel çalıştırma', included: true },
-      { text: 'Temel WebUI', included: true },
-      { text: 'Türkçe dokümantasyon', included: true },
-      { text: 'Öncelikli destek', included: false },
-      { text: 'Kurumsal özellikler', included: false },
-      { text: 'Özel model entegrasyonu', included: false },
+      { text: '50+ Türkçe model erişimi', status: 'included' },
+      { text: 'Yerel çalıştırma — verileriniz cihazınızda', status: 'included' },
+      { text: 'Topluluk WebUI', status: 'included' },
+      { text: 'Türkçe dokümantasyon', status: 'included' },
+      { text: 'GitHub Issues üzerinden destek', status: 'included' },
+      { text: 'MIT lisansı altında kaynak kod', status: 'included' },
     ],
-    cta: 'Ücretsiz Başla',
+    cta: 'İndir',
     ctaStyle: 'ghost',
     ctaLink: '/indir',
   },
   {
-    name: 'Pro',
-    label: 'PRO',
-    price: '149₺',
-    period: '/ay',
-    kdvLabel: '(KDV dahil)',
-    description: 'Profesyonel geliştiriciler için',
+    name: 'Bağış',
+    label: 'BAĞIŞ',
+    price: 'Sen Belirle',
+    period: 'tek seferlik / aylık',
+    description: 'Projeyi sürdürmemize katkıda bulun',
     featured: true,
     borderColor: 'border-accent-red',
-    ctaDescribedBy: 'cayma-hakki',
     features: [
-      { text: "Ücretsiz'deki her şey", included: true },
-      { text: 'Gelişmiş WebUI + temalar', included: true },
-      { text: 'Otomatik model güncellemeleri', included: true },
-      { text: 'API rate limit: 10.000/gün', included: true },
-      { text: 'Çoklu kullanıcı yönetimi', included: true },
-      { text: 'Öncelikli teknik destek', included: true },
-      { text: 'Model performans analitiği', included: true },
-      { text: 'Türkçe destek (e-posta)', included: true },
-      { text: 'Kurumsal SLA', included: false },
-      { text: 'Özel model entegrasyonu', included: false },
+      { text: 'Topluluk Edisyonundaki her şey', status: 'included' },
+      { text: 'Açık geliştirme yol haritasını destekle', status: 'included' },
+      { text: 'GitHub Sponsors veya Patreon üzerinden katkı', status: 'included' },
+      { text: 'İsteğe bağlı: adın TEŞEKKÜRLER listesine eklenir', status: 'included' },
+      { text: 'Discord Sponsor rozeti', status: 'included' },
     ],
-    cta: "Pro'ya Geç",
+    cta: "GitHub Sponsors'a Git",
     ctaStyle: 'primary',
+    ctaHref: 'https://github.com/sponsors/ollamatr',
+    secondaryCta: { label: "Patreon'da Destekle", href: 'https://www.patreon.com/ollamatr' },
   },
   {
-    name: 'KOBİ Paketi',
-    label: 'KOBİ / KURUMSAL',
-    price: '25.000₺ — 60.000₺',
-    period: '+ KDV (tek seferlik kurulum)',
-    kdvLabel: '(+ KDV)',
-    description: 'Kurumsal ve KOBİ çözümleri',
+    name: 'Kurumsal',
+    label: 'KURUMSAL · YAKINDA',
+    price: 'Yakında',
+    period: 'şirketleşme süreci',
+    description: 'KOBİ ve kurumsal çözümler için planlanan paket',
     borderColor: 'border-[#FFB800]',
+    comingSoon: true,
     features: [
-      { text: 'Tüm 100+ model erişimi', included: true },
-      { text: 'Yerel çalıştırma', included: true },
-      { text: 'Özelleştirilmiş WebUI', included: true },
-      { text: 'Özel eğitim & workshop', included: true },
-      { text: '7/24 telefon desteği', included: true },
-      { text: 'KVKK danışmanlığı', included: true },
-      { text: "Özel model fine-tune'u", included: true },
-      { text: 'Anahtar teslim kurulum', included: true },
-      { text: 'SLA garantisi (%99.9)', included: true },
-      { text: 'Yıllık bakım sözleşmesi', included: true },
+      { text: 'Anahtar teslim KOBİ kurulumu', status: 'coming-soon' },
+      { text: 'Özel model fine-tune', status: 'coming-soon' },
+      { text: '7/24 telefon desteği', status: 'coming-soon' },
+      { text: 'SLA garantisi', status: 'coming-soon' },
+      { text: 'KVKK danışmanlığı', status: 'coming-soon' },
     ],
-    cta: 'Teklif Al',
+    cta: 'Haberdar Et',
     ctaStyle: 'ghost',
+    ctaHref: 'mailto:iletisim@ollamatr.dev?subject=Kurumsal%20%C4%B0lgi',
   },
 ]
 
@@ -119,16 +111,12 @@ interface ComparisonRow {
 }
 
 const comparisonFeatures: ComparisonRow[] = [
-  { name: 'Türkçe Model Erişimi', ucretsiz: '50+', pro: '100+', kobi: 'Tümü' },
-  { name: 'Yerel Çalıştırma', ucretsiz: '✓', pro: '✓', kobi: '✓' },
-  { name: 'WebUI Arayüzü', ucretsiz: 'Temel', pro: 'Gelişmiş', kobi: 'Özelleştirilmiş' },
-  { name: 'API Rate Limit', ucretsiz: '—', pro: '10.000/gün', kobi: 'Sınırsız' },
-  { name: 'Kullanıcı Yönetimi', ucretsiz: '✗', pro: '✓', kobi: '✓' },
-  { name: 'Öncelikli Destek', ucretsiz: '✗', pro: '✓', kobi: '✓ 7/24' },
-  { name: 'Otomatik Güncelleme', ucretsiz: '✗', pro: '✓', kobi: '✓' },
-  { name: 'KVKK Danışmanlığı', ucretsiz: '✗', pro: '✗', kobi: '✓' },
-  { name: 'Özel Model Fine-tune', ucretsiz: '✗', pro: '✗', kobi: '✓' },
-  { name: 'SLA Garantisi', ucretsiz: '✗', pro: '✗', kobi: '%99.9' },
+  { name: '50+ Türkçe model', ucretsiz: '✓', pro: '✓', kobi: '✓' },
+  { name: 'Yerel çalıştırma', ucretsiz: '✓', pro: '✓', kobi: '✓' },
+  { name: 'Topluluk desteği (Discord / GitHub)', ucretsiz: '✓', pro: '✓', kobi: '✓' },
+  { name: 'Anahtar teslim kurulum', ucretsiz: '–', pro: '–', kobi: 'Yakında' },
+  { name: 'KVKK danışmanlığı', ucretsiz: '–', pro: '–', kobi: 'Yakında' },
+  { name: 'SLA garantisi', ucretsiz: '–', pro: '–', kobi: 'Yakında' },
 ]
 
 /* ------------------------------------------------------------------ */
@@ -137,29 +125,29 @@ const comparisonFeatures: ComparisonRow[] = [
 
 const faqItems = [
   {
-    question: 'Pro aboneliğimi nasıl iptal ederim?',
+    question: "OllamaTR'yi şirketim için ticari olarak kullanabilir miyim?",
     answer:
-      'Hesabınızdan tek tıkla iptal. İptal sonrası mevcut dönem sonuna kadar Pro özellikleri açık kalır.',
+      'Topluluk Edisyonu MIT lisansı altında ticari kullanıma açıktır. Ancak şu anda biz herhangi bir ticari hizmet satmıyoruz; OllamaTR henüz bir tüzel kişiliğe (şirket) sahip değildir. Yardım almak için topluluk Discord ve GitHub kanallarına katılabilirsiniz.',
   },
   {
-    question: 'KOBİ paketi fiyatı nasıl belirleniyor?',
+    question: 'Bağış yapanlar özel destek alır mı?',
     answer:
-      'Çalışan sayısı, model sayısı ve özel entegrasyon ihtiyaçlarına göre. 25.000₺ — 60.000₺ arası özel teklif sunuyoruz.',
+      'Hayır. Bağış tamamen gönüllüdür ve hiçbir ek hizmet sağlamaz. Tüm kullanıcılar aynı topluluk desteğine erişir. Bağış, projenin sürdürülebilirliğine katkıda bulunur.',
   },
   {
-    question: 'Ücretsiz sürümün sınırı var mı?',
+    question: 'OllamaTR ne zaman ticari sürüm çıkarır?',
     answer:
-      'Hayır, 50+ Türkçe modele tam erişim. Sadece bazı kurumsal özellikler kapalı.',
+      'Yeterli talep ve şirketleşme süreci tamamlandığında. Henüz somut bir tarih yok. Haberdar olmak için iletisim@ollamatr.dev adresine e-posta atabilirsiniz.',
   },
   {
-    question: 'Öğrenci indirimi var mı?',
+    question: 'Modelleri ticari ürünümde kullanabilir miyim?',
     answer:
-      'Evet, .edu.tr uzantılı e-posta ile Pro %50 indirimli — 75₺/ay.',
+      'Modelin lisansına bağlıdır. Modeller sayfasındaki her modelin lisansı belirtilmiştir. Örneğin Command-R-Turkish-35B gibi CC-BY-NC lisanslı modeller ticari kullanım için uygun değildir; Llama, Gemma, Mistral, Qwen ve Phi-3 türevleri ise atıf koşullarıyla ticari kullanıma açıktır.',
   },
   {
-    question: 'Kurumsal faturalandırma destekliyor musunuz?',
+    question: 'Veri gizliliği nasıl sağlanıyor?',
     answer:
-      'Evet, e-fatura ve dönemsel faturalandırma. Kurumsal müşterilerimize özel finans ekibimiz hizmet veriyor.',
+      'OllamaTR tamamen yerel çalışır. Hiçbir veri sunucularımıza gönderilmez (zaten paylaşılan bir sunucumuz yoktur). Detaylar için /kvkk sayfasını ve /cerez-politikasi sayfasını inceleyebilirsiniz.',
   },
 ]
 
@@ -170,19 +158,19 @@ const faqItems = [
 const testimonials = [
   {
     quote:
-      'OllamaTR sayesinde KVKK denetiminden tek seferde geçtik. Tüm hassas veriler şirket içinde kaldı.',
+      "Yerel makinemde tam Türkçe LLM stack'i 10 dakikada kurabildim. Bu yıl en sevdiğim açık kaynak projesi.",
     author: 'Selin A.',
-    role: 'CTO, TeknoStart',
+    role: 'İndie geliştirici',
   },
   {
     quote:
-      "100 çalışanlı şirketimizde 6 ayda kuruldu. Eğitim ve workshop'lar gerçekten profesyoneldi.",
+      "GitHub Issues'a katkıda bulundum, beni topluluğa iyi karşıladılar. Türkçe AI ekosistemi için harika bir başlangıç.",
     author: 'Burak T.',
-    role: 'IT Direktörü, Lojistik A.Ş.',
+    role: 'Açık kaynak gönüllüsü',
   },
   {
     quote:
-      'Bitirme projemde Türkçe LLM ile çalıştım. Ücretsiz sürüm bile inanılmaz.',
+      'Bitirme projemde kullandım. Tamamen ücretsiz, çevrimdışı çalışıyor — KVKK derdi olmadan deneyebildim.',
     author: 'Zeynep K.',
     role: 'ODTÜ öğrencisi',
   },
@@ -207,7 +195,7 @@ export default function Fiyatlandirma() {
             animate="visible"
             custom={0}
           >
-            FİYATLANDIRMA
+            DESTEK · BAĞIŞ
           </motion.p>
           <motion.h1
             className="font-display text-4xl font-bold leading-tight tracking-tight text-text-primary lg:text-5xl"
@@ -216,7 +204,7 @@ export default function Fiyatlandirma() {
             animate="visible"
             custom={1}
           >
-            Şeffaf, Adil, Yerel
+            Topluluk Edisyonu
           </motion.h1>
           <motion.p
             className="mx-auto mt-6 max-w-2xl font-body text-lg leading-relaxed text-text-secondary"
@@ -225,9 +213,34 @@ export default function Fiyatlandirma() {
             animate="visible"
             custom={2}
           >
-            Bireysel geliştiriciler için ücretsiz. Pro özellikler için aylık
-            abonelik. Kurumsal ihtiyaçlar için özel çözümler.
+            OllamaTR şu anda bir topluluk projesidir. Tüm özellikler ücretsiz ve
+            açık kaynaklıdır. Ticari hizmetler için şirketleşme sürecindeyiz.
           </motion.p>
+        </div>
+      </section>
+
+      {/* ========== TOPLULUK BANNER ========== */}
+      <section className="px-6 lg:px-10">
+        <div className="mx-auto max-w-6xl">
+          <div
+            role="status"
+            aria-label="Topluluk Projesi bilgisi"
+            className="rounded-lg border border-accent-red/30 bg-accent-red/10 p-4 md:p-5"
+          >
+            <div className="flex items-start gap-3">
+              <Info className="mt-0.5 h-5 w-5 shrink-0 text-accent-red" />
+              <p className="font-mono text-xs leading-relaxed text-text-secondary md:text-sm">
+                <span className="font-semibold uppercase tracking-wider text-accent-red">
+                  Topluluk Projesi
+                </span>{' '}
+                — OllamaTR şu anda topluluk tarafından geliştirilen, kâr amacı
+                gütmeyen bir açık kaynak girişimidir. Hiçbir kurum tarafından
+                desteklenmemekte ve resmi bir tüzel kişiliği bulunmamaktadır.
+                Ticari abonelik veya KOBİ paketleri şu anda{' '}
+                <strong className="text-text-primary">satışta değildir</strong>.
+              </p>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -255,7 +268,7 @@ export default function Fiyatlandirma() {
               {/* Featured badge */}
               {tier.featured && (
                 <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded bg-accent-red px-3 py-1 font-body text-xs font-semibold uppercase tracking-wider text-white">
-                  EN POPÜLER
+                  DESTEKLE
                 </span>
               )}
 
@@ -284,50 +297,67 @@ export default function Fiyatlandirma() {
                 )}
               </div>
 
-              {/* KDV label */}
-              <p className="mt-1 font-mono text-xs text-text-muted">
-                {tier.kdvLabel}
-              </p>
-
               {/* Description */}
               <p className="mt-2 font-body text-sm text-text-secondary">
                 {tier.description}
               </p>
 
               {/* CTA */}
-              <div className="mt-6">
-                {tier.ctaStyle === 'primary' ? (
-                  <button
-                    type="button"
-                    aria-describedby={tier.ctaDescribedBy}
-                    className="w-full rounded bg-accent-red py-3.5 font-body text-sm font-semibold uppercase tracking-wider text-white transition-all duration-200 hover:bg-accent-red-light hover:scale-[1.02]"
+              <div className="mt-6 flex flex-col gap-2">
+                {tier.ctaStyle === 'primary' && tier.ctaHref ? (
+                  <a
+                    href={tier.ctaHref}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex w-full items-center justify-center gap-2 rounded bg-accent-red py-3.5 font-body text-sm font-semibold uppercase tracking-wider text-white transition-all duration-200 hover:bg-accent-red-light hover:scale-[1.02]"
                   >
+                    <Heart className="h-4 w-4" />
                     {tier.cta}
-                  </button>
+                    <ExternalLink className="h-3 w-3 opacity-70" />
+                  </a>
                 ) : tier.ctaLink ? (
                   <Link
                     to={tier.ctaLink}
-                    aria-describedby={tier.ctaDescribedBy}
                     className="flex w-full items-center justify-center rounded border border-border-subtle bg-transparent py-3.5 font-body text-sm font-semibold uppercase tracking-wider text-text-primary transition-all duration-200 hover:border-accent-red hover:text-accent-red-light"
                   >
                     {tier.cta}
                   </Link>
+                ) : tier.ctaHref ? (
+                  <a
+                    href={tier.ctaHref}
+                    target={tier.ctaHref.startsWith('mailto:') ? undefined : '_blank'}
+                    rel={tier.ctaHref.startsWith('mailto:') ? undefined : 'noopener noreferrer'}
+                    className="flex w-full items-center justify-center rounded border border-border-subtle bg-transparent py-3.5 font-body text-sm font-semibold uppercase tracking-wider text-text-primary transition-all duration-200 hover:border-accent-red hover:text-accent-red-light"
+                  >
+                    {tier.cta}
+                  </a>
                 ) : (
                   <button
                     type="button"
-                    aria-describedby={tier.ctaDescribedBy}
                     className="flex w-full items-center justify-center rounded border border-border-subtle bg-transparent py-3.5 font-body text-sm font-semibold uppercase tracking-wider text-text-primary transition-all duration-200 hover:border-accent-red hover:text-accent-red-light"
                   >
                     {tier.cta}
                   </button>
                 )}
+                {tier.secondaryCta && (
+                  <a
+                    href={tier.secondaryCta.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex w-full items-center justify-center gap-2 rounded border border-border-subtle bg-transparent py-2.5 font-body text-xs font-semibold uppercase tracking-wider text-text-secondary transition-all duration-200 hover:border-accent-red hover:text-accent-red-light"
+                  >
+                    {tier.secondaryCta.label}
+                    <ExternalLink className="h-3 w-3 opacity-70" />
+                  </a>
+                )}
               </div>
 
-              {/* Pro tier: mesafeli satış disclosure note */}
-              {tier.featured && (
+              {/* Kurumsal tier: yakında note */}
+              {tier.comingSoon && (
                 <p className="mt-3 font-body text-xs leading-relaxed text-text-muted">
-                  Pro aboneliğine geçerek mesafeli satış sözleşmesini ve cayma
-                  hakkı koşullarını okuyup kabul etmiş sayılırsınız.
+                  Şirketleşme sürecimiz tamamlandığında bu paket aktif olacak.
+                  İlgilenirseniz e-posta ile haberdar edilmek istediğinizi
+                  belirtmeniz yeterli.
                 </p>
               )}
 
@@ -338,16 +368,20 @@ export default function Fiyatlandirma() {
                     key={fIdx}
                     className="flex items-start gap-3 font-body text-sm"
                   >
-                    {feature.included ? (
+                    {feature.status === 'included' ? (
                       <Check className="mt-0.5 h-4 w-4 shrink-0 text-safe-green" />
+                    ) : feature.status === 'coming-soon' ? (
+                      <Clock className="mt-0.5 h-4 w-4 shrink-0 text-warn-yellow" />
                     ) : (
                       <X className="mt-0.5 h-4 w-4 shrink-0 text-text-muted" />
                     )}
                     <span
                       className={
-                        feature.included
+                        feature.status === 'included'
                           ? 'text-text-primary'
-                          : 'text-text-muted line-through opacity-60'
+                          : feature.status === 'coming-soon'
+                            ? 'text-text-secondary'
+                            : 'text-text-muted line-through opacity-60'
                       }
                     >
                       {feature.text}
@@ -377,13 +411,13 @@ export default function Fiyatlandirma() {
                     Özellik
                   </th>
                   <th className="sticky top-0 bg-bg-obsidian px-4 py-4 text-center font-body text-sm font-medium text-text-secondary">
-                    Ücretsiz
+                    Topluluk
                   </th>
                   <th className="sticky top-0 bg-bg-obsidian px-4 py-4 text-center font-body text-sm font-semibold text-accent-red">
-                    Pro
+                    Bağış
                   </th>
                   <th className="sticky top-0 bg-bg-obsidian px-4 py-4 text-center font-body text-sm font-medium text-text-secondary">
-                    KOBİ
+                    Kurumsal (Yakında)
                   </th>
                 </tr>
               </thead>
@@ -495,113 +529,6 @@ export default function Fiyatlandirma() {
         </div>
       </section>
 
-      {/* ========== CAYMA HAKKI / MESAFELİ SATIŞ ========== */}
-      <section
-        id="cayma-hakki"
-        className="px-6 py-24 lg:px-10 lg:py-32"
-        aria-labelledby="cayma-hakki-heading"
-      >
-        <motion.div
-          className="mx-auto max-w-4xl rounded-lg border border-border-subtle bg-bg-charcoal/40 p-8 md:p-10"
-          variants={fadeUp}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: '-80px' }}
-          custom={0}
-        >
-          <h2
-            id="cayma-hakki-heading"
-            className="mb-3 font-display text-2xl font-bold uppercase tracking-wide text-text-primary"
-          >
-            Cayma Hakkınız ve Mesafeli Satış
-          </h2>
-          <p className="mb-8 font-body text-sm leading-relaxed text-text-secondary">
-            6502 Sayılı Tüketici Kanunu ve Mesafeli Sözleşmeler Yönetmeliği
-            kapsamında bilgilendirmeleriniz:
-          </p>
-
-          <div className="flex flex-col gap-8">
-            <div>
-              <h3 className="mb-2 font-display text-base font-semibold text-text-primary">
-                Cayma Hakkı (14 Gün)
-              </h3>
-              <p className="font-body text-sm leading-relaxed text-text-secondary">
-                Pro tarifesine abone olduktan sonra 14 (on dört) gün içinde
-                herhangi bir gerekçe göstermeksizin ve cezai şart ödemeksizin
-                cayma hakkınızı kullanabilirsiniz. Cayma hakkınızı kullanmak
-                için cayma süresi içinde{' '}
-                <span className="font-mono text-text-primary">
-                  privacy@ollamatr.com
-                </span>{' '}
-                adresine yazılı olarak başvurmanız yeterlidir.
-              </p>
-            </div>
-
-            <div>
-              <h3 className="mb-2 font-display text-base font-semibold text-text-primary">
-                Cayma Hakkının İstisnası
-              </h3>
-              <p className="font-body text-sm leading-relaxed text-text-secondary">
-                Yönetmelik Madde 15/1-ğ uyarınca, elektronik ortamda anında ifa
-                edilen ve tüketiciye anında teslim edilen dijital içerik
-                sözleşmelerinde, tüketicinin onayı ile ifaya başlanmışsa cayma
-                hakkı sona erer. Pro abonelik ilk kullanımı bu istisna
-                kapsamına girebilir; ilk girişinizden önce açık onay vermeniz
-                istenecektir.
-              </p>
-            </div>
-
-            <div>
-              <h3 className="mb-2 font-display text-base font-semibold text-text-primary">
-                İade Süreci
-              </h3>
-              <p className="font-body text-sm leading-relaxed text-text-secondary">
-                Cayma talebinizi takip eden 14 gün içerisinde ödemeniz iade
-                edilir. İade, ödemenin yapıldığı kanal üzerinden gerçekleştirilir.
-              </p>
-            </div>
-
-            <div>
-              <h3 className="mb-2 font-display text-base font-semibold text-text-primary">
-                KOBİ Paketi
-              </h3>
-              <p className="font-body text-sm leading-relaxed text-text-secondary">
-                KOBİ paketleri, ticari faaliyet kapsamında düzenlenen B2B
-                sözleşmelerdir; tüketici işlemi niteliği taşımaz. KOBİ
-                paketleri için ayrıca düzenlenmiş özel sözleşme şartları
-                geçerlidir. Detaylı bilgi için:{' '}
-                <span className="font-mono text-text-primary">
-                  privacy@ollamatr.com
-                </span>
-              </p>
-            </div>
-
-            <div>
-              <h3 className="mb-2 font-display text-base font-semibold text-text-primary">
-                Müşteri Hizmetleri
-              </h3>
-              <div className="rounded border border-border-subtle bg-bg-obsidian/60 p-4 font-mono text-sm text-text-secondary">
-                <p>E-posta: support@ollamatr.com</p>
-                <p>Çağrı Merkezi: [TODO: 0 (XXX) XXX XX XX]</p>
-                <p>KEP: [TODO]@hs01.kep.tr</p>
-                <p>Cevap süresi: 5 iş günü içerisinde</p>
-              </div>
-            </div>
-
-            <div>
-              <h3 className="mb-2 font-display text-base font-semibold text-text-primary">
-                Tüketici Hakem Heyeti
-              </h3>
-              <p className="font-body text-sm leading-relaxed text-text-secondary">
-                Uyuşmazlık halinde tüketici Hakem Heyetlerine veya Tüketici
-                Mahkemelerine başvurabilirsiniz. 2024 yılı parasal sınırları
-                için Ticaret Bakanlığı&rsquo;nın güncel listesi geçerlidir.
-              </p>
-            </div>
-          </div>
-        </motion.div>
-      </section>
-
       {/* ========== BOTTOM CTA ========== */}
       <section className="bg-bg-charcoal px-6 py-24 lg:px-10 lg:py-32">
         <ScrollReveal className="mx-auto max-w-2xl text-center">
@@ -609,8 +536,8 @@ export default function Fiyatlandirma() {
             Hemen Başla
           </h2>
           <p className="mt-4 font-body text-lg text-text-secondary">
-            Ücretsiz başlayın, ihtiyacınız arttıkça yükseltin. Kredi kartı
-            gerektirmez.
+            Tamamen ücretsiz, açık kaynak. Kredi kartı, hesap veya kayıt
+            gerekmez. Bağış tamamen gönüllüdür.
           </p>
           <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
             <Link
@@ -619,12 +546,15 @@ export default function Fiyatlandirma() {
             >
               İndir
             </Link>
-            <button
-              type="button"
-              className="inline-flex items-center justify-center rounded border border-border-subtle bg-transparent px-8 py-3.5 font-body text-sm font-semibold uppercase tracking-wider text-text-primary transition-all duration-200 hover:border-accent-red hover:text-accent-red-light"
+            <a
+              href="https://github.com/sponsors/ollamatr"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center gap-2 rounded border border-border-subtle bg-transparent px-8 py-3.5 font-body text-sm font-semibold uppercase tracking-wider text-text-primary transition-all duration-200 hover:border-accent-red hover:text-accent-red-light"
             >
-              KOBİ Teklifi Al
-            </button>
+              <Heart className="h-4 w-4" />
+              Sponsor Ol
+            </a>
           </div>
         </ScrollReveal>
       </section>

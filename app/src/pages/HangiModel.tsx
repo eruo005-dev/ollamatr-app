@@ -28,7 +28,7 @@ import {
 } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 import { Link } from 'react-router'
-import { COMMERCIAL_MODELS, type Model, type UseCase } from '@/lib/models-data'
+import { MODELS, type Model, type UseCase } from '@/lib/models-data'
 
 /* ------------------------------------------------------------------ */
 /*  Data                                                              */
@@ -187,7 +187,7 @@ function findBestModel(
   const targetUseCases = WIZARD_USECASE_MAP[wizardUseCase] ?? ['Genel Amaçlı']
 
   // Filter: RAM must fit, at least one canonical use case must match
-  let candidates = COMMERCIAL_MODELS.filter(
+  let candidates = MODELS.filter(
     (m) =>
       m.ramGB <= effectiveRam &&
       m.useCases.some((uc) => targetUseCases.includes(uc))
@@ -195,11 +195,11 @@ function findBestModel(
 
   if (candidates.length === 0) {
     // Fallback: just RAM fit
-    candidates = COMMERCIAL_MODELS.filter((m) => m.ramGB <= effectiveRam)
+    candidates = MODELS.filter((m) => m.ramGB <= effectiveRam)
     if (candidates.length === 0) {
       // Ultimate fallback: smallest commercial models
-      candidates = COMMERCIAL_MODELS.filter((m) => m.ramGB <= 8)
-      if (candidates.length === 0) candidates = [COMMERCIAL_MODELS[0]]
+      candidates = MODELS.filter((m) => m.ramGB <= 8)
+      if (candidates.length === 0) candidates = [MODELS[0]]
     }
   }
 
@@ -263,7 +263,7 @@ function findBestModel(
 
   scored.sort((a, b) => b.score - a.score)
 
-  const best = scored[0]?.model ?? COMMERCIAL_MODELS[0]
+  const best = scored[0]?.model ?? MODELS[0]
   const alternatives: Model[] = scored
     .slice(1, 3)
     .map((s) => s.model)
@@ -271,7 +271,7 @@ function findBestModel(
 
   // Ensure we have 2 alternatives
   while (alternatives.length < 2) {
-    const fallback = COMMERCIAL_MODELS.find(
+    const fallback = MODELS.find(
       (m) =>
         m.id !== best.id &&
         !alternatives.some((a) => a.id === m.id)
@@ -1238,15 +1238,23 @@ export default function HangiModel() {
                           <div>
                             <span className="text-text-secondary">Lisans:</span>{' '}
                             {result.best.license}
-                            {result.best.commercialUse && (
+                            {result.best.commercialUse ? (
                               <span className="ml-2 inline-flex items-center rounded bg-safe-green/10 px-1.5 py-0.5 text-[10px] uppercase tracking-wider text-safe-green">
                                 Ticari kullanım
                               </span>
+                            ) : (
+                              <span className="ml-2 inline-flex items-center rounded bg-warn-yellow/10 px-1.5 py-0.5 text-[10px] uppercase tracking-wider text-warn-yellow">
+                                Ticari Olmayan
+                              </span>
                             )}
                           </div>
-                          <div className="mt-1">
-                            {result.best.attribution}
-                          </div>
+                          <div className="mt-1">{result.best.attribution}</div>
+                          {!result.best.commercialUse && (
+                            <p className="mt-2 rounded-sm border border-warn-yellow/30 bg-warn-yellow/10 p-2 text-[11px] text-warn-yellow">
+                              ⓘ Bu model yalnızca araştırma ve kişisel kullanım içindir
+                              (CC-BY-NC 4.0). Ticari kullanım için lisans sahibinden izin gereklidir.
+                            </p>
+                          )}
                         </div>
 
                         {/* Actions */}

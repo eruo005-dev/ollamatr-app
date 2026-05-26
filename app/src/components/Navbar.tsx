@@ -6,7 +6,7 @@ const NAV_LINKS = [
   { label: 'Modeller', to: '/modeller' },
   { label: 'Hangi Model?', to: '/hangi-model' },
   { label: 'Dokümantasyon', to: '/dokumantasyon' },
-  { label: 'Fiyatlandırma', to: '/fiyatlandirma' },
+  { label: 'Destek', to: '/fiyatlandirma' },
   { label: 'Topluluk', to: '/topluluk' },
 ] as const
 

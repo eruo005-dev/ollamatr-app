@@ -4,7 +4,7 @@ import { Github } from 'lucide-react'
 const QUICK_LINKS = [
   { label: 'Modeller', to: '/modeller' },
   { label: 'Hangi Model?', to: '/hangi-model' },
-  { label: 'Fiyatlandırma', to: '/fiyatlandirma' },
+  { label: 'Destek', to: '/fiyatlandirma' },
   { label: 'İndir', to: '/indir' },
 ]
 
@@ -21,13 +21,10 @@ const LEGAL_LINKS: { label: string; to: string }[] = [
 ]
 
 const LEGAL_INFO: { label: string; value: string }[] = [
-  { label: 'Veri Sorumlusu', value: '[TODO: Şirket Tam Ünvanı A.Ş.]' },
-  { label: 'MERSİS', value: '[TODO: 16-haneli MERSİS No]' },
-  { label: 'KEP', value: '[TODO]@hs01.kep.tr' },
-  { label: 'Çağrı Merkezi', value: '0 (XXX) XXX XX XX' },
-  { label: 'Adres', value: '[TODO: Tam adres]' },
-  { label: 'Vergi Dairesi / No', value: '[TODO: Vergi Dairesi / No]' },
-  { label: 'VERBİS Kaydı', value: '[TODO: VERBİS No]' },
+  { label: 'Veri Sorumlusu', value: 'Bireysel Operatör — [Operatör İsim Soyisim]' },
+  { label: 'İletişim', value: 'iletisim@ollamatr.dev' },
+  { label: 'Proje Türü', value: 'Topluluk Projesi · Açık Kaynak (MIT)' },
+  { label: 'GitHub', value: 'github.com/ollamatr' },
 ]
 
 export default function Footer() {
@@ -46,8 +43,12 @@ export default function Footer() {
               <span className="text-accent-red">TR</span>
             </Link>
             <p className="mt-4 text-sm leading-relaxed text-text-secondary">
-              Türkiye'nin ilk yerel AI altyapı dağıtımı. Geliştiriciler, KOBİ'ler ve öğrenciler için Türkçe-uyumlu, KVKK-ready açık kaynak yapay zeka platformu.
+              Türkçe-uyumlu, yerel çalışan, açık kaynak yapay zeka stack'i. Topluluk tarafından geliştirilen, kâr amacı gütmeyen bir projedir.
             </p>
+            <div className="mt-4 inline-flex items-center gap-2 rounded-full border border-safe-green/30 bg-safe-green/10 px-3 py-1 font-mono text-xs uppercase tracking-wider text-safe-green">
+              <span className="h-1.5 w-1.5 rounded-full bg-safe-green animate-pulse" aria-hidden="true" />
+              Topluluk Projesi · Tüzel Kişilik Yok
+            </div>
           </div>
 
           {/* Quick links */}
@@ -139,7 +140,7 @@ export default function Footer() {
                 Yasal Bilgiler
               </h3>
               <p className="text-xs leading-relaxed text-text-muted">
-                6698 sayılı KVKK md.10 ve 6502 sayılı TKHK md.48 uyarınca veri sorumlusu ve satıcı bilgileri aşağıda yer almaktadır.
+                OllamaTR bir topluluk projesidir. Şu anda resmi bir tüzel kişiliği yoktur. KVKK md.10 kapsamında veri sorumlusu bilgileri aşağıdadır. Ticari hizmet sağlanmadığı için TKHK md.48 kapsamındaki şirket bilgileri henüz uygulanabilir değildir.
               </p>
             </div>
 
@@ -186,7 +187,7 @@ export default function Footer() {
         {/* Bottom bar */}
         <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-border-subtle pt-8 sm:flex-row">
           <p className="text-xs leading-relaxed text-text-muted">
-            &copy; 2025 [TODO: Şirket Tam Ünvanı] &mdash; Tüm hakları saklıdır. | İçerikte yer alan üçüncü taraf model isimleri (Llama, Gemma, Mistral, Qwen, Phi-3, Command-R, DeepSeek, Trendyol vb.) ilgili sahiplerinin markalarıdır.
+            &copy; 2025 OllamaTR Topluluğu &middot; MIT Lisansı &middot; İçerikte yer alan üçüncü taraf model isimleri (Llama, Gemma, Mistral, Qwen, Phi-3, Command-R, DeepSeek, Trendyol vb.) ilgili sahiplerinin markalarıdır.
           </p>
           <div className="flex items-center gap-6">
             <a

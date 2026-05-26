@@ -183,6 +183,14 @@ function HeroSection() {
           })}
         </h1>
 
+        <div
+          className="hero-cta mt-6 inline-flex items-center gap-2 rounded-full border border-safe-green/30 bg-safe-green/10 px-4 py-1.5 font-mono text-xs uppercase tracking-wider text-safe-green"
+          style={{ animationDelay: '0.7s' }}
+        >
+          <span className="h-1.5 w-1.5 rounded-full bg-safe-green animate-pulse" aria-hidden="true" />
+          Topluluk Edisyonu · Tamamen Ücretsiz
+        </div>
+
         <p
           className="hero-subtitle mx-auto mt-6 max-w-[600px] text-lg leading-relaxed text-text-secondary md:text-xl"
           style={{ animationDelay: '0.8s' }}

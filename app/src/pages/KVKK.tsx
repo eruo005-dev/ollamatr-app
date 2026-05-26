@@ -492,39 +492,39 @@ function KVKKHeavyContent({ sectionStyle }: HeavyContentProps) {
             internet sitesi ve sunulan hizmetler bağlamında geçerlidir.
           </p>
 
-          {/* Subsection (a) — Veri Sorumlusu */}
+          {/* Subsection (a) — Veri Sorumlusu (Bireysel Operatör) */}
           <div style={sectionStyle(aydinlatmaVisible, 0.15)} className="mt-10">
             <h3 className="font-display text-xl font-bold text-text-primary">a) Veri Sorumlusu</h3>
             <p className="mt-3 text-sm leading-relaxed text-text-secondary">
-              KVKK kapsamında veri sorumlusu sıfatıyla hareket eden tüzel kişilik aşağıdaki gibidir:
+              OllamaTR şu anda bir tüzel kişiliğe (şirkete) sahip değildir. KVKK Madde 3/1-ı uyarınca veri
+              sorumlusu, kişisel verilerin işleme amaçlarını ve vasıtalarını belirleyen, veri kayıt sisteminin
+              kurulmasından ve yönetilmesinden sorumlu olan gerçek veya tüzel kişiyi ifade eder. Bu proje
+              aşağıdaki gerçek kişinin sorumluluğu altında topluluk tarafından geliştirilmektedir:
             </p>
             <ul className="mt-3 space-y-1.5 text-sm leading-relaxed text-text-secondary">
               <li>
-                Ünvan: <code className="rounded bg-bg-obsidian px-1.5 py-0.5 font-mono text-xs text-warn-yellow">[TODO: Şirket Tam Ünvanı]</code>
-              </li>
-              <li>
-                MERSİS No: <code className="rounded bg-bg-obsidian px-1.5 py-0.5 font-mono text-xs text-warn-yellow">[TODO: MERSİS]</code>
-              </li>
-              <li>
-                Adres: <code className="rounded bg-bg-obsidian px-1.5 py-0.5 font-mono text-xs text-warn-yellow">[TODO: Tebligata Esas Adres]</code>
+                Veri Sorumlusu: <code className="rounded bg-bg-obsidian px-1.5 py-0.5 font-mono text-xs text-warn-yellow">Bireysel Operatör — [Operatör İsim Soyisim]</code>
               </li>
               <li>
                 E-posta:{' '}
                 <a
-                  href="mailto:privacy@ollamatr.com"
+                  href="mailto:iletisim@ollamatr.dev"
                   className="text-accent-red-light underline hover:text-accent-red"
                 >
-                  privacy@ollamatr.com
+                  iletisim@ollamatr.dev
                 </a>
               </li>
+              <li>Proje Türü: Topluluk projesi · Açık kaynak (MIT)</li>
               <li>
-                KEP: <code className="rounded bg-bg-obsidian px-1.5 py-0.5 font-mono text-xs text-warn-yellow">[TODO: kep-adresi]@hs01.kep.tr</code>
-              </li>
-              <li>
-                VERBİS Sicil No:{' '}
-                <code className="rounded bg-bg-obsidian px-1.5 py-0.5 font-mono text-xs text-warn-yellow">
-                  [TODO: VERBİS] (veya muafiyet gerekçesi)
-                </code>
+                GitHub:{' '}
+                <a
+                  href="https://github.com/ollamatr"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-accent-red-light underline hover:text-accent-red"
+                >
+                  github.com/ollamatr
+                </a>
               </li>
             </ul>
           </div>
@@ -536,11 +536,15 @@ function KVKKHeavyContent({ sectionStyle }: HeavyContentProps) {
               Kişisel verileriniz aşağıdaki amaçlarla işlenmektedir:
             </p>
             <ol className="mt-3 list-decimal space-y-2 pl-6 text-sm leading-relaxed text-text-secondary marker:text-text-muted">
-              <li>Hizmetlerimizin sunulması, sürdürülmesi ve geliştirilmesi,</li>
-              <li>Müşteri ilişkilerinin yönetimi (Pro ve KOBİ abonelikleri kapsamında),</li>
-              <li>Yasal yükümlülüklerin yerine getirilmesi (vergi, ticaret hukuku, KVKK),</li>
-              <li>Talep, soru ve şikayetlerin değerlendirilmesi ve cevaplanması.</li>
+              <li>Web sitemizin ziyaretçilerine hizmet sunulması ve site performansının iyileştirilmesi,</li>
+              <li>Topluluk üyeleriyle e-posta üzerinden iletişim kurulması (bağışlar, sorular, geri bildirimler),</li>
+              <li>GitHub Issues, Discord ve topluluk kanalları üzerinden katkı koordinasyonu,</li>
+              <li>KVKK ve sair mevzuatın gerektirdiği yasal yükümlülüklerin yerine getirilmesi.</li>
             </ol>
+            <p className="mt-3 text-sm leading-relaxed text-text-secondary">
+              Şu anda satışı yapılan ücretli bir hizmet bulunmadığından; müşteri ilişkileri yönetimi, abonelik
+              yönetimi veya ödeme işleme gibi amaçlar bu projede uygulanmamaktadır.
+            </p>
           </div>
 
           {/* Subsection (c) — Aktarılan Taraflar */}
@@ -552,14 +556,11 @@ function KVKKHeavyContent({ sectionStyle }: HeavyContentProps) {
             </p>
             <ul className="mt-3 list-disc space-y-2 pl-6 text-sm leading-relaxed text-text-secondary marker:text-text-muted">
               <li>
-                Ödeme sağlayıcıları (yalnızca Pro/KOBİ abonelik sözleşmesi söz konusu olduğunda; ödeme
-                bilgileriniz doğrudan ilgili ödeme kuruluşuna iletilir).
+                E-posta yazışmaları, topluluk operatörünün e-posta sağlayıcısı üzerinden gerçekleştirilir
+                (operatör tarafından açıklanacaktır).
               </li>
               <li>
-                Faturalandırma ve muhasebe yükümlülükleri kapsamında yetkili mali müşavir ve resmi kurumlar.
-              </li>
-              <li>
-                Yasal yükümlülükler nedeniyle bilgi talep eden yetkili kurumlar (Vergi Dairesi, KVKK Kurulu,
+                Yasal yükümlülükler nedeniyle bilgi talep eden yetkili kurumlar (KVKK Kurulu, vergi otoriteleri,
                 mahkemeler).
               </li>
             </ul>
@@ -583,15 +584,12 @@ function KVKKHeavyContent({ sectionStyle }: HeavyContentProps) {
                 vermemek kaydıyla, veri sorumlusunun meşru menfaatleri.
               </li>
               <li>
-                <strong>Pro ve KOBİ abonelikleri:</strong> KVKK Madde 5/2-(a) — sözleşmenin kurulması veya
-                ifasıyla doğrudan doğruya ilgili olması.
+                <strong>Topluluk üyeleri ile e-posta iletişimi:</strong> KVKK Madde 5/1 — e-posta gönderme
+                aksiyonu ile verilmiş sayılan açık rıza.
               </li>
               <li>
-                <strong>Müşteri iletişimi ve pazarlama:</strong> KVKK Madde 5/1 — ilgili kişinin açık rızası.
-              </li>
-              <li>
-                <strong>Yasal saklama yükümlülüğü:</strong> KVKK Madde 5/2-(ç) — veri sorumlusunun hukuki
-                yükümlülüğünü yerine getirebilmesi.
+                <strong>Yasal saklama yükümlülüğü (uygulanırsa):</strong> KVKK Madde 5/2-(ç) — veri sorumlusunun
+                hukuki yükümlülüğünü yerine getirebilmesi.
               </li>
             </ul>
           </div>
@@ -622,22 +620,35 @@ function KVKKHeavyContent({ sectionStyle }: HeavyContentProps) {
             </p>
           </div>
 
-          {/* Brand promise carve-out */}
+          {/* VERBİS muafiyet */}
           <div style={sectionStyle(aydinlatmaVisible, 0.4)} className="mt-10">
+            <h3 className="font-display text-xl font-bold text-text-primary">VERBİS Kaydı</h3>
+            <p className="mt-3 text-sm leading-relaxed text-text-secondary">
+              Veri Sorumluları Sicili (VERBİS) kaydı, KVKK Madde 16 kapsamında belirli eşikleri aşan veri
+              sorumluları için zorunludur. OllamaTR şu anda bir gerçek kişi tarafından düşük hacimde işletilen
+              bir topluluk projesidir ve "yıllık çalışan sayısı 50'den çok veya yıllık mali bilanço toplamı
+              25 milyon TL'den çok olan gerçek ve tüzel kişi veri sorumluları" kategorisine girmemektedir. Bu
+              nedenle 2017/61 sayılı Karar uyarınca VERBİS kaydı muafiyetinden yararlanılmaktadır. Proje
+              ileride bu eşikleri aşan bir tüzel kişiliğe dönüşürse VERBİS kaydı gerçekleştirilecektir.
+            </p>
+          </div>
+
+          {/* Brand promise carve-out */}
+          <div style={sectionStyle(aydinlatmaVisible, 0.45)} className="mt-10">
             <h3 className="font-display text-xl font-bold text-text-primary">Marka Vaadi Kapsamı</h3>
             <p className="mt-3 text-sm leading-relaxed text-text-secondary">
               "Verileriniz cihazınızda kalır" şeklindeki taahhüdümüz, özel olarak OllamaTR{' '}
               <strong>masaüstü ürününe</strong> (Ollama + Open WebUI paketi) işaret etmektedir. Tüm AI işlemleri
               (prompt'lar, yanıtlar, model çalıştırma) kullanıcının cihazında yerel olarak gerçekleşir ve
-              sunucularımıza iletilmez.
+              herhangi bir sunucuya iletilmez.
             </p>
             <p className="mt-3 text-sm leading-relaxed text-text-secondary">
-              Bu <strong>web sitesi</strong>, hesap yönetimi, faturalandırma ve müşteri iletişimi gibi
-              faaliyetler ile yol haritasındaki olası bulut hizmetleri; işbu Aydınlatma Metni ve{' '}
+              Bu <strong>web sitesinin kendisi</strong> ve gelecekteki olası kurumsal/bulut hizmetleri; işbu
+              Aydınlatma Metni ve{' '}
               <Link to="/cerez-politikasi" className="text-accent-red-light underline hover:text-accent-red">
                 Çerez Politikası
               </Link>{' '}
-              kapsamındadır.
+              kapsamındadır. Şu anda satışı yapılan ücretli bir hizmet bulunmamaktadır.
             </p>
           </div>
         </div>

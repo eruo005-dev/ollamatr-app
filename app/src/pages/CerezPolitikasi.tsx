@@ -11,7 +11,7 @@ interface CookieRow {
   name: string
   purpose: string
   duration: string
-  thirdParty: 'Hayır' | 'Evet'
+  thirdParty: 'Hayır' | 'Evet' | '—'
 }
 
 const cookieCategories: { category: string; rows: CookieRow[] }[] = [
@@ -30,10 +30,10 @@ const cookieCategories: { category: string; rows: CookieRow[] }[] = [
     category: 'Analitik',
     rows: [
       {
-        name: 'Kullanım İstatistikleri',
-        purpose: 'Site kullanımını anlamak ve içerikleri iyileştirmek amacıyla anonimleştirilmiş veri toplar.',
-        duration: '1 yıl',
-        thirdParty: 'Evet',
+        name: '(kullanılmıyor)',
+        purpose: 'Topluluk Edisyonu şu anda analitik çerez kullanmamaktadır.',
+        duration: '—',
+        thirdParty: '—',
       },
     ],
   },
@@ -41,10 +41,10 @@ const cookieCategories: { category: string; rows: CookieRow[] }[] = [
     category: 'Pazarlama',
     rows: [
       {
-        name: 'Kampanya Analizi',
-        purpose: 'Reklam ve kampanya etkinliğini ölçmek amacıyla kullanılır; ilgili kişinin açık rızasına bağlıdır.',
-        duration: '1 yıl',
-        thirdParty: 'Evet',
+        name: '(kullanılmıyor)',
+        purpose: 'Topluluk Edisyonu şu anda pazarlama çerezi kullanmamaktadır.',
+        duration: '—',
+        thirdParty: '—',
       },
     ],
   },
@@ -52,8 +52,8 @@ const cookieCategories: { category: string; rows: CookieRow[] }[] = [
     category: 'Tercih',
     rows: [
       {
-        name: 'Dil ve Tema Tercihi',
-        purpose: 'Ziyaretiniz boyunca dil ve görünüm tercihlerinizi hatırlamak için kullanılır.',
+        name: 'ollamatr-cookie-consent',
+        purpose: 'Çerez tercihinizi (localStorage) hatırlamak için kullanılır.',
         duration: '1 yıl',
         thirdParty: 'Hayır',
       },
