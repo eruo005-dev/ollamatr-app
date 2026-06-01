@@ -15,6 +15,7 @@
     "@fontsource/space-grotesk": "^5.2.10",
     "@gsap/react": "^2.1.2",
     "@radix-ui/react-accordion": "^1.2.12",
+    "@vercel/analytics": "^2.0.1",
     "clsx": "^2.1.1",
     "framer-motion": "^12.40.0",
     "gsap": "^3.15.0",
