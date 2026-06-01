@@ -17,6 +17,7 @@
 import { useMemo, useState } from 'react'
 import { Link } from 'react-router'
 import { ArrowUpRight, Filter, Send } from 'lucide-react'
+import rawItems from '@/lib/nabiz-items.json'
 
 type Category =
   | 'Tümü'
@@ -39,7 +40,8 @@ const CATEGORIES: Category[] = [
 
 interface PulseItem {
   id: string
-  date: string // display string — exact ISO only when verifiable
+  isoDate: string // RFC-3339 — drives RSS pubDate at build time
+  date: string // human-friendly display string
   category: Exclude<Category, 'Tümü'>
   title: string
   summary: string
@@ -48,91 +50,16 @@ interface PulseItem {
 }
 
 /* ============================================================================
- * Curated pulse items — each one verifiable. Keep this list short and true.
- * Add items via PR with a verifiable source link.
+ * Curated pulse items — sourced from `src/lib/nabiz-items.json` so the same
+ * data drives both this page and the prebuild `scripts/generate-rss.mjs`
+ * step. Keep the JSON file as the single source of truth.
  * ========================================================================== */
-const ITEMS: PulseItem[] = [
-  {
-    id: 'ollamatr-community-edition',
-    date: 'Mayıs 2026',
-    category: 'Topluluk',
-    title: 'OllamaTR Topluluk Edisyonu açıldı',
-    summary:
-      'Türkçe yapay zeka altyapısı için bireysel operatör yönetiminde, açık kaynak (MIT) ve KVKK uyumlu topluluk projesi. Şirket henüz yok; geliştirici katkıları açık.',
-    source: 'github.com/eruo005-dev/ollamatr-app',
-    href: 'https://github.com/eruo005-dev/ollamatr-app',
-  },
-  {
-    id: 'trendyol-llm-v2',
-    date: '2024',
-    category: 'Türkçe LLM',
-    title: 'Trendyol-LLM-7B-base-v2.0 yayınlandı',
-    summary:
-      'Trendyol Grubu tarafından açık kaynak (Apache 2.0) olarak yayınlanan 7B parametreli Türkçe odaklı temel model. E-ticaret kullanım örnekleri için fine-tune uyumlu.',
-    source: 'huggingface.co/Trendyol',
-    href: 'https://huggingface.co/Trendyol/Trendyol-LLM-7b-base-v2.0',
-  },
-  {
-    id: 'kocdigital-llama3-tr',
-    date: '2024',
-    category: 'Türkçe LLM',
-    title: 'KOCDigital-LLM-8b-v0.1 (Llama-3 Türkçe ince ayar)',
-    summary:
-      'Koç Digital tarafından Llama-3 8B üzerine yapılmış Türkçe instruct fine-tune. OpenLLM Turkish Leaderboard üzerinde yarışmacı puanlarla yer aldı.',
-    source: 'huggingface.co/KOCDIGITAL',
-    href: 'https://huggingface.co/KOCDIGITAL/Kocdigital-LLM-8b-v0.1',
-  },
-  {
-    id: 'cosmos-t1',
-    date: '2024',
-    category: 'Akademik',
-    title: 'Cosmos T1 — YTÜ tarafından yerli Türkçe LLM',
-    summary:
-      'Yıldız Teknik Üniversitesi tarafından geliştirilen Türkçe odaklı temel model. "Kendisinden üç kat büyük modellerle yarışıyor" iddiası ile basında yer aldı.',
-    source: 'YTÜ Haber Bülteni',
-    href: 'https://www.yildiz.edu.tr/universite/haberler/yerli-yapay-zeka-cosmos-t1-kendisinden-uc-kat-buyuk-modellerle-yarisiyor',
-  },
-  {
-    id: 'turna',
-    date: '2024',
-    category: 'Akademik',
-    title: 'TURNA — Boğaziçi TABILAB Türkçe encoder/decoder',
-    summary:
-      'Boğaziçi Üniversitesi TABILAB / BUCOLIN tarafından yayınlanan Türkçe odaklı sequence-to-sequence model. Çeşitli downstream görevlerde değerlendirildi.',
-    source: 'huggingface.co/boun-tabi-LMG',
-    href: 'https://huggingface.co/boun-tabi-LMG',
-  },
-  {
-    id: 'ollama-turkish-chars-issue',
-    date: '2025',
-    category: 'Ollama',
-    title: 'Ollama upstream: Türkçe çoklu bayt karakter desteği talebi',
-    summary:
-      'Ollama runtime üzerinde Türkçe karakterlerin (İ ı ş ğ ç ö ü) bazı akış senaryolarında düşmesi raporlandı. Almanca / Polonyaca için merge edilmiş emsal mevcut.',
-    source: 'github.com/ollama/ollama',
-    href: 'https://github.com/ollama/ollama/issues',
-  },
-  {
-    id: 'kvkk-yapay-zeka-rehberi',
-    date: 'Güncel',
-    category: 'KVKK & Hukuk',
-    title: 'KVKK Kurumu — Yapay zeka uygulamalarında veri koruma',
-    summary:
-      '6698 sayılı Kanun kapsamında yapay zeka sistemlerinde kişisel veri işleme ilkeleri ve veri sorumlusu yükümlülükleri. Ayrıntılar için Kurum yayınlarına bakınız.',
-    source: 'kvkk.gov.tr',
-    href: 'https://www.kvkk.gov.tr/',
-  },
-  {
-    id: 'openllm-tr-leaderboard',
-    date: 'Güncel',
-    category: 'Akademik',
-    title: 'OpenLLM Turkish Leaderboard',
-    summary:
-      'HuggingFace topluluğu tarafından sürdürülen Türkçe LLM değerlendirme tablosu. MMLU-TR, ARC-TR ve diğer Türkçe benchmark sonuçları izlenebilir.',
-    source: 'huggingface.co/spaces/malhajar/OpenLLMTurkishLeaderboard',
-    href: 'https://huggingface.co/spaces/malhajar/OpenLLMTurkishLeaderboard',
-  },
-]
+const ITEMS: PulseItem[] = (rawItems as PulseItem[])
+  .slice()
+  .sort(
+    (a, b) =>
+      new Date(b.isoDate).getTime() - new Date(a.isoDate).getTime()
+  )
 
 /* ============================================================================
  * Page
