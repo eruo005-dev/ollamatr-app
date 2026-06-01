@@ -1,5 +1,4 @@
 import { useRef } from 'react'
-import { Link } from 'react-router'
 import { motion } from 'framer-motion'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
@@ -451,12 +450,14 @@ export default function Hakkimizda() {
             Türkiye&apos;nin AI devriminin bir parçası olun.
           </p>
           <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
-            <Link
-              to="/indir"
-              className="inline-flex items-center justify-center rounded bg-accent-red px-8 py-3.5 font-body text-sm font-semibold uppercase tracking-wider text-white transition-all duration-200 hover:bg-accent-red-light hover:scale-[1.02]"
+            <a
+              href="https://t.me/+sK_c-yKLc4E0Y2I0"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center rounded bg-accent-red px-8 py-3.5 font-body text-sm font-semibold uppercase tracking-wider text-white transition-colors duration-200 hover:bg-accent-red-light"
             >
-              Hemen İndir
-            </Link>
+              Telegram'a Katıl
+            </a>
             <a
               href="mailto:iletisim@ollamatr.dev"
               className="inline-flex items-center justify-center rounded border border-border-subtle bg-transparent px-8 py-3.5 font-body text-sm font-semibold uppercase tracking-wider text-text-primary transition-all duration-200 hover:border-accent-red hover:text-accent-red-light"

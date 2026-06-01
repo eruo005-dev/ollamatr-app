@@ -54,9 +54,9 @@ const tiers: Tier[] = [
       { text: 'GitHub Issues üzerinden destek', status: 'included' },
       { text: 'MIT lisansı altında kaynak kod', status: 'included' },
     ],
-    cta: 'İndir',
+    cta: 'GitHub\'da İncele',
     ctaStyle: 'ghost',
-    ctaLink: '/indir',
+    ctaHref: 'https://github.com/eruo005-dev/ollamatr-app',
   },
   {
     name: 'Bağış',
@@ -540,12 +540,14 @@ export default function Fiyatlandirma() {
             gerekmez. Bağış tamamen gönüllüdür.
           </p>
           <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
-            <Link
-              to="/indir"
-              className="inline-flex items-center justify-center rounded bg-accent-red px-8 py-3.5 font-body text-sm font-semibold uppercase tracking-wider text-white transition-all duration-200 hover:bg-accent-red-light hover:scale-[1.02]"
+            <a
+              href="https://t.me/+sK_c-yKLc4E0Y2I0"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center rounded bg-accent-red px-8 py-3.5 font-body text-sm font-semibold uppercase tracking-wider text-white transition-colors duration-200 hover:bg-accent-red-light"
             >
-              İndir
-            </Link>
+              Telegram'a Katıl
+            </a>
             <a
               href="https://github.com/sponsors/ollamatr"
               target="_blank"

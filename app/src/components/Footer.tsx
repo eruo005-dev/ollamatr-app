@@ -5,7 +5,7 @@ const QUICK_LINKS = [
   { label: 'Modeller', to: '/modeller' },
   { label: 'Hangi Model?', to: '/hangi-model' },
   { label: 'Destek', to: '/fiyatlandirma' },
-  { label: 'İndir', to: '/indir' },
+  { label: 'Nabız', to: '/nabiz' },
 ]
 
 const RESOURCES = [

@@ -5,7 +5,6 @@ import {
   Terminal,
   MessageSquare,
   Cpu,
-  Download,
   BookOpen,
   ArrowRight,
 } from 'lucide-react'
@@ -175,10 +174,10 @@ function HeroSection() {
           style={{ animationDelay: '1.0s' }}
         >
           <Link
-            to="/indir"
-            className="inline-flex items-center gap-2 rounded bg-accent-red px-7 py-3.5 text-sm font-semibold uppercase tracking-wider text-white transition-all duration-200 hover:bg-accent-red-light hover:scale-[1.02]"
+            to="/modeller"
+            className="inline-flex items-center gap-2 rounded bg-accent-red px-7 py-3.5 text-sm font-semibold uppercase tracking-wider text-white transition-colors duration-200 hover:bg-accent-red-light"
           >
-            Hemen Başla
+            Modelleri Gör
             <ArrowRight className="h-4 w-4" />
           </Link>
           <Link
@@ -330,11 +329,11 @@ function ModelCard({ model }: { model: (typeof MODELS)[0] }) {
           {model.desc}
         </p>
         <Link
-          to="/indir"
+          to="/modeller"
           className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-accent-red-light transition-colors hover:text-accent-red"
         >
-          <Download className="h-3.5 w-3.5" />
-          İndir
+          <ArrowRight className="h-3.5 w-3.5" />
+          Detaylar
         </Link>
       </div>
     </TiltCard>
@@ -545,18 +544,20 @@ function CTABannerSection() {
             transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1) 1.0s',
           }}
         >
-          <Link
-            to="/indir"
-            className="inline-flex items-center gap-2 rounded bg-accent-red px-7 py-3.5 text-sm font-semibold uppercase tracking-wider text-white transition-all duration-200 hover:bg-accent-red-light hover:scale-[1.02]"
+          <a
+            href="https://t.me/+sK_c-yKLc4E0Y2I0"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 rounded bg-accent-red px-7 py-3.5 text-sm font-semibold uppercase tracking-wider text-white transition-colors duration-200 hover:bg-accent-red-light"
           >
-            Ücretsiz İndir
-            <Download className="h-4 w-4" />
-          </Link>
+            Telegram'a Katıl
+            <ArrowRight className="h-4 w-4" />
+          </a>
           <Link
-            to="/fiyatlandirma"
-            className="inline-flex items-center gap-2 rounded border border-border-subtle px-7 py-3.5 text-sm font-semibold uppercase tracking-wider text-text-primary transition-all duration-200 hover:border-accent-red hover:text-accent-red-light"
+            to="/nabiz"
+            className="inline-flex items-center gap-2 rounded border border-border-subtle px-7 py-3.5 text-sm font-semibold uppercase tracking-wider text-text-primary transition-colors duration-200 hover:border-accent-red hover:text-accent-red-light"
           >
-            Pro Planı İncele
+            Nabız'a Bak
             <ArrowRight className="h-4 w-4" />
           </Link>
         </div>

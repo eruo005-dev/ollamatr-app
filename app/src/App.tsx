@@ -10,7 +10,7 @@ const HangiModel = lazy(() => import('./pages/HangiModel'))
 const Dokumantasyon = lazy(() => import('./pages/Dokumantasyon'))
 const Fiyatlandirma = lazy(() => import('./pages/Fiyatlandirma'))
 const Topluluk = lazy(() => import('./pages/Topluluk'))
-const Indir = lazy(() => import('./pages/Indir'))
+const Nabiz = lazy(() => import('./pages/Nabiz'))
 const Hakkimizda = lazy(() => import('./pages/Hakkimizda'))
 const KVKK = lazy(() => import('./pages/KVKK'))
 const CerezPolitikasi = lazy(() => import('./pages/CerezPolitikasi'))
@@ -37,7 +37,9 @@ export default function App() {
             <Route path="/" element={<Home />} />
             <Route path="/modeller" element={<Modeller />} />
             <Route path="/hangi-model" element={<HangiModel />} />
-            <Route path="/indir" element={<Indir />} />
+            <Route path="/nabiz" element={<Nabiz />} />
+            {/* Backward-compat: old /indir route now serves Nabız (no app to download yet). */}
+            <Route path="/indir" element={<Nabiz />} />
             <Route path="/dokumantasyon" element={<Dokumantasyon />} />
             <Route path="/fiyatlandirma" element={<Fiyatlandirma />} />
             <Route path="/hakkimizda" element={<Hakkimizda />} />

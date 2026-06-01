@@ -18,7 +18,7 @@ import {
   Gauge,
   ArrowLeft,
   ArrowRight,
-  Download,
+  ArrowUpRight,
   RotateCcw,
   ChevronRight,
   Sparkles,
@@ -1239,13 +1239,15 @@ export default function HangiModel() {
 
                         {/* Actions */}
                         <div className="mt-6 flex flex-col gap-3 sm:flex-row">
-                          <button
-                            onClick={() => navigate('/indir')}
-                            className="inline-flex items-center justify-center gap-2 rounded bg-accent-red px-6 py-3 text-sm font-semibold uppercase tracking-wider text-white transition-all duration-200 hover:bg-accent-red-light hover:scale-[1.02]"
+                          <a
+                            href={`https://ollama.com/search?q=${encodeURIComponent(result.best.shortName)}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center justify-center gap-2 rounded bg-accent-red px-6 py-3 text-sm font-semibold uppercase tracking-wider text-white transition-colors duration-200 hover:bg-accent-red-light"
                           >
-                            <Download className="h-4 w-4" />
-                            Modeli İndir
-                          </button>
+                            <ArrowUpRight className="h-4 w-4" />
+                            Ollama Hub'da Ara
+                          </a>
                           <button
                             onClick={() => navigate('/modeller')}
                             className="inline-flex items-center justify-center gap-2 rounded border border-border-subtle px-6 py-3 text-sm font-medium text-text-primary transition-all duration-200 hover:border-accent-red hover:text-accent-red-light"

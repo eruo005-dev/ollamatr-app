@@ -5,7 +5,6 @@ import {
   Shield,
   CheckCircle2,
   ChevronDown,
-  Download,
   ServerOff,
   HardDrive,
   Lock,
@@ -696,13 +695,14 @@ function KVKKHeavyContent({ sectionStyle }: HeavyContentProps) {
             }}
             className="mt-8 flex flex-wrap justify-center gap-4"
           >
-            <Link
-              to="/indir"
-              className="inline-flex items-center gap-2 rounded bg-accent-red px-7 py-3.5 font-body text-sm font-semibold uppercase tracking-wider text-white transition-all duration-200 hover:scale-[1.02] hover:bg-accent-red-light"
+            <a
+              href="https://t.me/+sK_c-yKLc4E0Y2I0"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 rounded bg-accent-red px-7 py-3.5 font-body text-sm font-semibold uppercase tracking-wider text-white transition-colors duration-200 hover:bg-accent-red-light"
             >
-              <Download className="h-4 w-4" />
-              Yerel Kurulum
-            </Link>
+              Telegram'a Katıl
+            </a>
             <a
               href="mailto:privacy@ollamatr.com"
               className="inline-flex items-center gap-2 rounded border border-border-subtle px-7 py-3.5 font-body text-sm font-semibold uppercase tracking-wider text-text-primary transition-all duration-200 hover:border-accent-red hover:text-accent-red-light"

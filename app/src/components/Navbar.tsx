@@ -1,10 +1,11 @@
 import { useState, useCallback } from 'react'
 import { Link, useLocation } from 'react-router'
-import { Menu, X, Download } from 'lucide-react'
+import { Menu, X, Send } from 'lucide-react'
 
 const NAV_LINKS = [
   { label: 'Modeller', to: '/modeller' },
   { label: 'Hangi Model?', to: '/hangi-model' },
+  { label: 'Nabız', to: '/nabiz' },
   { label: 'Dokümantasyon', to: '/dokumantasyon' },
   { label: 'Destek', to: '/fiyatlandirma' },
   { label: 'Topluluk', to: '/topluluk' },
@@ -52,13 +53,15 @@ export default function Navbar() {
         </div>
 
         {/* Desktop CTA */}
-        <Link
-          to="/indir"
-          className="hidden items-center gap-2 rounded bg-accent-red px-5 py-2.5 text-sm font-semibold uppercase tracking-wider text-white transition-all duration-200 hover:bg-accent-red-light hover:scale-[1.02] md:inline-flex"
+        <a
+          href="https://t.me/+sK_c-yKLc4E0Y2I0"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="hidden items-center gap-2 rounded bg-accent-red px-5 py-2.5 text-sm font-semibold uppercase tracking-wider text-white transition-colors duration-200 hover:bg-accent-red-light md:inline-flex"
         >
-          <Download className="h-4 w-4" />
-          Uygulamayı İndir
-        </Link>
+          <Send className="h-4 w-4" />
+          Telegram'a Katıl
+        </a>
 
         {/* Mobile hamburger */}
         <button
@@ -94,14 +97,16 @@ export default function Navbar() {
                 {link.label}
               </Link>
             ))}
-            <Link
-              to="/indir"
+            <a
+              href="https://t.me/+sK_c-yKLc4E0Y2I0"
+              target="_blank"
+              rel="noopener noreferrer"
               onClick={closeMobile}
               className="mt-2 inline-flex items-center justify-center gap-2 rounded bg-accent-red px-5 py-3 text-sm font-semibold uppercase tracking-wider text-white"
             >
-              <Download className="h-4 w-4" />
-              Uygulamayı İndir
-            </Link>
+              <Send className="h-4 w-4" />
+              Telegram'a Katıl
+            </a>
           </div>
         </div>
       )}
