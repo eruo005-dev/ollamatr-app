@@ -397,7 +397,7 @@ export default function Fiyatlandirma() {
       {/* ========== FEATURE COMPARISON TABLE ========== */}
       <section className="px-6 py-24 lg:px-10 lg:py-32">
         <ScrollReveal>
-          <h2 className="mb-10 text-center font-display text-2xl font-bold uppercase tracking-wide text-text-primary">
+          <h2 className="mb-10 text-center font-display text-2xl font-bold tracking-tight text-text-primary">
             ÖZELLİK KARŞILAŞTIRMASI
           </h2>
         </ScrollReveal>
@@ -459,7 +459,7 @@ export default function Fiyatlandirma() {
       <section className="bg-bg-charcoal px-6 py-24 lg:px-10 lg:py-32">
         <div className="mx-auto max-w-3xl">
           <ScrollReveal>
-            <h2 className="mb-10 text-center font-display text-2xl font-bold uppercase tracking-wide text-text-primary">
+            <h2 className="mb-10 text-center font-display text-2xl font-bold tracking-tight text-text-primary">
               SIK SORULAN SORULAR
             </h2>
           </ScrollReveal>
@@ -489,7 +489,7 @@ export default function Fiyatlandirma() {
       <section className="px-6 py-20 lg:px-10 lg:py-24">
         <div className="mx-auto max-w-5xl">
           <ScrollReveal>
-            <h2 className="mb-10 text-center font-display text-xl font-bold uppercase tracking-wide text-text-primary">
+            <h2 className="mb-10 text-center font-display text-xl font-bold tracking-tight text-text-primary">
               MÜŞTERİ YORUMLARI
             </h2>
           </ScrollReveal>

@@ -43,7 +43,7 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
         role="alert"
         className="mx-auto my-12 max-w-md rounded-lg border border-border-subtle bg-bg-surface p-6 text-text-primary"
       >
-        <h2 className="font-display text-lg font-bold uppercase tracking-tight text-accent-red-light">
+        <h2 className="font-display text-lg font-bold tracking-tight text-accent-red-light">
           Bir hata oluştu
         </h2>
         <p className="mt-3 text-sm leading-relaxed text-text-primary">

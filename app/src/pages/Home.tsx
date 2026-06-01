@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react'
+import { useState, useMemo } from 'react'
 import { Link } from 'react-router'
 import {
   Shield,
@@ -14,31 +14,6 @@ import TiltCard from '@/components/TiltCard'
 import { useScrollReveal } from '@/hooks/useScrollReveal'
 
 /* ───────────────────────── Animated counter ───────────────────────── */
-function useCountUp(end: number, duration: number, start: boolean) {
-  const [value, setValue] = useState(0)
-
-  useEffect(() => {
-    if (!start) return
-    let raf: number
-    const startTime = performance.now()
-
-    function tick(now: number) {
-      const elapsed = now - startTime
-      const progress = Math.min(elapsed / duration, 1)
-      // Expo-out easing
-      const eased = 1 - Math.pow(1 - progress, 3)
-      setValue(Math.floor(eased * end))
-      if (progress < 1) {
-        raf = requestAnimationFrame(tick)
-      }
-    }
-    raf = requestAnimationFrame(tick)
-    return () => cancelAnimationFrame(raf)
-  }, [end, duration, start])
-
-  return value
-}
-
 /* ═══════════════════════════ MODEL DATA ═══════════════════════════ */
 const MODELS = [
   {
@@ -134,7 +109,6 @@ export default function Home() {
         <ProblemSection />
         <ModelShowcaseSection />
         <RAMCalculatorSection />
-        <SocialProofSection />
         <FeaturesSection />
         <CTABannerSection />
       </div>
@@ -264,7 +238,7 @@ function ModelShowcaseSection() {
             transition: 'all 0.8s cubic-bezier(0.16, 1, 0.3, 1)',
           }}
         >
-          <h2 className="font-display text-2xl font-bold uppercase tracking-tight text-text-primary md:text-3xl lg:text-[2.5rem]">
+          <h2 className="font-display text-2xl font-bold tracking-tight text-text-primary md:text-3xl lg:text-[2.5rem]">
             100+ TÜRKÇE-OPTİMİZE MODEL
           </h2>
           <Link
@@ -383,7 +357,7 @@ function RAMCalculatorSection() {
           transition: 'all 0.8s cubic-bezier(0.16, 1, 0.3, 1)',
         }}
       >
-        <h2 className="text-center font-display text-2xl font-bold uppercase tracking-tight text-text-primary md:text-3xl lg:text-[2.5rem]">
+        <h2 className="text-center font-display text-2xl font-bold tracking-tight text-text-primary md:text-3xl lg:text-[2.5rem]">
           SİSTEMİN HAZIR MI?
         </h2>
         <p className="mt-4 text-center text-base text-text-secondary">
@@ -441,118 +415,16 @@ function RAMCalculatorSection() {
   )
 }
 
-/* ═══════════════════════════ SECTION 5: SOCIAL PROOF ═══════════════════════════ */
-const STATS = [
-  { value: 10000, suffix: '+', label: 'İndirme' },
-  { value: 100, suffix: '+', label: 'Model' },
-  { value: 5000, suffix: '+', label: 'Aktif Kullanıcı' },
-  { value: 50, suffix: '+', label: 'Kurumsal Entegrasyon' },
-]
+/* ═══════════════════════════ SECTION 5: SOCIAL PROOF — REMOVED ═══════════════════════════
+ * The audit panel (G1/G2/T1/T2/R1) flagged the fabricated STATS + TESTIMONIALS
+ * as TKHK Madde 61 misleading-advertising risk and the single biggest brand-truth
+ * liability on the site. Removed alongside the Hakkimizda fake team + partner logo
+ * wall in commit applying redesign-audit-r1. When real numbers + real users exist,
+ * a SocialProofSection can return with live data sources.
+ */
+// SocialProofSection deleted in its entirety; resume real layout below.
 
-const TESTIMONIALS = [
-  {
-    quote:
-      "OllamaTR ile şirketimizdeki tüm AI altyapısını 1 günde kurdum. KVKK uyumluluğu artık sorun değil.",
-    name: 'Ahmet Y.',
-    title: 'KOBİ IT Yöneticisi',
-  },
-  {
-    quote:
-      'Türkçe fine-tune modelleri inanılmaz. Llama-3-Turkish ile oluşturduğum chatbot müşteri memnuniyetini %40 artırdı.',
-    name: 'Elif K.',
-    title: 'Startup Kurucusu',
-  },
-  {
-    quote:
-      'Dokümantasyon Türkçe, kurulum tek tık. 16GB RAM\'lik laptopumda Mistral-Turk sorunsuz çalışıyor.',
-    name: 'Mehmet D.',
-    title: 'Bilgisayar Mühendisliği Öğrencisi',
-  },
-]
-
-function SocialProofSection() {
-  const { ref, visible } = useScrollReveal()
-
-  return (
-    <section ref={ref} className="bg-bg-obsidian py-24 md:py-32 lg:py-[120px]">
-      <div className="mx-auto max-w-7xl px-6 lg:px-10">
-        <h2
-          className="text-center font-display text-2xl font-bold uppercase tracking-tight text-text-primary md:text-3xl lg:text-[2.5rem]"
-          style={{
-            opacity: visible ? 1 : 0,
-            transform: visible ? 'translateY(0)' : 'translateY(40px)',
-            transition: 'all 0.8s cubic-bezier(0.16, 1, 0.3, 1)',
-          }}
-        >
-          TÜRKİYE&apos;NİN GELİŞTİRİCİLERİ GÜVENİYOR
-        </h2>
-
-        {/* Stats */}
-        <div
-          className="mt-12 grid grid-cols-2 gap-8 md:grid-cols-4 md:gap-12"
-          style={{
-            opacity: visible ? 1 : 0,
-            transform: visible ? 'translateY(0)' : 'translateY(40px)',
-            transition: 'all 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.2s',
-          }}
-        >
-          {STATS.map((stat) => (
-            <StatItem key={stat.label} stat={stat} start={visible} />
-          ))}
-        </div>
-
-        {/* Testimonials */}
-        <div className="mt-16 grid grid-cols-1 gap-6 md:grid-cols-3">
-          {TESTIMONIALS.map((t, i) => (
-            <div
-              key={t.name}
-              className="rounded-lg border border-border-subtle bg-bg-charcoal p-8"
-              style={{
-                opacity: visible ? 1 : 0,
-                transform: visible ? 'translateY(0)' : 'translateY(40px)',
-                transition: `all 0.6s cubic-bezier(0.16, 1, 0.3, 1) ${0.3 + 0.1 * i}s`,
-              }}
-            >
-              <p className="text-sm leading-relaxed text-text-primary md:text-base">
-                &ldquo;{t.quote}&rdquo;
-              </p>
-              <div className="mt-6 border-t border-border-subtle pt-4">
-                <p className="font-display text-sm font-bold text-text-primary">
-                  {t.name}
-                </p>
-                <p className="mt-0.5 text-xs text-text-secondary">{t.title}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  )
-}
-
-function StatItem({
-  stat,
-  start,
-}: {
-  stat: (typeof STATS)[0]
-  start: boolean
-}) {
-  const count = useCountUp(stat.value, 1500, start)
-
-  return (
-    <div className="text-center">
-      <p className="font-display text-3xl font-bold text-accent-red md:text-[3rem]">
-        {count.toLocaleString('tr-TR')}
-        {stat.suffix}
-      </p>
-      <p className="mt-2 text-xs font-medium uppercase tracking-wider text-text-secondary">
-        {stat.label}
-      </p>
-    </div>
-  )
-}
-
-/* ═══════════════════════════ SECTION 6: FEATURES ═══════════════════════════ */
+/* ═══════════════════════════ SECTION 5: FEATURES ═══════════════════════════ */
 const FEATURES = [
   {
     icon: Shield,
@@ -583,7 +455,7 @@ function FeaturesSection() {
     <section ref={ref} className="bg-bg-charcoal py-24 md:py-32 lg:py-[120px]">
       <div className="mx-auto max-w-7xl px-6 lg:px-10">
         <h2
-          className="text-center font-display text-2xl font-bold uppercase tracking-tight text-text-primary md:text-3xl lg:text-[2.5rem]"
+          className="text-center font-display text-2xl font-bold tracking-tight text-text-primary md:text-3xl lg:text-[2.5rem]"
           style={{
             opacity: visible ? 1 : 0,
             transform: visible ? 'translateY(0)' : 'translateY(40px)',
@@ -643,7 +515,7 @@ function CTABannerSection() {
 
       <div className="relative mx-auto max-w-[800px] px-6 text-center lg:px-10">
         <h2
-          className="font-display text-3xl font-bold uppercase tracking-tight text-text-primary md:text-4xl lg:text-[3.5rem] lg:leading-tight"
+          className="font-display text-3xl font-bold tracking-tight text-text-primary md:text-4xl lg:text-[3.5rem] lg:leading-tight"
           style={{
             opacity: visible ? 1 : 0,
             transform: visible ? 'translateY(0)' : 'translateY(40px)',

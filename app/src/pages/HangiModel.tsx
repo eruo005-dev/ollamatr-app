@@ -295,12 +295,6 @@ function getRamColor(ram: number): string {
   return '#D91E36'
 }
 
-function getRamShadow(ram: number): string {
-  if (ram < 8) return '0 0 12px rgba(0, 229, 160, 0.3)'
-  if (ram <= 16) return '0 0 12px rgba(255, 184, 0, 0.3)'
-  return '0 0 12px rgba(217, 30, 54, 0.3)'
-}
-
 /* ------------------------------------------------------------------ */
 /*  Refs container type                                               */
 /* ------------------------------------------------------------------ */
@@ -729,10 +723,9 @@ export default function HangiModel() {
               domRefs.current.wizard = el
               wizardScope.current = el
             }}
-            className="relative overflow-hidden rounded-xl border border-[rgba(217,30,54,0.3)] p-6 md:p-12"
+            className="relative overflow-hidden rounded-xl border border-border-subtle p-6 md:p-12"
             style={{
               backgroundColor: '#0A0A0F',
-              boxShadow: '0 0 40px rgba(217, 30, 54, 0.1)',
             }}
           >
             {/* Terminal top bar */}
@@ -1182,9 +1175,6 @@ export default function HangiModel() {
                             style={{
                               color: getRamColor(result.best.ramGB),
                               borderColor: getRamColor(
-                                result.best.ramGB
-                              ),
-                              boxShadow: getRamShadow(
                                 result.best.ramGB
                               ),
                             }}

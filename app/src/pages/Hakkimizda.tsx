@@ -22,28 +22,10 @@ interface TeamMember {
 
 const teamMembers: TeamMember[] = [
   {
-    name: 'Ali Yılmaz',
-    role: 'Kurucu & CEO',
-    bio: "Türkiye'de yapay zekanın demokratikleşmesi için 10+ yıldır çalışıyor. Önceden Trendyol AI ekibinde.",
-    initials: 'AY',
-  },
-  {
-    name: 'Deniz Kaya',
-    role: 'CTO',
-    bio: 'GPU optimizasyonu ve dağıtık sistemler uzmanı. İTÜ Bilgisayar Müh. mezunu, eski Hugging Face contributor.',
-    initials: 'DK',
-  },
-  {
-    name: 'Ebru Şahin',
-    role: 'ML Lead',
-    bio: "NLP ve Türkçe dil modelleri üzerine doktora. Boğaziçi Üniversitesi'nde misafir araştırmacı.",
-    initials: 'EŞ',
-  },
-  {
-    name: 'Can Özdemir',
-    role: 'Head of Product',
-    bio: "10 yıllık ürün liderliği. Önceden Getir ve Peak Games'te ürün direktörü.",
-    initials: 'CÖ',
+    name: '[Operatör İsim Soyisim]',
+    role: 'Bireysel Operatör · Topluluk Yöneticisi',
+    bio: 'OllamaTR şu anda topluluk tarafından geliştirilen, kâr amacı gütmeyen bir açık kaynak projesidir ve tek bir bireysel operatörün KVKK md.3/1-ı kapsamındaki sorumluluğu altında yürütülmektedir. Gerçek isim ve iletişim bilgisi GitHub profili üzerinden görülebilir.',
+    initials: '··',
   },
 ]
 
@@ -56,14 +38,7 @@ interface Partner {
   slug: string
 }
 
-const partners: Partner[] = [
-  { name: 'Teknopark İstanbul', slug: 'teknopark-istanbul' },
-  { name: 'KOSGEB', slug: 'kosgeb' },
-  { name: 'TÜBİTAK', slug: 'tubitak' },
-  { name: 'İTÜ ARI Teknokent', slug: 'itu-ari-teknokent' },
-  { name: 'BİLGİ Yapay Zeka Merkezi', slug: 'bilgi-yapay-zeka' },
-  { name: 'Türkiye Yapay Zeka İnisiyatifi', slug: 'turkiye-yzi' },
-]
+const partners: Partner[] = []
 
 /* ------------------------------------------------------------------ */
 /*  Roadmap data                                                        */
@@ -345,7 +320,7 @@ export default function Hakkimizda() {
       <section className="px-6 py-24 lg:px-10 lg:py-32">
         <div className="mx-auto max-w-5xl">
           <ScrollReveal>
-            <h2 className="mb-12 text-center font-display text-3xl font-bold uppercase tracking-wide text-text-primary lg:text-4xl">
+            <h2 className="mb-12 text-center font-display text-3xl font-bold tracking-tight text-text-primary lg:text-4xl">
               EKİP
             </h2>
           </ScrollReveal>
@@ -391,7 +366,7 @@ export default function Hakkimizda() {
       <section className="bg-bg-charcoal px-6 py-24 lg:px-10 lg:py-32">
         <div className="mx-auto max-w-4xl text-center">
           <ScrollReveal>
-            <h2 className="mb-4 font-display text-2xl font-bold uppercase tracking-wide text-text-primary">
+            <h2 className="mb-4 font-display text-2xl font-bold tracking-tight text-text-primary">
               İLGİLİ EKOSİSTEM
             </h2>
           </ScrollReveal>
@@ -442,10 +417,10 @@ export default function Hakkimizda() {
             <p className="mt-12 font-body text-sm text-text-muted">
               Ortaklık ve işbirliği için{' '}
               <a
-                href="mailto:iletisim@ollamatr.com"
+                href="mailto:iletisim@ollamatr.dev"
                 className="text-accent-red-light transition-colors hover:text-accent-red"
               >
-                iletisim@ollamatr.com
+                iletisim@ollamatr.dev
               </a>{' '}
               adresinden bize ulaşabilirsiniz.
             </p>
@@ -457,7 +432,7 @@ export default function Hakkimizda() {
       <section className="px-6 py-24 lg:px-10 lg:py-32">
         <div className="mx-auto max-w-3xl">
           <ScrollReveal>
-            <h2 className="mb-12 text-center font-display text-3xl font-bold uppercase tracking-wide text-text-primary">
+            <h2 className="mb-12 text-center font-display text-3xl font-bold tracking-tight text-text-primary">
               YOL HARİTASI
             </h2>
           </ScrollReveal>
@@ -483,7 +458,7 @@ export default function Hakkimizda() {
               Hemen İndir
             </Link>
             <a
-              href="mailto:iletisim@ollamatr.com"
+              href="mailto:iletisim@ollamatr.dev"
               className="inline-flex items-center justify-center rounded border border-border-subtle bg-transparent px-8 py-3.5 font-body text-sm font-semibold uppercase tracking-wider text-text-primary transition-all duration-200 hover:border-accent-red hover:text-accent-red-light"
             >
               İletişime Geçin

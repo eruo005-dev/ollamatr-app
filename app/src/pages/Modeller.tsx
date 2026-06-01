@@ -797,7 +797,7 @@ function RamComparison({ models: comparisonModels }: { models: Model[] }) {
             transition: 'all 0.8s cubic-bezier(0.16, 1, 0.3, 1)',
           }}
         >
-          <h2 className="text-center font-display text-2xl font-bold uppercase tracking-tight text-text-primary md:text-3xl">
+          <h2 className="text-center font-display text-2xl font-bold tracking-tight text-text-primary md:text-3xl">
             RAM Gereksinimleri Karşılaştırması
           </h2>
           <p className="mx-auto mt-4 max-w-xl text-center font-body text-base text-text-secondary">

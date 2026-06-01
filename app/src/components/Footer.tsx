@@ -200,10 +200,7 @@ export default function Footer() {
               GitHub
             </a>
             <div className="inline-flex items-center gap-2">
-              <span className="relative flex h-2 w-2">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-safe-green opacity-75" />
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-safe-green" />
-              </span>
+              <span className="inline-flex h-2 w-2 rounded-full bg-safe-green" aria-hidden="true" />
               <span className="text-xs text-text-muted">Tüm Sistemler Çalışıyor</span>
             </div>
           </div>
