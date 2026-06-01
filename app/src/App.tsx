@@ -1,6 +1,7 @@
 import { lazy, Suspense } from 'react'
 import { Routes, Route } from 'react-router'
 import { Loader2 } from 'lucide-react'
+import { Analytics } from '@vercel/analytics/react'
 import Layout from './components/Layout'
 import ErrorBoundary from '@/components/ErrorBoundary'
 
@@ -47,6 +48,7 @@ export default function App() {
           </Routes>
         </Suspense>
       </ErrorBoundary>
+      <Analytics />
     </Layout>
   )
 }
