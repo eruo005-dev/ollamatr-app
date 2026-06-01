@@ -39,7 +39,7 @@ const platforms = [
     subtitle: 'Discord Sunucusu',
     members: '5.234 üye',
     description: 'Teknik tartışma, sesli kanallar, etkinlikler',
-    color: 'hover:border-[#5865F2]/40 hover:shadow-[0_0_20px_rgba(88,101,242,0.1)]',
+    color: 'hover:border-[#5865F2]/40',
     buttonColor: 'hover:text-[#5865F2] hover:border-[#5865F2]',
   },
   {
@@ -48,7 +48,7 @@ const platforms = [
     subtitle: 'Yapay Zeka Türkiye',
     members: '1.876 üye',
     description: 'Anlık sohbet, hızlı yardım, duyurular',
-    color: 'hover:border-[#0088cc]/40 hover:shadow-[0_0_20px_rgba(0,136,204,0.1)]',
+    color: 'hover:border-[#0088cc]/40',
     buttonColor: 'hover:text-[#0088cc] hover:border-[#0088cc]',
   },
   {
@@ -57,7 +57,7 @@ const platforms = [
     subtitle: 'Açık Kaynak',
     members: '234 contributor',
     description: "Açık kaynak katkı, issue takibi, PR'lar",
-    color: 'hover:border-white/20 hover:shadow-[0_0_20px_rgba(255,255,255,0.05)]',
+    color: 'hover:border-white/20',
     buttonColor: 'hover:text-white hover:border-white',
   },
   {
@@ -66,7 +66,7 @@ const platforms = [
     subtitle: 'btt.community',
     members: '456 konu',
     description: 'Derinlemesine tartışma, rehberler, showcase',
-    color: 'hover:border-accent-red/40 hover:shadow-glow-red',
+    color: 'hover:border-accent-red/40',
     buttonColor: 'hover:text-accent-red hover:border-accent-red',
   },
 ]

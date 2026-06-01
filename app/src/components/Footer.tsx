@@ -46,7 +46,7 @@ export default function Footer() {
               Türkçe-uyumlu, yerel çalışan, açık kaynak yapay zeka stack'i. Topluluk tarafından geliştirilen, kâr amacı gütmeyen bir projedir.
             </p>
             <div className="mt-4 inline-flex items-center gap-2 rounded-full border border-safe-green/30 bg-safe-green/10 px-3 py-1 font-mono text-xs uppercase tracking-wider text-safe-green">
-              <span className="h-1.5 w-1.5 rounded-full bg-safe-green animate-pulse" aria-hidden="true" />
+              <span className="h-1.5 w-1.5 rounded-full bg-safe-green" aria-hidden="true" />
               Topluluk Projesi · Tüzel Kişilik Yok
             </div>
           </div>

@@ -875,13 +875,6 @@ export default function HangiModel() {
                     {ramOptions.map((opt) => {
                       const selected = ram === opt.value
                       const isUnknown = opt.value === 0
-                      const glowColor = isUnknown
-                        ? 'rgba(244, 244, 245, 0.15)'
-                        : opt.value <= 8
-                          ? 'rgba(0, 229, 160, 0.3)'
-                          : opt.value <= 16
-                            ? 'rgba(255, 184, 0, 0.3)'
-                            : 'rgba(217, 30, 54, 0.3)'
                       const borderColor = isUnknown
                         ? 'var(--text-muted)'
                         : opt.value <= 8
@@ -895,7 +888,7 @@ export default function HangiModel() {
                           key={opt.value}
                           onClick={() => setRam(opt.value)}
                           aria-pressed={selected}
-                          className="relative rounded-lg border px-8 py-4 font-mono text-sm uppercase tracking-wider transition-all duration-200"
+                          className="relative rounded-lg border px-8 py-4 font-mono text-sm uppercase tracking-wider transition-colors duration-200"
                           style={{
                             backgroundColor: selected
                               ? 'var(--bg-surface)'
@@ -906,9 +899,6 @@ export default function HangiModel() {
                             color: selected
                               ? borderColor
                               : 'var(--text-secondary)',
-                            boxShadow: selected
-                              ? `0 0 20px ${glowColor}`
-                              : 'none',
                           }}
                         >
                           {opt.label}
@@ -1352,7 +1342,7 @@ export default function HangiModel() {
                 style={{
                   width: '100%',
                   background:
-                    'linear-gradient(90deg, var(--accent-red) 0%, rgba(217,30,54,0.3) 100%)',
+                    'var(--accent-red)',
                 }}
               />
             </div>

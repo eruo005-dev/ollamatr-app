@@ -16,7 +16,6 @@ module.exports = {
         'border-subtle': 'rgba(244, 244, 245, 0.08)',
         'border-active': 'rgba(217, 30, 54, 0.5)',
         'wizard-bg': '#0A0A0F',
-        'wizard-glow': '#D91E36',
         'safe-green': '#00E5A0',
         'warn-yellow': '#FFB800',
         border: "hsl(var(--border))",
@@ -78,9 +77,6 @@ module.exports = {
       },
       boxShadow: {
         xs: "0 1px 2px 0 rgb(0 0 0 / 0.05)",
-        'glow-red': '0 0 12px rgba(217, 30, 54, 0.3)',
-        'glow-green': '0 0 12px rgba(0, 229, 160, 0.3)',
-        'glow-yellow': '0 0 12px rgba(255, 184, 0, 0.3)',
       },
       keyframes: {
         "accordion-down": {
@@ -95,16 +91,11 @@ module.exports = {
           "0%,70%,100%": { opacity: "1" },
           "20%,50%": { opacity: "0" },
         },
-        "glow-pulse": {
-          "0%, 100%": { textShadow: "0 0 10px rgba(217, 30, 54, 0.0)" },
-          "50%": { textShadow: "0 0 30px rgba(217, 30, 54, 0.4)" },
-        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
         "caret-blink": "caret-blink 1.25s ease-out infinite",
-        "glow-pulse": "glow-pulse 2s ease-in-out infinite",
       },
     },
   },

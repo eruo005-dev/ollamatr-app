@@ -480,7 +480,7 @@ export default function Indir() {
           className="pointer-events-none absolute inset-0"
           style={{
             background:
-              'radial-gradient(ellipse at center, rgba(0, 229, 160, 0.06) 0%, transparent 70%)',
+              'none',
           }}
         />
         <motion.div

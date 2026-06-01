@@ -224,9 +224,7 @@ function RoadmapTimeline({ items }: { items: RoadmapItem[] }) {
           >
             {/* Dot */}
             <div
-              className={`relative z-10 mt-1.5 h-3 w-3 shrink-0 rounded-full ${getStatusColor(item.status)} ${
-                item.status === 'in-progress' ? 'animate-pulse' : ''
-              }`}
+              className={`relative z-10 mt-1.5 h-3 w-3 shrink-0 rounded-full ${getStatusColor(item.status)}`}
             />
 
             {/* Content */}

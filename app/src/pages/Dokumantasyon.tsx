@@ -95,7 +95,7 @@ export default function Dokumantasyon() {
           className="absolute inset-0 bg-cover bg-center opacity-20"
           style={{ backgroundImage: 'url(/docs-hero.jpg)' }}
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-bg-obsidian/60 via-bg-obsidian/80 to-bg-obsidian" />
+        <div className="absolute inset-0 bg-bg-obsidian/85" />
 
         <div className="relative mx-auto max-w-7xl">
           <motion.span

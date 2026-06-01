@@ -101,27 +101,23 @@ function useRAMCalculator() {
 
 const STATUS_CONFIG: Record<
   RamStatus,
-  { text: string; colorClass: string; glowClass: string }
+  { text: string; colorClass: string }
 > = {
   neutral: {
     text: 'RAM DURUMU: BEKLENİYOR',
     colorClass: 'text-text-muted border-text-muted',
-    glowClass: '',
   },
   safe: {
     text: 'YETERLİ: MODEL ÇALIŞABİLİR',
     colorClass: 'text-safe-green border-safe-green',
-    glowClass: 'shadow-glow-green',
   },
   warning: {
     text: 'SINIRDA: DÜŞÜK PERFORMANS',
     colorClass: 'text-warn-yellow border-warn-yellow',
-    glowClass: 'shadow-glow-yellow',
   },
   danger: {
     text: 'YETERSİZ: RAM ARTTIRILMALI',
     colorClass: 'text-accent-red border-accent-red',
-    glowClass: 'shadow-glow-red',
   },
 }
 
@@ -158,13 +154,13 @@ function HeroSection() {
       {/* Gradient overlay for text readability */}
       <div
         className="pointer-events-none absolute inset-0 z-[1]"
-        style={{ background: 'linear-gradient(to top, #0A090C 0%, transparent 50%)' }}
+        style={{ background: 'transparent' }}
       />
 
       {/* Hero content */}
       <div className="relative z-10 mx-auto max-w-[800px] px-6 pt-16 text-center">
         <h1
-          className="font-display text-4xl font-bold uppercase leading-[1.05] tracking-tight text-text-primary sm:text-5xl md:text-[4.5rem]"
+          className="font-display text-4xl font-bold leading-[1.05] tracking-tight text-text-primary sm:text-5xl md:text-[4.5rem]"
           style={{ letterSpacing: '-0.02em' }}
           aria-label={HERO_TITLE}
         >
@@ -187,7 +183,7 @@ function HeroSection() {
           className="hero-cta mt-6 inline-flex items-center gap-2 rounded-full border border-safe-green/30 bg-safe-green/10 px-4 py-1.5 font-mono text-xs uppercase tracking-wider text-safe-green"
           style={{ animationDelay: '0.7s' }}
         >
-          <span className="h-1.5 w-1.5 rounded-full bg-safe-green animate-pulse" aria-hidden="true" />
+          <span className="h-1.5 w-1.5 rounded-full bg-safe-green" aria-hidden="true" />
           Topluluk Edisyonu · Tamamen Ücretsiz
         </div>
 
@@ -435,7 +431,7 @@ function RAMCalculatorSection() {
 
           {/* Status Badge */}
           <div
-            className={`rounded border px-4 py-3 text-center font-mono text-xs uppercase transition-all duration-300 ${config.colorClass} ${config.glowClass}`}
+            className={`rounded border px-4 py-3 text-center font-mono text-xs uppercase transition-colors duration-300 ${config.colorClass}`}
           >
             {config.text}
           </div>
@@ -642,15 +638,12 @@ function CTABannerSection() {
       {/* Subtle red radial gradient */}
       <div
         className="pointer-events-none absolute inset-0"
-        style={{
-          background:
-            'radial-gradient(ellipse at center, rgba(217, 30, 54, 0.08) 0%, transparent 70%)',
-        }}
+        aria-hidden="true"
       />
 
       <div className="relative mx-auto max-w-[800px] px-6 text-center lg:px-10">
         <h2
-          className="animate-glow-pulse font-display text-3xl font-bold uppercase tracking-tight text-text-primary md:text-4xl lg:text-[3.5rem] lg:leading-tight"
+          className="font-display text-3xl font-bold uppercase tracking-tight text-text-primary md:text-4xl lg:text-[3.5rem] lg:leading-tight"
           style={{
             opacity: visible ? 1 : 0,
             transform: visible ? 'translateY(0)' : 'translateY(40px)',

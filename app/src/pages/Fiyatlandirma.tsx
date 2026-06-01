@@ -259,7 +259,7 @@ export default function Fiyatlandirma() {
               variants={staggerChild}
               className={`relative flex flex-col rounded-lg border p-8 transition-all duration-300 ${
                 tier.featured
-                  ? 'border-accent-red shadow-[0_0_30px_rgba(217,30,54,0.12)] md:scale-[1.02]'
+                  ? 'border-accent-red md:scale-[1.02]'
                   : tier.name === 'KOBİ Paketi'
                     ? 'border-[#FFB800]/40'
                     : 'border-border-subtle'
