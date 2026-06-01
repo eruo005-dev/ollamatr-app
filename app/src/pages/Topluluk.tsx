@@ -36,18 +36,20 @@ const platforms = [
   {
     icon: MessageCircle,
     name: 'Discord',
-    subtitle: 'Discord Sunucusu',
-    members: '5.234 üye',
+    subtitle: 'Yakında',
+    members: 'Açılış sırasında',
     description: 'Teknik tartışma, sesli kanallar, etkinlikler',
+    href: null,
     color: 'hover:border-[#5865F2]/40',
     buttonColor: 'hover:text-[#5865F2] hover:border-[#5865F2]',
   },
   {
     icon: Send,
     name: 'Telegram',
-    subtitle: 'Yapay Zeka Türkiye',
-    members: '1.876 üye',
+    subtitle: 'OllamaTR Topluluğu',
+    members: 'Davet ile katılım',
     description: 'Anlık sohbet, hızlı yardım, duyurular',
+    href: 'https://t.me/+sK_c-yKLc4E0Y2I0',
     color: 'hover:border-[#0088cc]/40',
     buttonColor: 'hover:text-[#0088cc] hover:border-[#0088cc]',
   },
@@ -55,17 +57,19 @@ const platforms = [
     icon: Github,
     name: 'GitHub',
     subtitle: 'Açık Kaynak',
-    members: '234 contributor',
+    members: 'Yeni başlıyor',
     description: "Açık kaynak katkı, issue takibi, PR'lar",
+    href: 'https://github.com/eruo005-dev/ollamatr-app',
     color: 'hover:border-white/20',
     buttonColor: 'hover:text-white hover:border-white',
   },
   {
     icon: Users,
     name: 'Forum',
-    subtitle: 'btt.community',
-    members: '456 konu',
+    subtitle: 'Yakında',
+    members: 'Açılış sırasında',
     description: 'Derinlemesine tartışma, rehberler, showcase',
+    href: null,
     color: 'hover:border-accent-red/40',
     buttonColor: 'hover:text-accent-red hover:border-accent-red',
   },
@@ -358,13 +362,25 @@ export default function Topluluk() {
                   </p>
 
                   <div className="mt-6">
-                    <button
-                      type="button"
-                      className={`inline-flex items-center gap-1.5 rounded border border-border-subtle bg-transparent px-5 py-2.5 font-body text-sm font-medium text-text-primary transition-all duration-200 ${platform.buttonColor}`}
-                    >
-                      Katıl
-                      <ChevronRight className="h-4 w-4" />
-                    </button>
+                    {platform.href ? (
+                      <a
+                        href={platform.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={`inline-flex items-center gap-1.5 rounded border border-border-subtle bg-transparent px-5 py-2.5 font-body text-sm font-medium text-text-primary transition-all duration-200 ${platform.buttonColor}`}
+                      >
+                        Katıl
+                        <ChevronRight className="h-4 w-4" />
+                      </a>
+                    ) : (
+                      <span
+                        className="inline-flex cursor-not-allowed items-center gap-1.5 rounded border border-border-subtle bg-transparent px-5 py-2.5 font-body text-sm font-medium text-text-muted opacity-70"
+                        aria-disabled="true"
+                        title="Yakında"
+                      >
+                        Yakında
+                      </span>
+                    )}
                   </div>
                 </motion.div>
               )

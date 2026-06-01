@@ -107,19 +107,21 @@ export default function Footer() {
                 </a>
               </li>
               <li>
-                <Link
-                  to="/topluluk"
+                <a
+                  href="https://t.me/+sK_c-yKLc4E0Y2I0"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="text-sm text-text-secondary transition-colors hover:text-accent-red-light"
                 >
                   Telegram
-                </Link>
+                </a>
               </li>
               <li>
                 <Link
                   to="/topluluk"
                   className="text-sm text-text-secondary transition-colors hover:text-accent-red-light"
                 >
-                  Discord
+                  Discord (yakında)
                 </Link>
               </li>
             </ul>

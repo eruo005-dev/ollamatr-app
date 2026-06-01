@@ -335,7 +335,16 @@ export default function Dokumantasyon() {
             </a>
           </motion.div>
           <motion.p variants={staggerChild} className="mt-6 text-sm text-text-muted">
-            Telegram grubumuzda 5.000+ geliştirici seni bekliyor.
+            Topluluk{' '}
+            <a
+              href="https://t.me/+sK_c-yKLc4E0Y2I0"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-accent-red-light underline-offset-2 hover:underline"
+            >
+              Telegram grubuna
+            </a>{' '}
+            katılarak sorularını paylaşabilirsin.
           </motion.p>
         </motion.div>
       </section>
