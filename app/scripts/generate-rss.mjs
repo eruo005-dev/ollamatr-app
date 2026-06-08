@@ -4,7 +4,7 @@
  * Reads the canonical pulse items from `src/lib/nabiz-items.json` and emits
  * an RSS 2.0 feed at `public/nabiz.rss`. Vercel serves files in `public/`
  * directly (filesystem check runs before the SPA fallback rewrite), so the
- * feed is reachable at https://ollamatr-app.vercel.app/nabiz.rss.
+ * feed is reachable at https://ollamatr.com/nabiz.rss.
  *
  * Invoked via the `prebuild` npm script.
  */
@@ -18,7 +18,7 @@ const ROOT = resolve(__dirname, '..')
 const ITEMS_PATH = join(ROOT, 'src', 'lib', 'nabiz-items.json')
 const OUTPUT_PATH = join(ROOT, 'public', 'nabiz.rss')
 
-const SITE_URL = 'https://ollamatr-app.vercel.app'
+const SITE_URL = 'https://ollamatr.com'
 const FEED_URL = `${SITE_URL}/nabiz.rss`
 const PAGE_URL = `${SITE_URL}/nabiz`
 
