@@ -8,7 +8,7 @@ module.exports = {
         'bg-obsidian': '#0A090C',
         'bg-charcoal': '#131217',
         'bg-surface': '#1A191D',
-        'accent-red': '#D91E36',
+        'accent-red': '#E13549',
         'accent-red-light': '#FF3B5C',
         'text-primary': '#F4F4F5',
         'text-secondary': '#8A8A93',

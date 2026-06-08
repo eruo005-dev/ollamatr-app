@@ -4,9 +4,14 @@ import { defineConfig } from "vite"
 import { inspectAttr } from 'plugin-inspect-react-code'
 
 // https://vite.dev/config/
-export default defineConfig({
+export default defineConfig(({ mode }) => ({
   base: './',
-  plugins: [inspectAttr(), react()],
+  plugins: [
+    // The inspect plugin injects data-attrs for the in-browser inspector;
+    // gate to dev so it never leaks into production HTML (per T1 audit).
+    ...(mode === 'development' ? [inspectAttr()] : []),
+    react(),
+  ],
   server: {
     port: 3000,
   },
@@ -15,4 +20,17 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
-});
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          // Split heavy animation deps so routes that don't use them
+          // (KVKK, Modeller, Nabız, etc.) don't pay the parse cost.
+          'framer-motion': ['framer-motion'],
+          'gsap': ['gsap', 'gsap/ScrollTrigger', '@gsap/react'],
+          'lenis': ['lenis'],
+        },
+      },
+    },
+  },
+}));
