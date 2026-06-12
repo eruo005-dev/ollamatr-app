@@ -5,7 +5,9 @@ import { inspectAttr } from 'plugin-inspect-react-code'
 
 // https://vite.dev/config/
 export default defineConfig(({ mode }) => ({
-  base: './',
+  // Absolute base: required for BrowserRouter — relative ('./') asset URLs
+  // break on nested routes like /modeller (assets would resolve under the route path).
+  base: '/',
   plugins: [
     // The inspect plugin injects data-attrs for the in-browser inspector;
     // gate to dev so it never leaks into production HTML (per T1 audit).
