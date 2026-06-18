@@ -141,7 +141,7 @@ const faqItems = [
   {
     question: 'Modelleri ticari ürünümde kullanabilir miyim?',
     answer:
-      'Modelin lisansına bağlıdır. Modeller sayfasındaki her modelin lisansı belirtilmiştir. Örneğin Command-R-Turkish-35B gibi CC-BY-NC lisanslı modeller ticari kullanım için uygun değildir; Llama, Gemma, Mistral, Qwen ve Phi-3 türevleri ise atıf koşullarıyla ticari kullanıma açıktır.',
+      'Modelin lisansına bağlıdır. Modeller sayfasında her modelin lisansı ve atıf koşulları belirtilmiştir. Kataloğumuzdaki modeller (Llama, Gemma, Mistral ve GPT-2 türevleri) atıf koşullarıyla ticari kullanıma açık lisanslara sahiptir. İleride ticari olmayan (ör. CC-BY-NC) lisanslı bir model eklenirse, ilgili model sayfasında açıkça işaretlenir.',
   },
   {
     question: 'Veri gizliliği nasıl sağlanıyor?',
@@ -163,7 +163,7 @@ export default function Fiyatlandirma() {
       <section className="px-6 pb-16 pt-40 lg:px-10 lg:pb-24 lg:pt-44">
         <div className="mx-auto max-w-4xl text-center">
           <motion.p
-            className="mb-4 font-body text-sm font-medium uppercase tracking-wider text-accent-red-light"
+            className="mb-4 font-body text-sm font-medium tracking-wide text-accent-red-light"
             variants={fadeUp}
             initial={prefersReducedMotion ? false : 'hidden'}
             animate="visible"
@@ -204,7 +204,7 @@ export default function Fiyatlandirma() {
             <div className="flex items-start gap-3">
               <Info className="mt-0.5 h-5 w-5 shrink-0 text-accent-red-light" />
               <p className="font-mono text-xs leading-relaxed text-text-secondary md:text-sm">
-                <span className="font-semibold uppercase tracking-wider text-accent-red-light">
+                <span className="font-semibold tracking-wide text-accent-red-light">
                   Topluluk Projesi
                 </span>{' '}
                 — OllamaTR şu anda topluluk tarafından geliştirilen, kâr amacı
@@ -241,14 +241,14 @@ export default function Fiyatlandirma() {
             >
               {/* Featured badge */}
               {tier.featured && (
-                <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded bg-accent-red-deep px-3 py-1 font-body text-xs font-semibold uppercase tracking-wider text-white">
+                <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded bg-accent-red-deep px-3 py-1 font-body text-xs font-semibold tracking-wide text-white">
                   DESTEKLE
                 </span>
               )}
 
               {/* Tier label */}
               <p
-                className={`mb-3 font-body text-xs font-medium uppercase tracking-wider ${
+                className={`mb-3 font-body text-xs font-medium tracking-wide ${
                   tier.featured ? 'text-accent-red-light' : 'text-text-muted'
                 }`}
               >
@@ -283,7 +283,7 @@ export default function Fiyatlandirma() {
                     href={tier.ctaHref}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex w-full items-center justify-center gap-2 rounded bg-accent-red-deep py-3.5 font-body text-sm font-semibold uppercase tracking-wider text-white transition-all duration-200 hover:bg-[#A01528] hover:scale-[1.02]"
+                    className="inline-flex w-full items-center justify-center gap-2 rounded bg-accent-red-deep py-3.5 font-body text-sm font-semibold tracking-wide text-white transition-all duration-200 hover:bg-[#A01528] hover:scale-[1.02]"
                   >
                     <Heart className="h-4 w-4" />
                     {tier.cta}
@@ -292,7 +292,7 @@ export default function Fiyatlandirma() {
                 ) : tier.ctaLink ? (
                   <Link
                     to={tier.ctaLink}
-                    className="flex w-full items-center justify-center rounded border border-border-subtle bg-transparent py-3.5 font-body text-sm font-semibold uppercase tracking-wider text-text-primary transition-all duration-200 hover:border-accent-red hover:text-accent-red-light"
+                    className="flex w-full items-center justify-center rounded border border-border-subtle bg-transparent py-3.5 font-body text-sm font-semibold tracking-wide text-text-primary transition-all duration-200 hover:border-accent-red hover:text-accent-red-light"
                   >
                     {tier.cta}
                   </Link>
@@ -301,14 +301,14 @@ export default function Fiyatlandirma() {
                     href={tier.ctaHref}
                     target={tier.ctaHref.startsWith('mailto:') ? undefined : '_blank'}
                     rel={tier.ctaHref.startsWith('mailto:') ? undefined : 'noopener noreferrer'}
-                    className="flex w-full items-center justify-center rounded border border-border-subtle bg-transparent py-3.5 font-body text-sm font-semibold uppercase tracking-wider text-text-primary transition-all duration-200 hover:border-accent-red hover:text-accent-red-light"
+                    className="flex w-full items-center justify-center rounded border border-border-subtle bg-transparent py-3.5 font-body text-sm font-semibold tracking-wide text-text-primary transition-all duration-200 hover:border-accent-red hover:text-accent-red-light"
                   >
                     {tier.cta}
                   </a>
                 ) : (
                   <button
                     type="button"
-                    className="flex w-full items-center justify-center rounded border border-border-subtle bg-transparent py-3.5 font-body text-sm font-semibold uppercase tracking-wider text-text-primary transition-all duration-200 hover:border-accent-red hover:text-accent-red-light"
+                    className="flex w-full items-center justify-center rounded border border-border-subtle bg-transparent py-3.5 font-body text-sm font-semibold tracking-wide text-text-primary transition-all duration-200 hover:border-accent-red hover:text-accent-red-light"
                   >
                     {tier.cta}
                   </button>
@@ -318,7 +318,7 @@ export default function Fiyatlandirma() {
                     href={tier.secondaryCta.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex w-full items-center justify-center gap-2 rounded border border-border-subtle bg-transparent py-2.5 font-body text-xs font-semibold uppercase tracking-wider text-text-secondary transition-all duration-200 hover:border-accent-red hover:text-accent-red-light"
+                    className="flex w-full items-center justify-center gap-2 rounded border border-border-subtle bg-transparent py-2.5 font-body text-xs font-semibold tracking-wide text-text-secondary transition-all duration-200 hover:border-accent-red hover:text-accent-red-light"
                   >
                     {tier.secondaryCta.label}
                     <ExternalLink className="h-3 w-3 opacity-70" />
@@ -484,7 +484,7 @@ export default function Fiyatlandirma() {
               href="https://t.me/+sK_c-yKLc4E0Y2I0"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center rounded bg-accent-red-deep px-8 py-3.5 font-body text-sm font-semibold uppercase tracking-wider text-white transition-colors duration-200 hover:bg-[#A01528]"
+              className="inline-flex items-center justify-center rounded bg-accent-red-deep px-8 py-3.5 font-body text-sm font-semibold tracking-wide text-white transition-colors duration-200 hover:bg-[#A01528]"
             >
               Telegram'a Katıl
             </a>
@@ -492,7 +492,7 @@ export default function Fiyatlandirma() {
               href="https://github.com/eruo005-dev/ollamatr-app"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-2 rounded border border-border-subtle bg-transparent px-8 py-3.5 font-body text-sm font-semibold uppercase tracking-wider text-text-primary transition-all duration-200 hover:border-accent-red hover:text-accent-red-light"
+              className="inline-flex items-center justify-center gap-2 rounded border border-border-subtle bg-transparent px-8 py-3.5 font-body text-sm font-semibold tracking-wide text-text-primary transition-all duration-200 hover:border-accent-red hover:text-accent-red-light"
             >
               <Heart className="h-4 w-4" />
               GitHub'da Destekle

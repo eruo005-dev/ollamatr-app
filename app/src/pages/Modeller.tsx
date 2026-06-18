@@ -119,13 +119,13 @@ function ModelCard({ model, onSelect }: ModelCardProps) {
             {model.name}
           </h3>
           {!model.commercialUse && (
-            <span className="inline-flex w-fit items-center rounded-sm border border-warn-yellow/30 bg-warn-yellow/15 px-2 py-0.5 font-mono text-xs uppercase text-warn-yellow">
+            <span className="inline-flex w-fit items-center rounded-sm border border-warn-yellow/30 bg-warn-yellow/15 px-2 py-0.5 font-mono text-xs text-warn-yellow">
               Ticari Olmayan
             </span>
           )}
         </div>
         <span
-          className={`flex shrink-0 items-center gap-1 rounded-sm bg-bg-surface px-2 py-1 font-mono text-xs uppercase tracking-wide ${getRamColorClass(model.ramGB)}`}
+          className={`flex shrink-0 items-center gap-1 rounded-sm bg-bg-surface px-2 py-1 font-mono text-xs tracking-wide ${getRamColorClass(model.ramGB)}`}
           style={{ border: '1px solid rgba(244, 244, 245, 0.08)' }}
         >
           <MemoryStick className="h-3 w-3" />
@@ -167,7 +167,7 @@ function ModelCard({ model, onSelect }: ModelCardProps) {
             e.stopPropagation()
             onSelect(model)
           }}
-          className="inline-flex items-center gap-1.5 rounded-sm border border-border-subtle px-3 py-2 font-body text-xs font-semibold uppercase tracking-wider text-text-primary transition-all duration-200 hover:border-accent-red hover:text-accent-red-light"
+          className="inline-flex items-center gap-1.5 rounded-sm border border-border-subtle px-3 py-2 font-body text-xs font-semibold tracking-wide text-text-primary transition-all duration-200 hover:border-accent-red hover:text-accent-red-light"
           aria-label={`${model.name} detaylarını aç`}
         >
           Detaylar
@@ -178,7 +178,7 @@ function ModelCard({ model, onSelect }: ModelCardProps) {
           target="_blank"
           rel="noopener noreferrer"
           onClick={(e) => e.stopPropagation()}
-          className="inline-flex items-center gap-1.5 rounded-sm bg-accent-red-deep px-4 py-2 font-body text-xs font-semibold uppercase tracking-wider text-white transition-all duration-200 hover:bg-[#A01528]"
+          className="inline-flex items-center gap-1.5 rounded-sm bg-accent-red-deep px-4 py-2 font-body text-xs font-semibold tracking-wide text-white transition-all duration-200 hover:bg-[#A01528]"
           aria-label={`${model.name} için Ollama Hub'da ara`}
         >
           <Download className="h-3.5 w-3.5" />
@@ -334,12 +334,12 @@ function DetailModal({ model, onClose }: DetailModalProps) {
             {model.name}
           </h2>
           {!model.commercialUse && (
-            <span className="inline-flex items-center rounded-sm border border-warn-yellow/30 bg-warn-yellow/15 px-2 py-0.5 font-mono text-xs uppercase text-warn-yellow">
+            <span className="inline-flex items-center rounded-sm border border-warn-yellow/30 bg-warn-yellow/15 px-2 py-0.5 font-mono text-xs text-warn-yellow">
               Ticari Olmayan
             </span>
           )}
           <span
-            className={`flex items-center gap-1 rounded-sm bg-bg-surface px-3 py-1.5 font-mono text-xs uppercase tracking-wide ${ramColor}`}
+            className={`flex items-center gap-1 rounded-sm bg-bg-surface px-3 py-1.5 font-mono text-xs tracking-wide ${ramColor}`}
             style={{ border: `1px solid ${ramHex}40` }}
           >
             <MemoryStick className="h-3.5 w-3.5" />
@@ -362,7 +362,7 @@ function DetailModal({ model, onClose }: DetailModalProps) {
 
         {/* Use cases */}
         <div className="mt-6">
-          <p className="font-mono text-[10px] uppercase tracking-wider text-text-muted">Kullanım Alanları</p>
+          <p className="font-mono text-[10px] tracking-wide text-text-muted">Kullanım Alanları</p>
           <div className="mt-2 flex flex-wrap gap-2">
             {model.useCases.map((uc) => (
               <span
@@ -389,11 +389,11 @@ function DetailModal({ model, onClose }: DetailModalProps) {
 
         {/* License section */}
         <div className="mt-6 rounded-sm border border-border-subtle bg-bg-surface p-4">
-          <p className="font-mono text-[10px] uppercase tracking-wider text-text-muted">Lisans</p>
+          <p className="font-mono text-[10px] tracking-wide text-text-muted">Lisans</p>
           <p className="mt-1 font-body text-sm font-semibold text-text-primary">
             {model.license}
             {!model.commercialUse && (
-              <span className="ml-2 inline-flex items-center rounded-sm border border-warn-yellow/30 bg-warn-yellow/15 px-2 py-0.5 font-mono text-[10px] uppercase text-warn-yellow">
+              <span className="ml-2 inline-flex items-center rounded-sm border border-warn-yellow/30 bg-warn-yellow/15 px-2 py-0.5 font-mono text-[10px] text-warn-yellow">
                 Ticari Olmayan
               </span>
             )}
@@ -414,14 +414,14 @@ function DetailModal({ model, onClose }: DetailModalProps) {
             href={`https://ollama.com/search?q=${encodeURIComponent(model.shortName)}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center justify-center gap-2 rounded-sm bg-accent-red-deep px-6 py-3.5 font-body text-sm font-semibold uppercase tracking-wider text-white transition-all duration-200 hover:bg-[#A01528]"
+            className="inline-flex items-center justify-center gap-2 rounded-sm bg-accent-red-deep px-6 py-3.5 font-body text-sm font-semibold tracking-wide text-white transition-all duration-200 hover:bg-[#A01528]"
           >
             <Download className="h-4 w-4" />
             Modeli İndir
           </a>
           <Link
             to="/hangi-model"
-            className="inline-flex items-center justify-center gap-2 rounded-sm border border-border-subtle px-6 py-3.5 font-body text-sm font-semibold uppercase tracking-wider text-text-primary transition-all duration-200 hover:border-accent-red hover:text-accent-red-light"
+            className="inline-flex items-center justify-center gap-2 rounded-sm border border-border-subtle px-6 py-3.5 font-body text-sm font-semibold tracking-wide text-text-primary transition-all duration-200 hover:border-accent-red hover:text-accent-red-light"
             onClick={handleClose}
           >
             <Wand2 className="h-4 w-4" />
@@ -429,7 +429,7 @@ function DetailModal({ model, onClose }: DetailModalProps) {
           </Link>
           <button
             onClick={handleClose}
-            className="inline-flex items-center justify-center gap-2 rounded-sm border border-border-subtle px-6 py-3.5 font-body text-sm font-semibold uppercase tracking-wider text-text-secondary transition-all duration-200 hover:border-accent-red hover:text-accent-red-light sm:ml-auto"
+            className="inline-flex items-center justify-center gap-2 rounded-sm border border-border-subtle px-6 py-3.5 font-body text-sm font-semibold tracking-wide text-text-secondary transition-all duration-200 hover:border-accent-red hover:text-accent-red-light sm:ml-auto"
           >
             <X className="h-4 w-4" />
             Kapat
@@ -443,7 +443,7 @@ function DetailModal({ model, onClose }: DetailModalProps) {
 function SpecItem({ label, value, color }: { label: string; value: string; color?: string }) {
   return (
     <div className="rounded-sm bg-bg-surface p-3" style={{ border: '1px solid rgba(244, 244, 245, 0.08)' }}>
-      <p className="font-mono text-[10px] uppercase tracking-wider text-text-muted">{label}</p>
+      <p className="font-mono text-[10px] tracking-wide text-text-muted">{label}</p>
       <p className="mt-1 font-body text-sm font-medium text-text-primary" style={color ? { color } : undefined}>
         {value}
       </p>
@@ -502,7 +502,7 @@ function FilterBar({
 
           {/* RAM + Sort dropdowns */}
           <div className="flex flex-wrap items-center gap-3">
-            <label className="flex items-center gap-2 font-mono text-xs uppercase tracking-wider text-text-muted">
+            <label className="flex items-center gap-2 font-mono text-xs tracking-wide text-text-muted">
               <span>RAM</span>
               <select
                 value={ramFilter}
@@ -515,7 +515,7 @@ function FilterBar({
               </select>
             </label>
 
-            <label className="flex items-center gap-2 font-mono text-xs uppercase tracking-wider text-text-muted">
+            <label className="flex items-center gap-2 font-mono text-xs tracking-wide text-text-muted">
               <span>Sırala</span>
               <select
                 value={sortOption}
@@ -540,7 +540,7 @@ function FilterBar({
                 type="button"
                 onClick={() => setUseCaseFilter(opt)}
                 aria-pressed={active}
-                className={`rounded-sm px-3 py-1.5 font-mono text-xs uppercase tracking-wider transition-colors ${
+                className={`rounded-sm px-3 py-1.5 font-mono text-xs tracking-wide transition-colors ${
                   active
                     ? 'border border-accent-red text-accent-red-light'
                     : 'border border-border-subtle text-text-secondary hover:border-accent-red-light hover:text-text-primary'
@@ -581,7 +581,7 @@ function Pagination({ page, pageCount, onChange }: PaginationProps) {
         type="button"
         onClick={() => onChange(Math.max(1, page - 1))}
         disabled={page === 1}
-        className="inline-flex items-center gap-1.5 rounded-sm border border-border-subtle px-4 py-2 font-mono text-xs uppercase tracking-wider text-text-primary transition-colors hover:border-accent-red hover:text-accent-red-light disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:border-border-subtle disabled:hover:text-text-primary"
+        className="inline-flex items-center gap-1.5 rounded-sm border border-border-subtle px-4 py-2 font-mono text-xs tracking-wide text-text-primary transition-colors hover:border-accent-red hover:text-accent-red-light disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:border-border-subtle disabled:hover:text-text-primary"
       >
         <ChevronLeft className="h-3.5 w-3.5" />
         Önceki
@@ -612,7 +612,7 @@ function Pagination({ page, pageCount, onChange }: PaginationProps) {
         type="button"
         onClick={() => onChange(Math.min(pageCount, page + 1))}
         disabled={page === pageCount}
-        className="inline-flex items-center gap-1.5 rounded-sm border border-border-subtle px-4 py-2 font-mono text-xs uppercase tracking-wider text-text-primary transition-colors hover:border-accent-red hover:text-accent-red-light disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:border-border-subtle disabled:hover:text-text-primary"
+        className="inline-flex items-center gap-1.5 rounded-sm border border-border-subtle px-4 py-2 font-mono text-xs tracking-wide text-text-primary transition-colors hover:border-accent-red hover:text-accent-red-light disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:border-border-subtle disabled:hover:text-text-primary"
       >
         Sonraki
         <ChevronRight className="h-3.5 w-3.5" />
@@ -828,7 +828,7 @@ function CTASection() {
         </p>
         <Link
           to="/hangi-model"
-          className="mt-8 inline-flex items-center gap-2 rounded-sm bg-accent-red-deep px-7 py-3.5 font-body text-sm font-semibold uppercase tracking-wider text-white transition-all duration-200 hover:bg-[#A01528] hover:scale-[1.02]"
+          className="mt-8 inline-flex items-center gap-2 rounded-sm bg-accent-red-deep px-7 py-3.5 font-body text-sm font-semibold tracking-wide text-white transition-all duration-200 hover:bg-[#A01528] hover:scale-[1.02]"
         >
           <Wand2 className="h-4 w-4" />
           Sihirbazı Kullan
@@ -845,7 +845,7 @@ function PageHeader() {
     <section className="relative bg-bg-obsidian pt-32 pb-16 md:pt-40 md:pb-20">
       <div className="mx-auto max-w-7xl px-6 lg:px-10">
         <p
-          className="font-body text-sm font-medium uppercase tracking-[0.08em] text-accent-red-light"
+          className="font-body text-sm font-medium tracking-[0.08em] text-accent-red-light"
           style={{
             animation: 'fadeUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both',
           }}

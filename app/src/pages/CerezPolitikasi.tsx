@@ -90,7 +90,7 @@ export default function CerezPolitikasi() {
         >
           <motion.span
             variants={staggerChild}
-            className="mb-4 inline-flex items-center gap-2 font-body text-sm font-medium uppercase tracking-wider text-accent-red-light"
+            className="mb-4 inline-flex items-center gap-2 font-body text-sm font-medium tracking-wide text-accent-red-light"
           >
             <Cookie className="h-4 w-4" />
             ÇEREZ BİLGİLENDİRMESİ
@@ -171,19 +171,19 @@ export default function CerezPolitikasi() {
             <table className="w-full min-w-[720px] border-collapse">
               <thead>
                 <tr className="bg-bg-charcoal">
-                  <th className="px-5 py-4 text-left font-display text-xs font-bold uppercase tracking-wider text-text-muted">
+                  <th className="px-5 py-4 text-left font-display text-xs font-bold tracking-wide text-text-muted">
                     Kategori
                   </th>
-                  <th className="px-5 py-4 text-left font-display text-xs font-bold uppercase tracking-wider text-text-muted">
+                  <th className="px-5 py-4 text-left font-display text-xs font-bold tracking-wide text-text-muted">
                     Ad
                   </th>
-                  <th className="px-5 py-4 text-left font-display text-xs font-bold uppercase tracking-wider text-text-muted">
+                  <th className="px-5 py-4 text-left font-display text-xs font-bold tracking-wide text-text-muted">
                     Amaç
                   </th>
-                  <th className="px-5 py-4 text-left font-display text-xs font-bold uppercase tracking-wider text-text-muted">
+                  <th className="px-5 py-4 text-left font-display text-xs font-bold tracking-wide text-text-muted">
                     Süre
                   </th>
-                  <th className="px-5 py-4 text-left font-display text-xs font-bold uppercase tracking-wider text-text-muted">
+                  <th className="px-5 py-4 text-left font-display text-xs font-bold tracking-wide text-text-muted">
                     Üçüncü Taraf?
                   </th>
                 </tr>
@@ -243,7 +243,7 @@ export default function CerezPolitikasi() {
             className="mb-4 inline-flex items-center gap-2 rounded border border-border-subtle bg-bg-obsidian px-3 py-1.5"
           >
             <Settings2 className="h-3.5 w-3.5 text-accent-red-light" />
-            <span className="font-mono text-[0.625rem] uppercase tracking-wider text-text-muted">
+            <span className="font-mono text-[0.625rem] tracking-wide text-text-muted">
               Tercih Yönetimi
             </span>
           </div>
@@ -280,7 +280,7 @@ export default function CerezPolitikasi() {
             <button
               type="button"
               onClick={openCookiePreferences}
-              className="inline-flex items-center gap-2 rounded bg-accent-red-deep px-6 py-3 font-body text-sm font-semibold uppercase tracking-wider text-white transition-all duration-200 hover:scale-[1.02] hover:bg-[#A01528]"
+              className="inline-flex items-center gap-2 rounded bg-accent-red-deep px-6 py-3 font-body text-sm font-semibold tracking-wide text-white transition-all duration-200 hover:scale-[1.02] hover:bg-[#A01528]"
             >
               <Settings2 className="h-4 w-4" />
               Çerez Tercihlerimi Aç
@@ -369,14 +369,14 @@ export default function CerezPolitikasi() {
           >
             <Link
               to="/kvkk"
-              className="inline-flex items-center gap-2 rounded border border-border-subtle bg-bg-obsidian px-6 py-3 font-body text-sm font-semibold uppercase tracking-wider text-text-primary transition-all duration-200 hover:border-accent-red hover:text-accent-red-light"
+              className="inline-flex items-center gap-2 rounded border border-border-subtle bg-bg-obsidian px-6 py-3 font-body text-sm font-semibold tracking-wide text-text-primary transition-all duration-200 hover:border-accent-red hover:text-accent-red-light"
             >
               <ScrollText className="h-4 w-4" />
               KVKK ve Aydınlatma Metni
             </Link>
             <a
               href="mailto:privacy@ollamatr.com"
-              className="inline-flex items-center gap-2 rounded border border-border-subtle px-6 py-3 font-body text-sm font-semibold uppercase tracking-wider text-text-primary transition-all duration-200 hover:border-accent-red hover:text-accent-red-light"
+              className="inline-flex items-center gap-2 rounded border border-border-subtle px-6 py-3 font-body text-sm font-semibold tracking-wide text-text-primary transition-all duration-200 hover:border-accent-red hover:text-accent-red-light"
             >
               <ExternalLink className="h-4 w-4" />
               privacy@ollamatr.com

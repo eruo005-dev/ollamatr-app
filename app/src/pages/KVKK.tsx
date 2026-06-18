@@ -159,7 +159,7 @@ function ExpandableChecklistItem({ item }: { item: ChecklistItem }) {
         className="flex w-full items-center justify-between px-2 py-5 text-left transition-colors duration-200 hover:bg-[rgba(217,30,54,0.02)]"
       >
         <div className="flex items-center gap-4">
-          <span className="shrink-0 font-mono text-xs uppercase tracking-wider text-text-muted">
+          <span className="shrink-0 font-mono text-xs tracking-wide text-text-muted">
             {item.article}
           </span>
           <div>
@@ -167,7 +167,7 @@ function ExpandableChecklistItem({ item }: { item: ChecklistItem }) {
           </div>
         </div>
         <div className="flex shrink-0 items-center gap-3">
-          <span className="inline-flex items-center gap-1 rounded border border-border-subtle bg-bg-charcoal px-2 py-1 font-mono text-[0.625rem] font-medium uppercase tracking-wider text-text-secondary">
+          <span className="inline-flex items-center gap-1 rounded border border-border-subtle bg-bg-charcoal px-2 py-1 font-mono text-[0.625rem] font-medium tracking-wide text-text-secondary">
             {item.label}
           </span>
           <ChevronDown
@@ -421,13 +421,13 @@ function KVKKHeavyContent({ sectionStyle }: HeavyContentProps) {
             <table className="w-full min-w-[640px] border-collapse rounded-lg border border-border-subtle">
               <thead>
                 <tr className="bg-bg-charcoal">
-                  <th className="px-5 py-4 text-left font-display text-sm font-bold uppercase tracking-wider text-text-muted">
+                  <th className="px-5 py-4 text-left font-display text-sm font-bold tracking-wide text-text-muted">
                     Özellik
                   </th>
-                  <th className="border-l-2 border-l-accent-red px-5 py-4 text-left font-display text-sm font-bold uppercase tracking-wider text-accent-red-light">
+                  <th className="border-l-2 border-l-accent-red px-5 py-4 text-left font-display text-sm font-bold tracking-wide text-accent-red-light">
                     OllamaTR
                   </th>
-                  <th className="px-5 py-4 text-left font-display text-sm font-bold uppercase tracking-wider text-text-muted">
+                  <th className="px-5 py-4 text-left font-display text-sm font-bold tracking-wide text-text-muted">
                     Bulut AI (ChatGPT vb.)
                   </th>
                 </tr>
@@ -472,7 +472,7 @@ function KVKKHeavyContent({ sectionStyle }: HeavyContentProps) {
             className="mb-4 inline-flex items-center gap-2 rounded border border-border-subtle bg-bg-obsidian px-3 py-1.5"
           >
             <ScrollText className="h-3.5 w-3.5 text-accent-red-light" />
-            <span className="font-mono text-[0.625rem] uppercase tracking-wider text-text-muted">
+            <span className="font-mono text-[0.625rem] tracking-wide text-text-muted">
               6698 Sayılı KVKK Madde 10
             </span>
           </div>
@@ -552,8 +552,10 @@ function KVKKHeavyContent({ sectionStyle }: HeavyContentProps) {
           <div style={sectionStyle(aydinlatmaVisible, 0.25)} className="mt-10">
             <h3 className="font-display text-xl font-bold text-text-primary">c) Aktarılan Taraflar</h3>
             <p className="mt-3 text-sm leading-relaxed text-text-secondary">
-              Web sitemizin ziyaretçi verileri (IP, tarayıcı bilgileri) yurt dışında bulunan hiçbir tedarikçiye
-              aktarılmamaktadır. Aşağıdaki sınırlı durumlarda aktarım söz konusu olabilir:
+              Web sitemiz Vercel Inc. (ABD) barındırma altyapısında yayınlanmaktadır; bu nedenle ziyaretçi
+              bağlantı verileri (IP, tarayıcı bilgileri) teknik olarak bu barındırma sağlayıcısı tarafından
+              yurt dışında işlenir (KVKK Madde 9). Bunun dışında ziyaretçi verisi başka bir yurt dışı
+              tedarikçiye aktarılmaz. Ayrıca aşağıdaki sınırlı durumlarda aktarım söz konusu olabilir:
             </p>
             <ul className="mt-3 list-disc space-y-2 pl-6 text-sm leading-relaxed text-text-secondary marker:text-text-muted">
               <li>
@@ -701,13 +703,13 @@ function KVKKHeavyContent({ sectionStyle }: HeavyContentProps) {
               href="https://t.me/+sK_c-yKLc4E0Y2I0"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded bg-accent-red-deep px-7 py-3.5 font-body text-sm font-semibold uppercase tracking-wider text-white transition-colors duration-200 hover:bg-[#A01528]"
+              className="inline-flex items-center gap-2 rounded bg-accent-red-deep px-7 py-3.5 font-body text-sm font-semibold tracking-wide text-white transition-colors duration-200 hover:bg-[#A01528]"
             >
               Telegram'a Katıl
             </a>
             <a
               href="mailto:privacy@ollamatr.com"
-              className="inline-flex items-center gap-2 rounded border border-border-subtle px-7 py-3.5 font-body text-sm font-semibold uppercase tracking-wider text-text-primary transition-all duration-200 hover:border-accent-red hover:text-accent-red-light"
+              className="inline-flex items-center gap-2 rounded border border-border-subtle px-7 py-3.5 font-body text-sm font-semibold tracking-wide text-text-primary transition-all duration-200 hover:border-accent-red hover:text-accent-red-light"
             >
               Daha Fazla Bilgi
             </a>
@@ -764,7 +766,7 @@ export default function KVKK() {
         <div ref={heroRef} className="mx-auto max-w-7xl">
           <span
             style={heroStyle(0)}
-            className="mb-4 inline-block font-body text-sm font-medium uppercase tracking-wider text-accent-red-light"
+            className="mb-4 inline-block font-body text-sm font-medium tracking-wide text-accent-red-light"
           >
             VERİ GİZLİLİĞİ
           </span>
@@ -785,14 +787,14 @@ export default function KVKK() {
           <div style={heroStyle(0.32)} className="mt-6 flex flex-wrap gap-3">
             <a
               href="#aydinlatma-metni"
-              className="inline-flex items-center gap-2 rounded border border-border-subtle px-4 py-2 font-body text-xs font-medium uppercase tracking-wider text-text-primary transition-colors hover:border-accent-red hover:text-accent-red-light"
+              className="inline-flex items-center gap-2 rounded border border-border-subtle px-4 py-2 font-body text-xs font-medium tracking-wide text-text-primary transition-colors hover:border-accent-red hover:text-accent-red-light"
             >
               <ScrollText className="h-3.5 w-3.5" />
               Aydınlatma Metni'ne Atla
             </a>
             <Link
               to="/cerez-politikasi"
-              className="inline-flex items-center gap-2 rounded border border-border-subtle px-4 py-2 font-body text-xs font-medium uppercase tracking-wider text-text-primary transition-colors hover:border-accent-red hover:text-accent-red-light"
+              className="inline-flex items-center gap-2 rounded border border-border-subtle px-4 py-2 font-body text-xs font-medium tracking-wide text-text-primary transition-colors hover:border-accent-red hover:text-accent-red-light"
             >
               Çerez Politikası
             </Link>

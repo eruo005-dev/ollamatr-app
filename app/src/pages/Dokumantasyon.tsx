@@ -29,7 +29,7 @@ const quickStartCards = [
   {
     icon: Play,
     title: 'İlk Modelinizi Çalıştırın',
-    desc: "Llama-3-Turkish indirin, sohbet edin. Yerel AI'nin nasıl çalıştığını görün.",
+    desc: "Turkish-Llama 8B indirin, sohbet edin. Yerel AI'nin nasıl çalıştığını görün.",
     linkText: 'Öğren →',
   },
   {
@@ -51,7 +51,7 @@ const categories = [
 
 const popularArticles = [
   { title: "Windows'a OllamaTR Nasıl Kurulur?", readTime: '5 dk', category: 'Kurulum' },
-  { title: 'Llama-3-Turkish ile İlk Sohbetiniz', readTime: '3 dk', category: 'Hızlı Başlangıç' },
+  { title: 'Turkish-Llama 8B ile İlk Sohbetiniz', readTime: '3 dk', category: 'Hızlı Başlangıç' },
   { title: 'GPU Hızlandırma Nasıl Etkinleştirilir?', readTime: '4 dk', category: 'Yapılandırma' },
   { title: 'Kendi Modelinizde İnce Ayar Yapın', readTime: '8 dk', category: 'İleri' },
   { title: 'API ile Python Uygulaması Oluşturun', readTime: '6 dk', category: 'API' },
@@ -103,7 +103,7 @@ export default function Dokumantasyon() {
             initial={reduce ? false : { opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: reduce ? 0 : 0.5, ease: easeExpoOut }}
-            className="mb-4 inline-block font-body text-sm font-medium uppercase tracking-wider text-accent-red-light"
+            className="mb-4 inline-block font-body text-sm font-medium tracking-wide text-accent-red-light"
           >
             DOKÜMANTASYON
           </motion.span>
@@ -327,7 +327,7 @@ export default function Dokumantasyon() {
           >
             <Link
               to="/topluluk"
-              className="inline-flex items-center gap-2 rounded bg-accent-red-deep px-7 py-3.5 font-body text-sm font-semibold uppercase tracking-wider text-white transition-all duration-200 hover:scale-[1.02] hover:bg-[#A01528]"
+              className="inline-flex items-center gap-2 rounded bg-accent-red-deep px-7 py-3.5 font-body text-sm font-semibold tracking-wide text-white transition-all duration-200 hover:scale-[1.02] hover:bg-[#A01528]"
             >
               Topluluğa Katıl →
             </Link>
@@ -335,7 +335,7 @@ export default function Dokumantasyon() {
               href="https://github.com/eruo005-dev/ollamatr-app"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded border border-border-subtle px-7 py-3.5 font-body text-sm font-semibold uppercase tracking-wider text-text-primary transition-all duration-200 hover:border-accent-red hover:text-accent-red-light"
+              className="inline-flex items-center gap-2 rounded border border-border-subtle px-7 py-3.5 font-body text-sm font-semibold tracking-wide text-text-primary transition-all duration-200 hover:border-accent-red hover:text-accent-red-light"
             >
               GitHub'da Sor
             </a>

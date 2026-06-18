@@ -97,7 +97,7 @@ function HeroSection() {
           {HERO_TITLE}
         </h1>
 
-        <div className="mt-6 inline-flex items-center gap-2 rounded-full border border-safe-green/30 bg-safe-green/10 px-4 py-1.5 font-mono text-xs uppercase tracking-wider text-safe-green">
+        <div className="mt-6 inline-flex items-center gap-2 rounded-full border border-safe-green/30 bg-safe-green/10 px-4 py-1.5 font-mono text-xs tracking-wide text-safe-green">
           <span className="h-1.5 w-1.5 rounded-full bg-safe-green" aria-hidden="true" />
           Topluluk Edisyonu · Tamamen Ücretsiz
         </div>
@@ -111,14 +111,14 @@ function HeroSection() {
         <div className="mt-12 flex flex-col items-center justify-center gap-4 sm:flex-row">
           <Link
             to="/modeller"
-            className="inline-flex items-center gap-2 rounded bg-accent-red-deep px-7 py-3.5 text-sm font-semibold uppercase tracking-wider text-white transition-colors duration-200 hover:bg-[#A01528]"
+            className="inline-flex items-center gap-2 rounded bg-accent-red-deep px-7 py-3.5 text-sm font-semibold tracking-wide text-white transition-colors duration-200 hover:bg-[#A01528]"
           >
             Modelleri Gör
             <ArrowRight className="h-4 w-4" />
           </Link>
           <Link
             to="/modeller"
-            className="inline-flex items-center gap-2 rounded border border-border-subtle px-7 py-3.5 text-sm font-semibold uppercase tracking-wider text-text-primary transition-all duration-200 hover:border-accent-red hover:text-accent-red-light"
+            className="inline-flex items-center gap-2 rounded border border-border-subtle px-7 py-3.5 text-sm font-semibold tracking-wide text-text-primary transition-all duration-200 hover:border-accent-red hover:text-accent-red-light"
           >
             <BookOpen className="h-4 w-4" />
             Model Kataloğu
@@ -167,7 +167,7 @@ function ModelShowcaseSection() {
           </h2>
           <Link
             to="/modeller"
-            className="mt-3 inline-flex items-center gap-1 text-sm font-medium uppercase tracking-wider text-text-secondary transition-colors hover:text-accent-red-light"
+            className="mt-3 inline-flex items-center gap-1 text-sm font-medium tracking-wide text-text-secondary transition-colors hover:text-accent-red-light"
           >
             Öne çıkan modeller gösteriliyor. Tümünü gör
             <ArrowRight className="h-3.5 w-3.5" />
@@ -193,7 +193,7 @@ function ModelCard({ model }: { model: Model }) {
           <h3 className="font-display text-base font-bold text-text-primary md:text-lg">
             {model.name}
           </h3>
-          <span className={`font-mono shrink-0 rounded border border-border-subtle bg-bg-surface px-2 py-0.5 text-xs uppercase ${ramColorClass(model.ramGB)}`}>
+          <span className={`font-mono shrink-0 rounded border border-border-subtle bg-bg-surface px-2 py-0.5 text-xs ${ramColorClass(model.ramGB)}`}>
             ~{model.ramGB}GB
           </span>
         </div>
@@ -239,7 +239,7 @@ function RAMCalculatorSection() {
           <div>
             <label
               htmlFor="model-size"
-              className="mb-2 block font-mono text-xs uppercase text-text-muted"
+              className="mb-2 block font-mono text-xs text-text-muted"
             >
               Model Boyutu (GB)
             </label>
@@ -258,7 +258,7 @@ function RAMCalculatorSection() {
           <div>
             <label
               htmlFor="ram-size"
-              className="mb-2 block font-mono text-xs uppercase text-text-muted"
+              className="mb-2 block font-mono text-xs text-text-muted"
             >
               Mevcut RAM (GB)
             </label>
@@ -276,7 +276,7 @@ function RAMCalculatorSection() {
 
           {/* Status Badge */}
           <div
-            className={`rounded border px-4 py-3 text-center font-mono text-xs uppercase transition-colors duration-300 ${config.colorClass}`}
+            className={`rounded border px-4 py-3 text-center font-mono text-xs transition-colors duration-300 ${config.colorClass}`}
           >
             {config.text}
           </div>
@@ -315,7 +315,7 @@ const FEATURES = [
   {
     icon: Cpu,
     title: 'Yerel Çalışma',
-    desc: 'Tüm modeller yerel donanımda çalışır. İnternet bağlantısı gerektirmez, latency sıfır.',
+    desc: 'Tüm modeller yerel donanımda çalışır. İnternet bağlantısı gerektirmez, gecikme yok.',
   },
 ]
 
@@ -413,14 +413,14 @@ function CTABannerSection() {
             href="https://t.me/+sK_c-yKLc4E0Y2I0"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 rounded bg-accent-red-deep px-7 py-3.5 text-sm font-semibold uppercase tracking-wider text-white transition-colors duration-200 hover:bg-[#A01528]"
+            className="inline-flex items-center gap-2 rounded bg-accent-red-deep px-7 py-3.5 text-sm font-semibold tracking-wide text-white transition-colors duration-200 hover:bg-[#A01528]"
           >
             Telegram topluluğuna katıl
             <ArrowRight className="h-4 w-4" />
           </a>
           <Link
             to="/modeller"
-            className="inline-flex items-center gap-2 rounded border border-border-subtle px-7 py-3.5 text-sm font-semibold uppercase tracking-wider text-text-primary transition-colors duration-200 hover:border-accent-red hover:text-accent-red-light"
+            className="inline-flex items-center gap-2 rounded border border-border-subtle px-7 py-3.5 text-sm font-semibold tracking-wide text-text-primary transition-colors duration-200 hover:border-accent-red hover:text-accent-red-light"
           >
             Modelleri keşfet
             <ArrowRight className="h-4 w-4" />

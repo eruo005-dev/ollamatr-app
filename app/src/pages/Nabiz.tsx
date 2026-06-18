@@ -77,7 +77,7 @@ export default function Nabiz() {
       {/* HERO */}
       <section className="px-6 pb-12 pt-40 lg:px-10 lg:pb-16 lg:pt-44">
         <div className="mx-auto max-w-4xl">
-          <p className="mb-3 font-mono text-xs uppercase tracking-wider text-accent-red-light">
+          <p className="mb-3 font-mono text-xs tracking-wide text-accent-red-light">
             Nabız
           </p>
           <h1 className="font-display text-4xl font-bold leading-tight tracking-tight text-text-primary lg:text-5xl">
@@ -106,7 +106,7 @@ export default function Nabiz() {
       {/* FILTER PILLS */}
       <section className="px-6 lg:px-10" aria-label="Kategori filtresi">
         <div className="mx-auto max-w-4xl">
-          <div className="mb-3 inline-flex items-center gap-2 text-xs font-medium uppercase tracking-wider text-text-muted">
+          <div className="mb-3 inline-flex items-center gap-2 text-xs font-medium tracking-wide text-text-muted">
             <Filter className="h-3.5 w-3.5" aria-hidden="true" />
             Kategori
           </div>
@@ -119,7 +119,7 @@ export default function Nabiz() {
                   type="button"
                   onClick={() => setActiveCategory(cat)}
                   aria-pressed={isActive}
-                  className={`rounded-sm border px-3 py-1.5 font-mono text-xs uppercase tracking-wider transition-colors duration-200 ${
+                  className={`rounded-sm border px-3 py-1.5 font-mono text-xs tracking-wide transition-colors duration-200 ${
                     isActive
                       ? 'border-accent-red bg-accent-red/10 text-accent-red-light'
                       : 'border-border-subtle bg-transparent text-text-secondary hover:border-text-secondary hover:text-text-primary'
@@ -153,7 +153,7 @@ export default function Nabiz() {
                 key={item.id}
                 className="rounded-lg border border-border-subtle bg-bg-charcoal p-6 transition-colors duration-200 hover:border-accent-red/40 md:p-7"
               >
-                <div className="flex flex-wrap items-center gap-3 font-mono text-xs uppercase tracking-wider text-text-muted">
+                <div className="flex flex-wrap items-center gap-3 font-mono text-xs tracking-wide text-text-muted">
                   <span className="rounded-sm border border-border-subtle px-2 py-0.5 text-text-secondary">
                     {item.category}
                   </span>
@@ -172,7 +172,7 @@ export default function Nabiz() {
                   href={item.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="mt-5 inline-flex items-center gap-1.5 font-mono text-xs uppercase tracking-wider text-accent-red-light underline-offset-2 hover:underline"
+                  className="mt-5 inline-flex items-center gap-1.5 font-mono text-xs tracking-wide text-accent-red-light underline-offset-2 hover:underline"
                   aria-label={`${item.title} kaynağına git`}
                 >
                   {item.source}
@@ -208,14 +208,14 @@ export default function Nabiz() {
               href="https://t.me/+sK_c-yKLc4E0Y2I0"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded bg-accent-red-deep px-6 py-3 font-body text-sm font-semibold uppercase tracking-wider text-white transition-colors duration-200 hover:bg-[#A01528]"
+              className="inline-flex items-center gap-2 rounded bg-accent-red-deep px-6 py-3 font-body text-sm font-semibold tracking-wide text-white transition-colors duration-200 hover:bg-[#A01528]"
             >
               <Send className="h-4 w-4" aria-hidden="true" />
               Telegram'da öner
             </a>
             <Link
               to="/modeller"
-              className="inline-flex items-center gap-2 rounded border border-border-subtle px-6 py-3 font-body text-sm font-semibold uppercase tracking-wider text-text-primary transition-colors duration-200 hover:border-accent-red hover:text-accent-red-light"
+              className="inline-flex items-center gap-2 rounded border border-border-subtle px-6 py-3 font-body text-sm font-semibold tracking-wide text-text-primary transition-colors duration-200 hover:border-accent-red hover:text-accent-red-light"
             >
               Model Kataloğu
             </Link>

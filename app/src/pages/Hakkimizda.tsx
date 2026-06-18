@@ -217,7 +217,7 @@ function RoadmapTimeline({ items }: { items: RoadmapItem[] }) {
             {/* Content */}
             <div>
               <div className="flex flex-wrap items-center gap-3">
-                <span className="font-mono text-xs font-medium uppercase tracking-wider text-text-muted">
+                <span className="font-mono text-xs font-medium tracking-wide text-text-muted">
                   {item.quarter}
                 </span>
                 <span
@@ -254,7 +254,7 @@ export default function Hakkimizda() {
       <section className="px-6 pb-16 pt-40 lg:px-10 lg:pb-24 lg:pt-44">
         <div className="mx-auto max-w-4xl text-center">
           <motion.p
-            className="mb-4 font-body text-sm font-medium uppercase tracking-wider text-accent-red-light"
+            className="mb-4 font-body text-sm font-medium tracking-wide text-accent-red-light"
             variants={fadeUp}
             initial={reduce ? false : 'hidden'}
             animate="visible"
@@ -489,13 +489,13 @@ export default function Hakkimizda() {
               href="https://t.me/+sK_c-yKLc4E0Y2I0"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center rounded bg-accent-red-deep px-8 py-3.5 font-body text-sm font-semibold uppercase tracking-wider text-white transition-colors duration-200 hover:bg-[#A01528]"
+              className="inline-flex items-center justify-center rounded bg-accent-red-deep px-8 py-3.5 font-body text-sm font-semibold tracking-wide text-white transition-colors duration-200 hover:bg-[#A01528]"
             >
               Telegram'a Katıl
             </a>
             <a
               href="mailto:iletisim@ollamatr.com"
-              className="inline-flex items-center justify-center rounded border border-border-subtle bg-transparent px-8 py-3.5 font-body text-sm font-semibold uppercase tracking-wider text-text-primary transition-all duration-200 hover:border-accent-red hover:text-accent-red-light"
+              className="inline-flex items-center justify-center rounded border border-border-subtle bg-transparent px-8 py-3.5 font-body text-sm font-semibold tracking-wide text-text-primary transition-all duration-200 hover:border-accent-red hover:text-accent-red-light"
             >
               İletişime Geçin
             </a>

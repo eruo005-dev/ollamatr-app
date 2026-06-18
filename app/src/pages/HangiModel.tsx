@@ -721,7 +721,7 @@ export default function HangiModel() {
         className="relative bg-bg-obsidian px-6 pt-40 pb-20 lg:px-10"
       >
         <div className="mx-auto max-w-4xl text-center">
-          <span className="hero-animate mb-4 inline-block font-body text-sm font-medium uppercase tracking-wider text-accent-red-light">
+          <span className="hero-animate mb-4 inline-block font-body text-sm font-medium tracking-wide text-accent-red-light">
             MODEL SİHİRBAZI
           </span>
           <h1 className="hero-animate font-display text-4xl font-bold leading-tight tracking-tight text-text-primary md:text-5xl lg:text-[4rem]">
@@ -754,7 +754,7 @@ export default function HangiModel() {
                 <span className="inline-block h-3 w-3 rounded-full bg-[#FFBD2E]" />
                 <span className="inline-block h-3 w-3 rounded-full bg-[#27C93F]" />
               </div>
-              <span className="ml-4 font-mono text-xs uppercase tracking-wider text-text-muted">
+              <span className="ml-4 font-mono text-xs tracking-wide text-text-muted">
                 ollamatr-wizard
               </span>
               <span className="ml-auto font-mono text-xs text-text-muted">
@@ -853,7 +853,7 @@ export default function HangiModel() {
                     <button
                       onClick={goForward}
                       disabled={!useCase}
-                      className="inline-flex items-center gap-2 rounded px-6 py-3 text-sm font-semibold uppercase tracking-wider text-white transition-all duration-200 disabled:cursor-not-allowed disabled:opacity-40"
+                      className="inline-flex items-center gap-2 rounded px-6 py-3 text-sm font-semibold tracking-wide text-white transition-all duration-200 disabled:cursor-not-allowed disabled:opacity-40"
                       style={{
                         backgroundColor: useCase
                           ? 'var(--accent-red-deep)'
@@ -895,7 +895,7 @@ export default function HangiModel() {
                           key={opt.value}
                           onClick={() => setRam(opt.value)}
                           aria-pressed={selected}
-                          className="relative rounded-lg border px-8 py-4 font-mono text-sm uppercase tracking-wider transition-colors duration-200"
+                          className="relative rounded-lg border px-8 py-4 font-mono text-sm tracking-wide transition-colors duration-200"
                           style={{
                             backgroundColor: selected
                               ? 'var(--bg-surface)'
@@ -934,7 +934,7 @@ export default function HangiModel() {
                     <button
                       onClick={goForward}
                       disabled={ram === null}
-                      className="inline-flex items-center gap-2 rounded px-6 py-3 text-sm font-semibold uppercase tracking-wider text-white transition-all duration-200 disabled:cursor-not-allowed disabled:opacity-40"
+                      className="inline-flex items-center gap-2 rounded px-6 py-3 text-sm font-semibold tracking-wide text-white transition-all duration-200 disabled:cursor-not-allowed disabled:opacity-40"
                       style={{
                         backgroundColor:
                           ram !== null
@@ -1036,7 +1036,7 @@ export default function HangiModel() {
                     <button
                       onClick={goForward}
                       disabled={!skill}
-                      className="inline-flex items-center gap-2 rounded px-6 py-3 text-sm font-semibold uppercase tracking-wider text-white transition-all duration-200 disabled:cursor-not-allowed disabled:opacity-40"
+                      className="inline-flex items-center gap-2 rounded px-6 py-3 text-sm font-semibold tracking-wide text-white transition-all duration-200 disabled:cursor-not-allowed disabled:opacity-40"
                       style={{
                         backgroundColor: skill
                           ? 'var(--accent-red-deep)'
@@ -1117,7 +1117,7 @@ export default function HangiModel() {
                     <button
                       onClick={handleStep4Submit}
                       disabled={priorities.length === 0}
-                      className="inline-flex items-center gap-2 rounded px-6 py-3 text-sm font-semibold uppercase tracking-wider text-white transition-all duration-200 disabled:cursor-not-allowed disabled:opacity-40"
+                      className="inline-flex items-center gap-2 rounded px-6 py-3 text-sm font-semibold tracking-wide text-white transition-all duration-200 disabled:cursor-not-allowed disabled:opacity-40"
                       style={{
                         backgroundColor:
                           priorities.length > 0
@@ -1181,7 +1181,7 @@ export default function HangiModel() {
                             {result.matchLevel} (tahmini)
                           </span>
                           <span
-                            className="inline-flex items-center gap-1 rounded border px-2 py-0.5 font-mono text-xs uppercase"
+                            className="inline-flex items-center gap-1 rounded border px-2 py-0.5 font-mono text-xs"
                             style={{
                               color: getRamColor(result.best.ramGB),
                               borderColor: getRamColor(
@@ -1223,28 +1223,18 @@ export default function HangiModel() {
                           ))}
                         </div>
 
-                        {/* License + attribution */}
+                        {/* License + attribution. Every catalog model is
+                            commercial-use, so the result always shows the real
+                            license + commercial badge — no non-commercial branch. */}
                         <div className="mt-5 rounded-md border border-border-subtle bg-bg-surface/60 px-3 py-2 font-mono text-[11px] leading-relaxed text-text-muted">
                           <div>
                             <span className="text-text-secondary">Lisans:</span>{' '}
                             {result.best.license}
-                            {result.best.commercialUse ? (
-                              <span className="ml-2 inline-flex items-center rounded bg-safe-green/10 px-1.5 py-0.5 text-[10px] uppercase tracking-wider text-safe-green">
-                                Ticari kullanım
-                              </span>
-                            ) : (
-                              <span className="ml-2 inline-flex items-center rounded bg-warn-yellow/10 px-1.5 py-0.5 text-[10px] uppercase tracking-wider text-warn-yellow">
-                                Ticari Olmayan
-                              </span>
-                            )}
+                            <span className="ml-2 inline-flex items-center rounded bg-safe-green/10 px-1.5 py-0.5 text-[10px] tracking-wide text-safe-green">
+                              Ticari kullanım
+                            </span>
                           </div>
                           <div className="mt-1">{result.best.attribution}</div>
-                          {!result.best.commercialUse && (
-                            <p className="mt-2 rounded-sm border border-warn-yellow/30 bg-warn-yellow/10 p-2 text-[11px] text-warn-yellow">
-                              ⓘ Bu model yalnızca araştırma ve kişisel kullanım içindir
-                              (CC-BY-NC 4.0). Ticari kullanım için lisans sahibinden izin gereklidir.
-                            </p>
-                          )}
                         </div>
 
                         {/* Actions */}
@@ -1253,7 +1243,7 @@ export default function HangiModel() {
                             href={`https://ollama.com/search?q=${encodeURIComponent(result.best.shortName)}`}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="inline-flex items-center justify-center gap-2 rounded bg-accent-red-deep px-6 py-3 text-sm font-semibold uppercase tracking-wider text-white transition-colors duration-200 hover:bg-[#A01528]"
+                            className="inline-flex items-center justify-center gap-2 rounded bg-accent-red-deep px-6 py-3 text-sm font-semibold tracking-wide text-white transition-colors duration-200 hover:bg-[#A01528]"
                           >
                             <ArrowUpRight className="h-4 w-4" />
                             Ollama Hub'da Ara
@@ -1270,7 +1260,7 @@ export default function HangiModel() {
 
                       {/* Alternative models */}
                       <div className="mt-6">
-                        <p className="mb-3 font-mono text-xs uppercase tracking-wider text-text-muted">
+                        <p className="mb-3 font-mono text-xs tracking-wide text-text-muted">
                           Alternatif Modeller
                         </p>
                         <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
@@ -1428,7 +1418,7 @@ export default function HangiModel() {
           <div className="cta-animate mt-8">
             <Link
               to="/modeller"
-              className="inline-flex items-center gap-2 rounded border border-border-subtle px-8 py-3.5 text-sm font-semibold uppercase tracking-wider text-text-primary transition-all duration-200 hover:border-accent-red hover:text-accent-red-light"
+              className="inline-flex items-center gap-2 rounded border border-border-subtle px-8 py-3.5 text-sm font-semibold tracking-wide text-text-primary transition-all duration-200 hover:border-accent-red hover:text-accent-red-light"
             >
               Tüm Modeller
               <ArrowRight className="h-4 w-4" />

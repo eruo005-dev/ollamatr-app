@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion'
+import { motion, useReducedMotion } from 'framer-motion'
 import { Send, MessageCircle, Github, Users, ChevronRight } from 'lucide-react'
 import { fadeUp, staggerContainer, staggerChild } from '@/lib/animations'
 import ScrollReveal from '@/components/ScrollReveal'
@@ -63,6 +63,7 @@ const platforms = [
 /* ------------------------------------------------------------------ */
 
 export default function Topluluk() {
+  const reduce = useReducedMotion()
   return (
     <section aria-label="Topluluk sayfası" className="bg-bg-obsidian">
       {/* ========== HERO with background image ========== */}
@@ -78,10 +79,11 @@ export default function Topluluk() {
 
         <div className="relative z-10 mx-auto max-w-4xl text-center">
           <motion.p
-            className="mb-4 font-body text-sm font-medium uppercase tracking-wider text-accent-red-light"
+            className="mb-4 font-body text-sm font-medium tracking-wide text-accent-red-light"
             variants={fadeUp}
-            initial="hidden"
+            initial={reduce ? false : 'hidden'}
             animate="visible"
+            transition={reduce ? { duration: 0 } : undefined}
             custom={0}
           >
             Topluluk
@@ -89,8 +91,9 @@ export default function Topluluk() {
           <motion.h1
             className="font-display text-4xl font-bold leading-tight tracking-tight text-text-primary lg:text-5xl"
             variants={fadeUp}
-            initial="hidden"
+            initial={reduce ? false : 'hidden'}
             animate="visible"
+            transition={reduce ? { duration: 0 } : undefined}
             custom={1}
           >
             Birlikte büyüyoruz
@@ -98,8 +101,9 @@ export default function Topluluk() {
           <motion.p
             className="mx-auto mt-6 max-w-2xl font-body text-lg leading-relaxed text-text-secondary"
             variants={fadeUp}
-            initial="hidden"
+            initial={reduce ? false : 'hidden'}
             animate="visible"
+            transition={reduce ? { duration: 0 } : undefined}
             custom={2}
           >
             OllamaTR yeni başlayan, açık kaynak bir topluluk projesi. Türkçe yapay
@@ -109,15 +113,16 @@ export default function Topluluk() {
           <motion.div
             className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row"
             variants={fadeUp}
-            initial="hidden"
+            initial={reduce ? false : 'hidden'}
             animate="visible"
+            transition={reduce ? { duration: 0 } : undefined}
             custom={3}
           >
             <a
               href={TELEGRAM_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-2 rounded bg-accent-red-deep px-8 py-3.5 font-body text-sm font-semibold uppercase tracking-wider text-white transition-all duration-200 hover:bg-[#A01528] hover:scale-[1.02]"
+              className="inline-flex items-center justify-center gap-2 rounded bg-accent-red-deep px-8 py-3.5 font-body text-sm font-semibold tracking-wide text-white transition-all duration-200 hover:bg-[#A01528] hover:scale-[1.02]"
             >
               <Send className="h-4 w-4" />
               Telegram'a katıl
@@ -126,7 +131,7 @@ export default function Topluluk() {
               href={GITHUB_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-2 rounded border border-border-subtle bg-transparent px-8 py-3.5 font-body text-sm font-semibold uppercase tracking-wider text-text-primary transition-all duration-200 hover:border-accent-red hover:text-accent-red-light"
+              className="inline-flex items-center justify-center gap-2 rounded border border-border-subtle bg-transparent px-8 py-3.5 font-body text-sm font-semibold tracking-wide text-text-primary transition-all duration-200 hover:border-accent-red hover:text-accent-red-light"
             >
               <Github className="h-4 w-4" />
               GitHub'da keşfet
@@ -147,7 +152,7 @@ export default function Topluluk() {
           <motion.div
             className="grid grid-cols-1 gap-6 sm:grid-cols-2"
             variants={staggerContainer}
-            initial="hidden"
+            initial={reduce ? false : 'hidden'}
             whileInView="visible"
             viewport={{ once: true, margin: '-50px' }}
           >
@@ -157,6 +162,7 @@ export default function Topluluk() {
                 <motion.div
                   key={idx}
                   variants={staggerChild}
+                  transition={reduce ? { duration: 0 } : undefined}
                   className={`group flex flex-col rounded-lg border border-border-subtle bg-bg-charcoal p-8 transition-all duration-300 hover:-translate-y-0.5 ${platform.color}`}
                 >
                   <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-bg-surface">
@@ -297,7 +303,7 @@ export default function Topluluk() {
               href={TELEGRAM_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center rounded bg-accent-red-deep px-8 py-3.5 font-body text-sm font-semibold uppercase tracking-wider text-white transition-all duration-200 hover:bg-[#A01528] hover:scale-[1.02]"
+              className="inline-flex items-center justify-center rounded bg-accent-red-deep px-8 py-3.5 font-body text-sm font-semibold tracking-wide text-white transition-all duration-200 hover:bg-[#A01528] hover:scale-[1.02]"
             >
               <Send className="mr-2 h-4 w-4" />
               Topluluğa katıl
@@ -306,7 +312,7 @@ export default function Topluluk() {
               href={GITHUB_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center rounded border border-border-subtle bg-transparent px-8 py-3.5 font-body text-sm font-semibold uppercase tracking-wider text-text-primary transition-all duration-200 hover:border-accent-red hover:text-accent-red-light"
+              className="inline-flex items-center justify-center rounded border border-border-subtle bg-transparent px-8 py-3.5 font-body text-sm font-semibold tracking-wide text-text-primary transition-all duration-200 hover:border-accent-red hover:text-accent-red-light"
             >
               <Github className="mr-2 h-4 w-4" />
               GitHub'da keşfet

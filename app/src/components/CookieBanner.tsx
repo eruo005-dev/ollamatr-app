@@ -3,17 +3,19 @@ import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
 import { Cookie, X } from 'lucide-react'
 import { Link } from 'react-router'
 
+// We do NOT use analytics or marketing cookies — the Çerez Politikası says so.
+// The consent shape only covers the categories that actually exist: necessary
+// (always on) and preferences (optional). Analytics/marketing were removed so
+// the banner matches reality rather than offering toggles for cookies we never set.
 type Consent = {
   necessary: true
-  analytics: boolean
-  marketing: boolean
   preferences: boolean
   timestamp: string
 }
 
 const STORAGE_KEY = 'ollamatr-cookie-consent'
 
-type CategoryKey = 'analytics' | 'marketing' | 'preferences'
+type CategoryKey = 'preferences'
 
 type CategoryDef = {
   key: CategoryKey
@@ -22,16 +24,6 @@ type CategoryDef = {
 }
 
 const CATEGORIES: CategoryDef[] = [
-  {
-    key: 'analytics',
-    label: 'Analitik',
-    description: 'Site kullanımını anonim olarak ölçmemize yardımcı olur.',
-  },
-  {
-    key: 'marketing',
-    label: 'Pazarlama',
-    description: 'İlgi alanlarınıza uygun içerik sunmamızı sağlar.',
-  },
   {
     key: 'preferences',
     label: 'Tercih',
@@ -70,8 +62,6 @@ export default function CookieBanner() {
   const reduce = useReducedMotion()
   const [visible, setVisible] = useState<boolean>(() => readConsent() === null)
   const [showPreferences, setShowPreferences] = useState(false)
-  const [analytics, setAnalytics] = useState(false)
-  const [marketing, setMarketing] = useState(false)
   const [preferences, setPreferences] = useState(false)
 
   // Çerez Politikası page (and footer) dispatch this to reopen the manager
@@ -79,8 +69,6 @@ export default function CookieBanner() {
   useEffect(() => {
     const open = () => {
       const c = readConsent()
-      setAnalytics(c?.analytics ?? false)
-      setMarketing(c?.marketing ?? false)
       setPreferences(c?.preferences ?? false)
       setShowPreferences(true)
       setVisible(true)
@@ -89,30 +77,19 @@ export default function CookieBanner() {
     return () => window.removeEventListener('open-cookie-preferences', open)
   }, [])
 
-  const buildConsent = (
-    a: boolean,
-    m: boolean,
-    p: boolean
-  ): Consent => ({
+  const buildConsent = (p: boolean): Consent => ({
     necessary: true,
-    analytics: a,
-    marketing: m,
     preferences: p,
     timestamp: new Date().toISOString(),
   })
 
-  const handleAcceptAll = (): void => {
-    saveConsent(buildConsent(true, true, true))
-    setVisible(false)
-  }
-
   const handleNecessaryOnly = (): void => {
-    saveConsent(buildConsent(false, false, false))
+    saveConsent(buildConsent(false))
     setVisible(false)
   }
 
   const handleSavePreferences = (): void => {
-    saveConsent(buildConsent(analytics, marketing, preferences))
+    saveConsent(buildConsent(preferences))
     setVisible(false)
   }
 
@@ -120,15 +97,11 @@ export default function CookieBanner() {
     handleNecessaryOnly()
   }
 
-  const setCategory = (key: CategoryKey, value: boolean): void => {
-    if (key === 'analytics') setAnalytics(value)
-    else if (key === 'marketing') setMarketing(value)
-    else setPreferences(value)
+  const setCategory = (_key: CategoryKey, value: boolean): void => {
+    setPreferences(value)
   }
 
-  const getCategoryValue = (key: CategoryKey): boolean => {
-    if (key === 'analytics') return analytics
-    if (key === 'marketing') return marketing
+  const getCategoryValue = (_key: CategoryKey): boolean => {
     return preferences
   }
 
@@ -174,10 +147,9 @@ export default function CookieBanner() {
                   id="cookie-banner-desc"
                   className="mt-2 text-sm leading-relaxed text-text-secondary"
                 >
-                  Deneyiminizi iyileştirmek, site kullanımını analiz etmek ve
-                  içerikleri kişiselleştirmek için çerezler kullanıyoruz.
-                  Zorunlu çerezler sitenin çalışması için gereklidir. Detaylı
-                  bilgi için{' '}
+                  Yalnızca zorunlu ve tercih çerezleri kullanıyoruz; analitik
+                  veya pazarlama çerezi kullanmıyoruz. Zorunlu çerezler sitenin
+                  çalışması için gereklidir. Detaylı bilgi için{' '}
                   <Link
                     to="/cerez-politikasi"
                     className="text-accent-red-light underline-offset-2 hover:underline focus:outline-none focus:ring-2 focus:ring-accent-red"
@@ -269,15 +241,8 @@ export default function CookieBanner() {
                 <div className="mt-5 flex flex-col gap-2 sm:flex-row sm:flex-wrap">
                   <button
                     type="button"
-                    onClick={handleAcceptAll}
-                    className="rounded-md bg-accent-red-deep px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-[#A01528] focus:outline-none focus:ring-2 focus:ring-accent-red focus:ring-offset-2 focus:ring-offset-bg-surface"
-                  >
-                    Hepsini Kabul Et
-                  </button>
-                  <button
-                    type="button"
                     onClick={handleNecessaryOnly}
-                    className="rounded-md border border-border-subtle px-5 py-2.5 text-sm font-semibold text-text-secondary transition-colors hover:bg-white/5 hover:text-text-primary focus:outline-none focus:ring-2 focus:ring-accent-red"
+                    className="rounded-md bg-accent-red-deep px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-[#A01528] focus:outline-none focus:ring-2 focus:ring-accent-red focus:ring-offset-2 focus:ring-offset-bg-surface"
                   >
                     Sadece Zorunlu
                   </button>

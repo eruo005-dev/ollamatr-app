@@ -1,8 +1,12 @@
-import { useEffect, type ReactNode } from 'react'
+import { useEffect, lazy, Suspense, type ReactNode } from 'react'
 import type LenisType from 'lenis'
 import Navbar from './Navbar'
 import Footer from './Footer'
-import CookieBanner from './CookieBanner'
+
+// CookieBanner is below-the-fold and renders on every page, but it pulls
+// framer-motion into the bundle. Lazy-load it so framer stays off the home
+// critical path / first paint.
+const CookieBanner = lazy(() => import('./CookieBanner'))
 
 interface LayoutProps {
   children: ReactNode
@@ -52,7 +56,9 @@ export default function Layout({ children }: LayoutProps) {
       </a>
       <Navbar />
       <main id="main-content">{children}</main>
-      <CookieBanner />
+      <Suspense fallback={null}>
+        <CookieBanner />
+      </Suspense>
       <Footer />
     </div>
   )

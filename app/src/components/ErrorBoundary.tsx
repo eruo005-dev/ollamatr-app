@@ -52,7 +52,7 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
         <button
           type="button"
           onClick={this.handleReload}
-          className="mt-5 inline-flex items-center gap-2 rounded border border-border-subtle bg-bg-surface px-5 py-2.5 text-xs font-semibold uppercase tracking-wider text-text-primary transition-colors duration-200 hover:border-accent-red hover:text-accent-red-light"
+          className="mt-5 inline-flex items-center gap-2 rounded border border-border-subtle bg-bg-surface px-5 py-2.5 text-xs font-semibold tracking-wide text-text-primary transition-colors duration-200 hover:border-accent-red hover:text-accent-red-light"
         >
           Sayfayı Yenile
         </button>

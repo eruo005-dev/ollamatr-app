@@ -45,7 +45,7 @@ export default function Footer() {
             <p className="mt-4 text-sm leading-relaxed text-text-secondary">
               Türkçe-uyumlu, yerel çalışan, açık kaynak yapay zeka stack'i. Topluluk tarafından geliştirilen, kâr amacı gütmeyen bir projedir.
             </p>
-            <div className="mt-4 inline-flex items-center gap-2 rounded-full border border-safe-green/30 bg-safe-green/10 px-3 py-1 font-mono text-xs uppercase tracking-wider text-safe-green">
+            <div className="mt-4 inline-flex items-center gap-2 rounded-full border border-safe-green/30 bg-safe-green/10 px-3 py-1 font-mono text-xs tracking-wide text-safe-green">
               <span className="h-1.5 w-1.5 rounded-full bg-safe-green" aria-hidden="true" />
               Topluluk Projesi · Tüzel Kişilik Yok
             </div>
@@ -53,7 +53,7 @@ export default function Footer() {
 
           {/* Quick links */}
           <div>
-            <h4 className="mb-4 font-display text-sm font-bold uppercase tracking-wider text-text-primary">
+            <h4 className="mb-4 font-display text-sm font-bold tracking-wide text-text-primary">
               Hızlı Bağlantılar
             </h4>
             <ul className="space-y-3">
@@ -72,7 +72,7 @@ export default function Footer() {
 
           {/* Resources */}
           <div>
-            <h4 className="mb-4 font-display text-sm font-bold uppercase tracking-wider text-text-primary">
+            <h4 className="mb-4 font-display text-sm font-bold tracking-wide text-text-primary">
               Kaynaklar
             </h4>
             <ul className="space-y-3">
@@ -91,7 +91,7 @@ export default function Footer() {
 
           {/* Connect */}
           <div>
-            <h4 className="mb-4 font-display text-sm font-bold uppercase tracking-wider text-text-primary">
+            <h4 className="mb-4 font-display text-sm font-bold tracking-wide text-text-primary">
               Bağlantı
             </h4>
             <ul className="space-y-3">
@@ -137,7 +137,7 @@ export default function Footer() {
             <div>
               <h3
                 id="yasal-bilgiler-heading"
-                className="mb-4 font-display text-sm font-bold uppercase tracking-wider text-text-primary"
+                className="mb-4 font-display text-sm font-bold tracking-wide text-text-primary"
               >
                 Yasal Bilgiler
               </h3>
@@ -152,7 +152,7 @@ export default function Footer() {
             >
               {LEGAL_INFO.map((item) => (
                 <div key={item.label} className="flex flex-col">
-                  <dt className="font-mono text-xs uppercase tracking-wide text-text-secondary">
+                  <dt className="font-mono text-xs tracking-wide text-text-secondary">
                     {item.label}
                   </dt>
                   <dd className="font-mono text-xs text-text-muted">
@@ -168,7 +168,7 @@ export default function Footer() {
             aria-label="Yasal sayfalar"
             className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-2"
           >
-            <h4 className="font-display text-xs font-bold uppercase tracking-wider text-text-primary">
+            <h4 className="font-display text-xs font-bold tracking-wide text-text-primary">
               Yasal Sayfalar
             </h4>
             <ul className="flex flex-wrap items-center gap-x-6 gap-y-2">
@@ -189,7 +189,7 @@ export default function Footer() {
         {/* Bottom bar */}
         <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-border-subtle pt-8 sm:flex-row">
           <p className="text-xs leading-relaxed text-text-muted">
-            &copy; 2025 OllamaTR Topluluğu &middot; MIT Lisansı &middot; İçerikte yer alan üçüncü taraf model isimleri (Llama, Gemma, Mistral, Qwen, Phi-3, Command-R, DeepSeek, Trendyol vb.) ilgili sahiplerinin markalarıdır.
+            &copy; 2025 OllamaTR Topluluğu &middot; MIT Lisansı &middot; İçerikte yer alan üçüncü taraf model isimleri (Llama, Gemma, Mistral, Trendyol, Turkcell, Koçdigital vb.) ilgili sahiplerinin markalarıdır.
           </p>
           <div className="flex items-center gap-6">
             <a
