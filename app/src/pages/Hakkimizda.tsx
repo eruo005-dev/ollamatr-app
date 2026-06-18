@@ -269,7 +269,7 @@ export default function Hakkimizda() {
             animate="visible"
             custom={1}
           >
-            Türkiye&apos;nin AI Altyapısını İnşa Ediyoruz
+            Türkiye&apos;nin AI altyapısını birlikte inşa etmek için yola çıktık
           </motion.h1>
           <motion.p
             className="mx-auto mt-6 max-w-3xl font-body text-lg leading-relaxed text-text-secondary"

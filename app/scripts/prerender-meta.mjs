@@ -27,6 +27,7 @@ const ROUTES = {
   '/topluluk': { title: 'Topluluk', description: 'Telegram, GitHub ve etkinlikler üzerinden OllamaTR topluluğuna katıl.' },
   '/kvkk': { title: 'KVKK ve Aydınlatma Metni', description: '6698 sayılı Kanun kapsamında veri sorumlusu bilgileri ve ilgili kişi hakları.' },
   '/cerez-politikasi': { title: 'Çerez Politikası', description: "OllamaTR'in çerez kullanımı ve kategori bazında tercih yönetimi." },
+  '/indir': { title: 'Nabız — Türkçe yapay zeka gündemi', description: 'Ollama yayınları, Türkçe LLM güncellemeleri, akademik çıktılar, KVKK kararları ve topluluk haberleri.' },
 }
 
 const shell = readFileSync(resolve(DIST, 'index.html'), 'utf8')
@@ -58,4 +59,11 @@ for (const [path, meta] of Object.entries(ROUTES)) {
   writeFileSync(resolve(dir, 'index.html'), html)
   n++
 }
-console.log(`prerender-meta: wrote ${n} per-route index.html shells with route-specific title/canonical/OG`)
+// 404 shell: SPA boots and renders <NotFound>, but the noindex is BAKED into
+// the static HTML so even non-JS crawlers won't index unknown routes. The SPA
+// fallback rewrite (vercel.json) points unmatched paths here.
+let notFound = shell
+  .replace(/<title>[\s\S]*?<\/title>/, '<title>Sayfa bulunamadı (404) — OllamaTR</title>')
+  .replace(/<head>/i, '<head>\n    <meta name="robots" content="noindex" />')
+writeFileSync(resolve(DIST, '404.html'), notFound)
+console.log(`prerender-meta: wrote ${n} per-route shells + 404.html (baked noindex)`)

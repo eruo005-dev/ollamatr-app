@@ -25,7 +25,7 @@
     "date": "2024",
     "category": "Türkçe LLM",
     "title": "Trendyol-LLM-7B-base-v2.0 yayınlandı",
-    "summary": "Trendyol Grubu tarafından açık kaynak (Apache 2.0) olarak yayınlanan 7B parametreli Türkçe odaklı temel model. E-ticaret kullanım örnekleri için fine-tune uyumlu.",
+    "summary": "Trendyol Grubu tarafından açık kaynak (Apache 2.0) olarak yayınlanan 7B parametreli Türkçe odaklı temel model. E-ticaret kullanım örnekleri için ince ayar için uygun.",
     "source": "huggingface.co/Trendyol",
     "href": "https://huggingface.co/Trendyol/Trendyol-LLM-7b-base-v2.0"
   },
@@ -35,7 +35,7 @@
     "date": "2024",
     "category": "Türkçe LLM",
     "title": "KOCDigital-LLM-8b-v0.1 (Llama-3 Türkçe ince ayar)",
-    "summary": "Koç Digital tarafından Llama-3 8B üzerine yapılmış Türkçe instruct fine-tune. OpenLLM Turkish Leaderboard üzerinde yarışmacı puanlarla yer aldı.",
+    "summary": "Koç Digital tarafından Llama-3 8B üzerine yapılmış Türkçe instruct ince ayarı. OpenLLM Turkish Leaderboard üzerinde yarışmacı puanlarla yer aldı.",
     "source": "huggingface.co/KOCDIGITAL",
     "href": "https://huggingface.co/KOCDIGITAL/Kocdigital-LLM-8b-v0.1"
   },

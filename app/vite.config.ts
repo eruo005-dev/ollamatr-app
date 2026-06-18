@@ -23,6 +23,12 @@ export default defineConfig(({ mode }) => ({
     },
   },
   build: {
+    // Keep framer-motion off the home critical path: it's only needed by the
+    // lazily-loaded CookieBanner, so drop it from the entry's modulepreload set.
+    modulePreload: {
+      resolveDependencies: (_filename, deps) =>
+        deps.filter((d) => !d.includes('framer-motion')),
+    },
     rollupOptions: {
       output: {
         manualChunks: {
