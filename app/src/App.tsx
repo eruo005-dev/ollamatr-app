@@ -15,6 +15,7 @@ const Nabiz = lazy(() => import('./pages/Nabiz'))
 const Hakkimizda = lazy(() => import('./pages/Hakkimizda'))
 const KVKK = lazy(() => import('./pages/KVKK'))
 const CerezPolitikasi = lazy(() => import('./pages/CerezPolitikasi'))
+const NotFound = lazy(() => import('./pages/NotFound'))
 
 /* Per-route titles + meta descriptions — closes WCAG 2.4.2 (Page Titled)
  * and lets search engines see distinct intent per page even without SSR. */
@@ -61,9 +62,15 @@ const ROUTE_META: Record<string, { title: string; description: string }> = {
   },
 }
 
+const NOT_FOUND_META = {
+  title: 'Sayfa bulunamadı (404)',
+  description: 'Aradığın sayfa bulunamadı. Ana sayfaya dön veya modelleri keşfet.',
+}
+
 function RouteMeta() {
   const { pathname } = useLocation()
-  const meta = ROUTE_META[pathname] ?? ROUTE_META['/']
+  // /indir aliases to Nabız; unknown paths get an honest 404 title (not home's).
+  const meta = ROUTE_META[pathname] ?? (pathname === '/indir' ? ROUTE_META['/nabiz'] : NOT_FOUND_META)
   usePageTitle(meta.title, meta.description)
   return null
 }
@@ -93,7 +100,6 @@ export default function App() {
             <Route path="/hangi-model" element={<HangiModel />} />
             <Route path="/nabiz" element={<Nabiz />} />
             {/* Backward-compat: old /indir route now serves Nabız (no app to download yet). */}
-            <Route path="/nabiz" element={<Nabiz />} />
             <Route path="/indir" element={<Nabiz />} />
             <Route path="/dokumantasyon" element={<Dokumantasyon />} />
             <Route path="/fiyatlandirma" element={<Fiyatlandirma />} />
@@ -101,6 +107,7 @@ export default function App() {
             <Route path="/kvkk" element={<KVKK />} />
             <Route path="/cerez-politikasi" element={<CerezPolitikasi />} />
             <Route path="/topluluk" element={<Topluluk />} />
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </Suspense>
       </ErrorBoundary>

@@ -69,14 +69,14 @@ const tiers: Tier[] = [
     features: [
       { text: 'Topluluk Edisyonundaki her şey', status: 'included' },
       { text: 'Açık geliştirme yol haritasını destekle', status: 'included' },
-      { text: 'GitHub Sponsors veya Patreon üzerinden katkı', status: 'included' },
+      { text: 'GitHub deposunda yıldız ver, katkı yap, issue aç', status: 'included' },
       { text: 'İsteğe bağlı: adın TEŞEKKÜRLER listesine eklenir', status: 'included' },
-      { text: 'Discord Sponsor rozeti', status: 'included' },
+      { text: 'GitHub Sponsors / Patreon: yakında', status: 'coming-soon' },
     ],
-    cta: "GitHub Sponsors'a Git",
+    cta: "GitHub'da Destekle",
     ctaStyle: 'primary',
-    ctaHref: 'https://github.com/sponsors/ollamatr',
-    secondaryCta: { label: "Patreon'da Destekle", href: 'https://www.patreon.com/ollamatr' },
+    ctaHref: 'https://github.com/eruo005-dev/ollamatr-app',
+    secondaryCta: { label: "Telegram'a Katıl", href: 'https://t.me/+sK_c-yKLc4E0Y2I0' },
   },
   {
     name: 'Kurumsal',
@@ -95,7 +95,7 @@ const tiers: Tier[] = [
     ],
     cta: 'Haberdar Et',
     ctaStyle: 'ghost',
-    ctaHref: 'mailto:iletisim@ollamatr.dev?subject=Kurumsal%20%C4%B0lgi',
+    ctaHref: 'mailto:iletisim@ollamatr.com?subject=Kurumsal%20%C4%B0lgi',
   },
 ]
 
@@ -137,7 +137,7 @@ const faqItems = [
   {
     question: 'OllamaTR ne zaman ticari sürüm çıkarır?',
     answer:
-      'Yeterli talep ve şirketleşme süreci tamamlandığında. Henüz somut bir tarih yok. Haberdar olmak için iletisim@ollamatr.dev adresine e-posta atabilirsiniz.',
+      'Yeterli talep ve şirketleşme süreci tamamlandığında. Henüz somut bir tarih yok. Haberdar olmak için iletisim@ollamatr.com adresine e-posta atabilirsiniz.',
   },
   {
     question: 'Modelleri ticari ürünümde kullanabilir miyim?',
@@ -549,13 +549,13 @@ export default function Fiyatlandirma() {
               Telegram'a Katıl
             </a>
             <a
-              href="https://github.com/sponsors/ollamatr"
+              href="https://github.com/eruo005-dev/ollamatr-app"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center justify-center gap-2 rounded border border-border-subtle bg-transparent px-8 py-3.5 font-body text-sm font-semibold uppercase tracking-wider text-text-primary transition-all duration-200 hover:border-accent-red hover:text-accent-red-light"
             >
               <Heart className="h-4 w-4" />
-              Sponsor Ol
+              GitHub'da Destekle
             </a>
           </div>
         </ScrollReveal>

@@ -507,22 +507,22 @@ function KVKKHeavyContent({ sectionStyle }: HeavyContentProps) {
               <li>
                 E-posta:{' '}
                 <a
-                  href="mailto:iletisim@ollamatr.dev"
+                  href="mailto:iletisim@ollamatr.com"
                   className="text-accent-red-light underline hover:text-accent-red"
                 >
-                  iletisim@ollamatr.dev
+                  iletisim@ollamatr.com
                 </a>
               </li>
               <li>Proje Türü: Topluluk projesi · Açık kaynak (MIT)</li>
               <li>
                 GitHub:{' '}
                 <a
-                  href="https://github.com/ollamatr"
+                  href="https://github.com/eruo005-dev/ollamatr-app"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-accent-red-light underline hover:text-accent-red"
                 >
-                  github.com/ollamatr
+                  github.com/eruo005-dev/ollamatr-app
                 </a>
               </li>
             </ul>

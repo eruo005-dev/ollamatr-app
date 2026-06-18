@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://ollamatr-app.vercel.app/sitemap.xml
+Sitemap: https://ollamatr.com/sitemap.xml

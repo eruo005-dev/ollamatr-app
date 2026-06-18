@@ -22,9 +22,9 @@ const LEGAL_LINKS: { label: string; to: string }[] = [
 
 const LEGAL_INFO: { label: string; value: string }[] = [
   { label: 'Veri Sorumlusu', value: 'Bireysel Operatör — [Operatör İsim Soyisim]' },
-  { label: 'İletişim', value: 'iletisim@ollamatr.dev' },
+  { label: 'İletişim', value: 'iletisim@ollamatr.com' },
   { label: 'Proje Türü', value: 'Topluluk Projesi · Açık Kaynak (MIT)' },
-  { label: 'GitHub', value: 'github.com/ollamatr' },
+  { label: 'GitHub', value: 'github.com/eruo005-dev/ollamatr-app' },
 ]
 
 export default function Footer() {
@@ -97,7 +97,7 @@ export default function Footer() {
             <ul className="space-y-3">
               <li>
                 <a
-                  href="https://github.com/ollamatr"
+                  href="https://github.com/eruo005-dev/ollamatr-app"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 text-sm text-text-secondary transition-colors hover:text-accent-red-light"
@@ -193,7 +193,7 @@ export default function Footer() {
           </p>
           <div className="flex items-center gap-6">
             <a
-              href="https://github.com/ollamatr"
+              href="https://github.com/eruo005-dev/ollamatr-app"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-1.5 text-xs text-text-muted transition-colors hover:text-text-secondary"

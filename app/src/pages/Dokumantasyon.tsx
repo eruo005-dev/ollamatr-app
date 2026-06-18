@@ -224,8 +224,8 @@ export default function Dokumantasyon() {
                       {cat.title}
                     </h3>
                     <p className="mt-1 text-sm leading-relaxed text-text-secondary">{cat.desc}</p>
-                    <span className="mt-2 inline-block font-body text-xs font-medium text-text-muted">
-                      {cat.count} makale
+                    <span className="mt-2 inline-block rounded-full bg-accent-red/10 px-2 py-0.5 font-body text-xs font-medium text-accent-red">
+                      Yakında
                     </span>
                   </div>
                 </motion.div>
@@ -247,10 +247,15 @@ export default function Dokumantasyon() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, ease: easeExpoOut }}
-            className="mb-8 font-display text-xl font-bold text-text-primary"
+            className="mb-2 font-display text-xl font-bold text-text-primary"
           >
-            POPÜLER MAKALELER
+            HAZIRLANAN REHBERLER
           </motion.h2>
+          <p className="mb-8 max-w-2xl font-body text-sm leading-relaxed text-text-muted">
+            Bu rehberler hazırlanıyor. Şimdilik kurulum için{' '}
+            <a href="https://ollama.com/download" target="_blank" rel="noopener noreferrer" className="text-accent-red-light underline-offset-2 hover:underline">resmi Ollama dokümantasyonunu</a>{' '}
+            kullanabilir, soruların için Telegram topluluğuna katılabilirsin.
+          </p>
 
           {filteredArticles.length > 0 ? (
             <div className="divide-y divide-border-subtle rounded-lg border border-border-subtle bg-bg-charcoal">
@@ -279,7 +284,7 @@ export default function Dokumantasyon() {
                       {article.title}
                     </h4>
                     <p className="mt-0.5 font-body text-xs text-text-muted">
-                      {article.readTime} okuma — {article.category}
+                      {article.category} · Yakında
                     </p>
                   </div>
                   <ArrowRight className="h-4 w-4 shrink-0 text-text-muted transition-all duration-200 group-hover:translate-x-1 group-hover:text-accent-red" />
@@ -326,7 +331,7 @@ export default function Dokumantasyon() {
               Topluluğa Katıl →
             </Link>
             <a
-              href="https://github.com/ollamatr"
+              href="https://github.com/eruo005-dev/ollamatr-app"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 rounded border border-border-subtle px-7 py-3.5 font-body text-sm font-semibold uppercase tracking-wider text-text-primary transition-all duration-200 hover:border-accent-red hover:text-accent-red-light"

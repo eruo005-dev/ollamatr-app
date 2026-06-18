@@ -416,10 +416,10 @@ export default function Hakkimizda() {
             <p className="mt-12 font-body text-sm text-text-muted">
               Ortaklık ve işbirliği için{' '}
               <a
-                href="mailto:iletisim@ollamatr.dev"
+                href="mailto:iletisim@ollamatr.com"
                 className="text-accent-red-light transition-colors hover:text-accent-red"
               >
-                iletisim@ollamatr.dev
+                iletisim@ollamatr.com
               </a>{' '}
               adresinden bize ulaşabilirsiniz.
             </p>
@@ -459,7 +459,7 @@ export default function Hakkimizda() {
               Telegram'a Katıl
             </a>
             <a
-              href="mailto:iletisim@ollamatr.dev"
+              href="mailto:iletisim@ollamatr.com"
               className="inline-flex items-center justify-center rounded border border-border-subtle bg-transparent px-8 py-3.5 font-body text-sm font-semibold uppercase tracking-wider text-text-primary transition-all duration-200 hover:border-accent-red hover:text-accent-red-light"
             >
               İletişime Geçin
