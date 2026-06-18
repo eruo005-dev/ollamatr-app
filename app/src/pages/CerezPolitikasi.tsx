@@ -375,11 +375,11 @@ export default function CerezPolitikasi() {
               KVKK ve Aydınlatma Metni
             </Link>
             <a
-              href="mailto:privacy@ollamatr.com"
+              href="mailto:support@ollamatr.com"
               className="inline-flex items-center gap-2 rounded border border-border-subtle px-6 py-3 font-body text-sm font-semibold tracking-wide text-text-primary transition-all duration-200 hover:border-accent-red hover:text-accent-red-light"
             >
               <ExternalLink className="h-4 w-4" />
-              privacy@ollamatr.com
+              support@ollamatr.com
             </a>
           </div>
         </div>

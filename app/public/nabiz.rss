@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>OllamaTR Nabız</title>
+    <link>https://ollamatr.com/nabiz</link>
+    <atom:link href="https://ollamatr.com/nabiz.rss" rel="self" type="application/rss+xml" />
+    <description>Türkçe yapay zekada olup biten — Ollama yayınları, Türkçe LLM güncellemeleri, akademik çıktılar, KVKK kararları ve topluluk etkinlikleri.</description>
+    <language>tr-TR</language>
+    <lastBuildDate>Tue, 26 May 2026 00:00:00 GMT</lastBuildDate>
+    <ttl>360</ttl>
+    <item>
+      <title>OllamaTR Topluluk Edisyonu açıldı</title>
+      <link>https://github.com/eruo005-dev/ollamatr-app</link>
+      <guid isPermaLink="false">ollamatr-nabiz-ollamatr-community-edition</guid>
+      <pubDate>Tue, 26 May 2026 00:00:00 GMT</pubDate>
+      <category>Topluluk</category>
+      <description>Türkçe yapay zeka altyapısı için bireysel operatör yönetiminde, açık kaynak (MIT) ve KVKK uyumlu topluluk projesi. Şirket henüz yok; geliştirici katkıları açık. (Kaynak: github.com/eruo005-dev/ollamatr-app)</description>
+    </item>
+    <item>
+      <title>Ollama upstream: Türkçe çoklu bayt karakter desteği talebi</title>
+      <link>https://github.com/ollama/ollama/issues</link>
+      <guid isPermaLink="false">ollamatr-nabiz-ollama-turkish-chars-issue</guid>
+      <pubDate>Mon, 01 Sep 2025 00:00:00 GMT</pubDate>
+      <category>Ollama</category>
+      <description>Ollama runtime üzerinde Türkçe karakterlerin (İ ı ş ğ ç ö ü) bazı akış senaryolarında düşmesi raporlandı. Almanca / Polonyaca için merge edilmiş emsal mevcut. (Kaynak: github.com/ollama/ollama)</description>
+    </item>
+    <item>
+      <title>Cosmos T1 — YTÜ tarafından yerli Türkçe LLM</title>
+      <link>https://www.yildiz.edu.tr/universite/haberler/yerli-yapay-zeka-cosmos-t1-kendisinden-uc-kat-buyuk-modellerle-yarisiyor</link>
+      <guid isPermaLink="false">ollamatr-nabiz-cosmos-t1</guid>
+      <pubDate>Fri, 01 Nov 2024 00:00:00 GMT</pubDate>
+      <category>Akademik</category>
+      <description>Yıldız Teknik Üniversitesi tarafından geliştirilen Türkçe odaklı temel model. &quot;Kendisinden üç kat büyük modellerle yarışıyor&quot; iddiası ile basında yer aldı. (Kaynak: YTÜ Haber Bülteni)</description>
+    </item>
+    <item>
+      <title>Trendyol-LLM-7B-base-v2.0 yayınlandı</title>
+      <link>https://huggingface.co/Trendyol/Trendyol-LLM-7b-base-v2.0</link>
+      <guid isPermaLink="false">ollamatr-nabiz-trendyol-llm-v2</guid>
+      <pubDate>Sat, 15 Jun 2024 00:00:00 GMT</pubDate>
+      <category>Türkçe LLM</category>
+      <description>Trendyol Grubu tarafından açık kaynak (Apache 2.0) olarak yayınlanan 7B parametreli Türkçe odaklı temel model. E-ticaret kullanım örnekleri için ince ayar için uygun. (Kaynak: huggingface.co/Trendyol)</description>
+    </item>
+    <item>
+      <title>KOCDigital-LLM-8b-v0.1 (Llama-3 Türkçe ince ayar)</title>
+      <link>https://huggingface.co/KOCDIGITAL/Kocdigital-LLM-8b-v0.1</link>
+      <guid isPermaLink="false">ollamatr-nabiz-kocdigital-llama3-tr</guid>
+      <pubDate>Fri, 10 May 2024 00:00:00 GMT</pubDate>
+      <category>Türkçe LLM</category>
+      <description>Koç Digital tarafından Llama-3 8B üzerine yapılmış Türkçe instruct ince ayarı. OpenLLM Turkish Leaderboard üzerinde yarışmacı puanlarla yer aldı. (Kaynak: huggingface.co/KOCDIGITAL)</description>
+    </item>
+    <item>
+      <title>TURNA — Boğaziçi TABILAB Türkçe encoder/decoder</title>
+      <link>https://huggingface.co/boun-tabi-LMG</link>
+      <guid isPermaLink="false">ollamatr-nabiz-turna</guid>
+      <pubDate>Fri, 01 Mar 2024 00:00:00 GMT</pubDate>
+      <category>Akademik</category>
+      <description>Boğaziçi Üniversitesi TABILAB / BUCOLIN tarafından yayınlanan Türkçe odaklı sequence-to-sequence model. Çeşitli downstream görevlerde değerlendirildi. (Kaynak: huggingface.co/boun-tabi-LMG)</description>
+    </item>
+    <item>
+      <title>OpenLLM Turkish Leaderboard</title>
+      <link>https://huggingface.co/spaces/malhajar/OpenLLMTurkishLeaderboard</link>
+      <guid isPermaLink="false">ollamatr-nabiz-openllm-tr-leaderboard</guid>
+      <pubDate>Mon, 01 Jan 2024 00:00:00 GMT</pubDate>
+      <category>Akademik</category>
+      <description>HuggingFace topluluğu tarafından sürdürülen Türkçe LLM değerlendirme tablosu. MMLU-TR, ARC-TR ve diğer Türkçe benchmark sonuçları izlenebilir. (Kaynak: huggingface.co/spaces/malhajar/OpenLLMTurkishLeaderboard)</description>
+    </item>
+    <item>
+      <title>KVKK Kurumu — Yapay zeka uygulamalarında veri koruma</title>
+      <link>https://www.kvkk.gov.tr/</link>
+      <guid isPermaLink="false">ollamatr-nabiz-kvkk-yapay-zeka-rehberi</guid>
+      <pubDate>Mon, 01 Jan 2024 00:00:00 GMT</pubDate>
+      <category>KVKK &amp; Hukuk</category>
+      <description>6698 sayılı Kanun kapsamında yapay zeka sistemlerinde kişisel veri işleme ilkeleri ve veri sorumlusu yükümlülükleri. Ayrıntılar için Kurum yayınlarına bakınız. (Kaynak: kvkk.gov.tr)</description>
+    </item>
+  </channel>
+</rss>

@@ -94,7 +94,7 @@ const tiers: Tier[] = [
     ],
     cta: 'Haberdar Et',
     ctaStyle: 'ghost',
-    ctaHref: 'mailto:iletisim@ollamatr.com?subject=Kurumsal%20%C4%B0lgi',
+    ctaHref: 'mailto:support@ollamatr.com?subject=Kurumsal%20%C4%B0lgi',
   },
 ]
 
@@ -136,7 +136,7 @@ const faqItems = [
   {
     question: 'OllamaTR ne zaman ticari sürüm çıkarır?',
     answer:
-      'Yeterli talep ve şirketleşme süreci tamamlandığında. Henüz somut bir tarih yok. Haberdar olmak için iletisim@ollamatr.com adresine e-posta atabilirsiniz.',
+      'Yeterli talep ve şirketleşme süreci tamamlandığında. Henüz somut bir tarih yok. Haberdar olmak için support@ollamatr.com adresine e-posta atabilirsiniz.',
   },
   {
     question: 'Modelleri ticari ürünümde kullanabilir miyim?',

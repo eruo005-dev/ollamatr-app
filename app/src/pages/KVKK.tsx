@@ -45,7 +45,7 @@ const checklistItems: ChecklistItem[] = [
   {
     article: 'Madde 11',
     title: 'Veri Sahibinin Hakları',
-    desc: 'İlgili kişilerin sahip olduğu 8 yasal hak Aydınlatma Metni bölümünde tek tek sıralanmıştır. Talepleriniz için privacy@ollamatr.com adresine başvurabilirsiniz.',
+    desc: 'İlgili kişilerin sahip olduğu 8 yasal hak Aydınlatma Metni bölümünde tek tek sıralanmıştır. Talepleriniz için support@ollamatr.com adresine başvurabilirsiniz.',
     label: 'MADDE 11: VERİ SAHİBİ HAKLARI',
   },
   {
@@ -509,10 +509,10 @@ function KVKKHeavyContent({ sectionStyle }: HeavyContentProps) {
               <li>
                 E-posta:{' '}
                 <a
-                  href="mailto:iletisim@ollamatr.com"
+                  href="mailto:support@ollamatr.com"
                   className="text-accent-red-light underline hover:text-accent-red-light"
                 >
-                  iletisim@ollamatr.com
+                  support@ollamatr.com
                 </a>
               </li>
               <li>Proje Türü: Topluluk projesi · Açık kaynak (MIT)</li>
@@ -614,10 +614,10 @@ function KVKKHeavyContent({ sectionStyle }: HeavyContentProps) {
             <p className="mt-5 rounded-lg border border-border-subtle bg-bg-obsidian p-4 text-sm leading-relaxed text-text-secondary">
               Bu haklarınızı kullanmak için{' '}
               <a
-                href="mailto:privacy@ollamatr.com"
+                href="mailto:support@ollamatr.com"
                 className="text-accent-red-light underline hover:text-accent-red-light"
               >
-                privacy@ollamatr.com
+                support@ollamatr.com
               </a>{' '}
               adresine başvurabilirsiniz. Talepler en geç 30 gün içerisinde cevaplanacaktır (KVKK Madde 13).
             </p>
@@ -708,7 +708,7 @@ function KVKKHeavyContent({ sectionStyle }: HeavyContentProps) {
               Telegram'a Katıl
             </a>
             <a
-              href="mailto:privacy@ollamatr.com"
+              href="mailto:support@ollamatr.com"
               className="inline-flex items-center gap-2 rounded border border-border-subtle px-7 py-3.5 font-body text-sm font-semibold tracking-wide text-text-primary transition-all duration-200 hover:border-accent-red hover:text-accent-red-light"
             >
               Daha Fazla Bilgi

@@ -26,7 +26,7 @@ const teamMembers: TeamMember[] = [
   {
     name: 'OllamaTR topluluk projesi',
     role: 'Açık kaynak topluluk projesi',
-    bio: 'OllamaTR yeni başlayan, kâr amacı gütmeyen bir açık kaynak topluluk projesidir. Sorular, katkı ve iletişim için iletisim@ollamatr.com adresinden veya GitHub deposu üzerinden bize ulaşabilirsiniz.',
+    bio: 'OllamaTR yeni başlayan, kâr amacı gütmeyen bir açık kaynak topluluk projesidir. Sorular, katkı ve iletişim için support@ollamatr.com adresinden veya GitHub deposu üzerinden bize ulaşabilirsiniz.',
     initials: '··',
   },
 ]
@@ -372,10 +372,10 @@ export default function Hakkimizda() {
                 </p>
                 <div className="mt-4 flex flex-wrap gap-x-4 gap-y-2">
                   <a
-                    href="mailto:iletisim@ollamatr.com"
+                    href="mailto:support@ollamatr.com"
                     className="font-body text-xs font-medium text-accent-red-light transition-colors hover:text-accent-red-light"
                   >
-                    iletisim@ollamatr.com
+                    support@ollamatr.com
                   </a>
                   <a
                     href="https://github.com/eruo005-dev/ollamatr-app"
@@ -450,10 +450,10 @@ export default function Hakkimizda() {
             <p className="mt-12 font-body text-sm text-text-muted">
               Ortaklık ve işbirliği için{' '}
               <a
-                href="mailto:iletisim@ollamatr.com"
+                href="mailto:support@ollamatr.com"
                 className="text-accent-red-light transition-colors hover:text-accent-red-light"
               >
-                iletisim@ollamatr.com
+                support@ollamatr.com
               </a>{' '}
               adresinden bize ulaşabilirsiniz.
             </p>
@@ -494,7 +494,7 @@ export default function Hakkimizda() {
               Telegram'a Katıl
             </a>
             <a
-              href="mailto:iletisim@ollamatr.com"
+              href="mailto:support@ollamatr.com"
               className="inline-flex items-center justify-center rounded border border-border-subtle bg-transparent px-8 py-3.5 font-body text-sm font-semibold tracking-wide text-text-primary transition-all duration-200 hover:border-accent-red hover:text-accent-red-light"
             >
               İletişime Geçin
