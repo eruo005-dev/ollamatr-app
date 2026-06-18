@@ -26,7 +26,7 @@ const PAGE_SIZE = 9
 function getRamColorClass(ramGB: number): string {
   if (ramGB < 8) return 'text-safe-green'
   if (ramGB <= 16) return 'text-warn-yellow'
-  return 'text-accent-red'
+  return 'text-accent-red-light'
 }
 
 function getRamBgColor(ramGB: number): string {
@@ -42,17 +42,6 @@ function ramFilterToBucket(filter: RamFilter): RamBucket | null {
     case '16GB+ (Yüksek)': return '16GB+'
     default: return null
   }
-}
-
-/* Parse downloads string like "24.5K" / "9.6K" to a number for display formatting. */
-function parseDownloadsNumber(s: string): number {
-  const m = s.match(/^([0-9]+(?:\.[0-9]+)?)\s*([KkMm])?/)
-  if (!m) return 0
-  const value = parseFloat(m[1])
-  const suffix = m[2]?.toLowerCase()
-  if (suffix === 'k') return Math.round(value * 1000)
-  if (suffix === 'm') return Math.round(value * 1_000_000)
-  return Math.round(value)
 }
 
 /* ═══════════════════════════ FILTER HOOK ═══════════════════════════ */
@@ -120,8 +109,6 @@ interface ModelCardProps {
 }
 
 function ModelCard({ model, onSelect }: ModelCardProps) {
-  const downloadsNum = useMemo(() => parseDownloadsNumber(model.downloads), [model.downloads])
-
   return (
     <TiltCard
       className="cursor-pointer rounded-lg border border-border-subtle bg-bg-charcoal p-6 md:p-7 outline-none focus-visible:ring-2 focus-visible:ring-accent-red"
@@ -188,34 +175,30 @@ function ModelCard({ model, onSelect }: ModelCardProps) {
         </span>
       </div>
 
-      {/* Bottom row: download count + actions */}
-      <div className="mt-5 flex items-center justify-between gap-2 border-t border-border-subtle pt-4">
-        <span className="font-mono text-xs text-text-muted">
-          {downloadsNum.toLocaleString('tr-TR')} indirme
-        </span>
-        <div className="flex items-center gap-2">
-          <button
-            onClick={(e) => {
-              e.stopPropagation()
-              onSelect(model)
-            }}
-            className="inline-flex items-center gap-1.5 rounded-sm border border-border-subtle px-3 py-2 font-body text-xs font-semibold uppercase tracking-wider text-text-primary transition-all duration-200 hover:border-accent-red hover:text-accent-red-light"
-            aria-label={`${model.name} detaylarını aç`}
-          >
-            Detaylar
-            <ArrowRight className="h-3 w-3" />
-          </button>
-          <button
-            onClick={(e) => {
-              e.stopPropagation()
-              onSelect(model)
-            }}
-            className="inline-flex items-center gap-1.5 rounded-sm bg-accent-red px-4 py-2 font-body text-xs font-semibold uppercase tracking-wider text-white transition-all duration-200 hover:bg-accent-red-light hover:scale-[1.02]"
-          >
-            <Download className="h-3.5 w-3.5" />
-            İndir
-          </button>
-        </div>
+      {/* Bottom row: actions */}
+      <div className="mt-5 flex items-center justify-end gap-2 border-t border-border-subtle pt-4">
+        <button
+          onClick={(e) => {
+            e.stopPropagation()
+            onSelect(model)
+          }}
+          className="inline-flex items-center gap-1.5 rounded-sm border border-border-subtle px-3 py-2 font-body text-xs font-semibold uppercase tracking-wider text-text-primary transition-all duration-200 hover:border-accent-red hover:text-accent-red-light"
+          aria-label={`${model.name} detaylarını aç`}
+        >
+          Detaylar
+          <ArrowRight className="h-3 w-3" />
+        </button>
+        <a
+          href={`https://ollama.com/search?q=${encodeURIComponent(model.shortName)}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          onClick={(e) => e.stopPropagation()}
+          className="inline-flex items-center gap-1.5 rounded-sm bg-accent-red-deep px-4 py-2 font-body text-xs font-semibold uppercase tracking-wider text-white transition-all duration-200 hover:bg-accent-red-light"
+          aria-label={`${model.name} için Ollama Hub'da ara`}
+        >
+          <Download className="h-3.5 w-3.5" />
+          İndir
+        </a>
       </div>
     </TiltCard>
   )
@@ -323,7 +306,6 @@ function DetailModal({ model, onClose }: DetailModalProps) {
 
   const ramColor = getRamColorClass(model.ramGB)
   const ramHex = getRamBgColor(model.ramGB)
-  const downloadsNum = parseDownloadsNumber(model.downloads)
 
   return (
     <div
@@ -355,7 +337,7 @@ function DetailModal({ model, onClose }: DetailModalProps) {
         {/* Close button */}
         <button
           onClick={handleClose}
-          className="absolute right-4 top-4 rounded p-2 text-text-secondary transition-colors hover:text-accent-red md:right-6 md:top-6"
+          className="absolute right-4 top-4 rounded p-2 text-text-secondary transition-colors hover:text-accent-red-light md:right-6 md:top-6"
           aria-label="Kapat"
         >
           <X className="h-5 w-5" />
@@ -373,7 +355,7 @@ function DetailModal({ model, onClose }: DetailModalProps) {
           )}
           <span
             className={`flex items-center gap-1 rounded-sm bg-bg-surface px-3 py-1.5 font-mono text-xs uppercase tracking-wide ${ramColor}`}
-            style={{ border: `1px solid ${ramHex}40`, boxShadow: `0 0 8px ${ramHex}25` }}
+            style={{ border: `1px solid ${ramHex}40` }}
           >
             <MemoryStick className="h-3.5 w-3.5" />
             {model.ramGB}GB RAM
@@ -390,7 +372,6 @@ function DetailModal({ model, onClose }: DetailModalProps) {
           <SpecItem label="Kısa Ad" value={model.shortName} />
           <SpecItem label="RAM Gereksinimi" value={`${model.ramGB}GB`} color={ramHex} />
           <SpecItem label="RAM Sınıfı" value={model.ramBucket} />
-          <SpecItem label="İndirmeler" value={downloadsNum.toLocaleString('tr-TR')} />
           <SpecItem label="Popülerlik" value={`%${model.popularity}`} />
           <SpecItem label="Yayın Tarihi" value={new Date(model.releasedAt).toLocaleDateString('tr-TR')} />
         </div>
@@ -458,10 +439,15 @@ function DetailModal({ model, onClose }: DetailModalProps) {
 
         {/* Action buttons */}
         <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-          <button className="inline-flex items-center justify-center gap-2 rounded-sm bg-accent-red px-6 py-3.5 font-body text-sm font-semibold uppercase tracking-wider text-white transition-all duration-200 hover:bg-accent-red-light hover:scale-[1.02]">
+          <a
+            href={`https://ollama.com/search?q=${encodeURIComponent(model.shortName)}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center justify-center gap-2 rounded-sm bg-accent-red-deep px-6 py-3.5 font-body text-sm font-semibold uppercase tracking-wider text-white transition-all duration-200 hover:bg-accent-red-light"
+          >
             <Download className="h-4 w-4" />
             Modeli İndir
-          </button>
+          </a>
           <Link
             to="/hangi-model"
             className="inline-flex items-center justify-center gap-2 rounded-sm border border-border-subtle px-6 py-3.5 font-body text-sm font-semibold uppercase tracking-wider text-text-primary transition-all duration-200 hover:border-accent-red hover:text-accent-red-light"
@@ -585,7 +571,7 @@ function FilterBar({
                 aria-pressed={active}
                 className={`rounded-sm px-3 py-1.5 font-mono text-xs uppercase tracking-wider transition-colors ${
                   active
-                    ? 'border border-accent-red text-accent-red'
+                    ? 'border border-accent-red text-accent-red-light'
                     : 'border border-border-subtle text-text-secondary hover:border-accent-red-light hover:text-text-primary'
                 }`}
               >
@@ -641,7 +627,7 @@ function Pagination({ page, pageCount, onChange }: PaginationProps) {
               aria-current={active ? 'page' : undefined}
               className={`min-w-9 rounded-sm px-3 py-1.5 font-mono text-xs transition-colors ${
                 active
-                  ? 'border border-accent-red text-accent-red'
+                  ? 'border border-accent-red text-accent-red-light'
                   : 'border border-border-subtle text-text-secondary hover:border-accent-red-light hover:text-text-primary'
               }`}
             >
@@ -664,7 +650,7 @@ function Pagination({ page, pageCount, onChange }: PaginationProps) {
   )
 }
 
-/* ═══════════════════════════ 3D PERSPECTIVE GRID ═══════════════════════════ */
+/* ═══════════════════════════ MODEL GRID ═══════════════════════════ */
 interface ModelGridProps {
   models: Model[]
   onSelect: (model: Model) => void
@@ -674,7 +660,6 @@ function ModelGrid({ models: gridModels, onSelect }: ModelGridProps) {
   const cardRefs = useRef<Map<number, HTMLElement>>(new Map())
   const [visibleCards, setVisibleCards] = useState<Set<number>>(new Set())
   const [prevGridModels, setPrevGridModels] = useState(gridModels)
-  const [isMobile, setIsMobile] = useState(false)
 
   // Reset visible-card entrance animations when filter inputs change.
   // React docs: derived-state-on-input-change is computed during render,
@@ -684,18 +669,19 @@ function ModelGrid({ models: gridModels, onSelect }: ModelGridProps) {
     setVisibleCards(new Set())
   }
 
-  // Track mobile breakpoint to flatten the per-row rotateY perspective.
-  useEffect(() => {
-    if (typeof window === 'undefined') return
-    const mq = window.matchMedia('(max-width: 767px)')
-    const update = () => setIsMobile(mq.matches)
-    update()
-    mq.addEventListener('change', update)
-    return () => mq.removeEventListener('change', update)
+  // Respect prefers-reduced-motion: if reduced, mark every card visible up front
+  // so the grid renders fully without entrance transitions.
+  const prefersReducedMotion = useMemo(() => {
+    if (typeof window === 'undefined') return false
+    return window.matchMedia('(prefers-reduced-motion: reduce)').matches
   }, [])
 
   // Observe whichever cards are currently mounted via refs.
   useEffect(() => {
+    if (prefersReducedMotion) {
+      setVisibleCards(new Set(gridModels.map((m) => m.id)))
+      return
+    }
     const elements = Array.from(cardRefs.current.entries())
     if (elements.length === 0) return
     const observer = new IntersectionObserver(
@@ -718,60 +704,38 @@ function ModelGrid({ models: gridModels, onSelect }: ModelGridProps) {
     )
     elements.forEach(([, el]) => observer.observe(el))
     return () => observer.disconnect()
-  }, [gridModels])
-
-  // Memoized grouping into rows of 3 for the 3D perspective transform.
-  const rows = useMemo(() => {
-    const out: Model[][] = []
-    for (let i = 0; i < gridModels.length; i += 3) {
-      out.push(gridModels.slice(i, i + 3))
-    }
-    return out
-  }, [gridModels])
+  }, [gridModels, prefersReducedMotion])
 
   return (
     <div
       id="model-grid"
-      className="mx-auto max-w-7xl px-6 lg:px-10"
-      style={{ perspective: '1000px', transformStyle: 'preserve-3d' }}
+      className="mx-auto grid max-w-7xl grid-cols-1 gap-6 px-6 sm:grid-cols-2 lg:grid-cols-3 lg:px-10"
     >
-      {rows.map((row, rowIndex) => {
-        const rotateY = isMobile ? 0 : rowIndex % 2 === 0 ? -3 : 3
+      {gridModels.map((model, index) => {
+        const isVisible = prefersReducedMotion || visibleCards.has(model.id)
         return (
           <div
-            key={rowIndex}
-            className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3"
-            style={{
-              transform: `rotateY(${rotateY}deg)`,
-              transformStyle: 'preserve-3d',
-              marginBottom: '24px',
+            key={model.id}
+            ref={(el) => {
+              if (el) {
+                el.dataset.id = String(model.id)
+                cardRefs.current.set(model.id, el)
+              } else {
+                cardRefs.current.delete(model.id)
+              }
             }}
-          >
-            {row.map((model, colIndex) => {
-              const globalIndex = rowIndex * 3 + colIndex
-              const isVisible = visibleCards.has(model.id)
-              return (
-                <div
-                  key={model.id}
-                  ref={(el) => {
-                    if (el) {
-                      el.dataset.id = String(model.id)
-                      cardRefs.current.set(model.id, el)
-                    } else {
-                      cardRefs.current.delete(model.id)
-                    }
-                  }}
-                  className="model-card"
-                  style={{
+            className="model-card"
+            style={
+              prefersReducedMotion
+                ? undefined
+                : {
                     opacity: isVisible ? 1 : 0,
                     transform: isVisible ? 'translateY(0)' : 'translateY(50px)',
-                    transition: `opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1) ${globalIndex * 0.06}s, transform 0.5s cubic-bezier(0.16, 1, 0.3, 1) ${globalIndex * 0.06}s`,
-                  }}
-                >
-                  <ModelCard model={model} onSelect={onSelect} />
-                </div>
-              )
-            })}
+                    transition: `opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1) ${index * 0.06}s, transform 0.5s cubic-bezier(0.16, 1, 0.3, 1) ${index * 0.06}s`,
+                  }
+            }
+          >
+            <ModelCard model={model} onSelect={onSelect} />
           </div>
         )
       })}
@@ -893,10 +857,10 @@ function CTASection() {
         </p>
         <Link
           to="/hangi-model"
-          className="mt-8 inline-flex items-center gap-2 rounded-sm bg-accent-red px-7 py-3.5 font-body text-sm font-semibold uppercase tracking-wider text-white transition-all duration-200 hover:bg-accent-red-light hover:scale-[1.02]"
+          className="mt-8 inline-flex items-center gap-2 rounded-sm bg-accent-red-deep px-7 py-3.5 font-body text-sm font-semibold uppercase tracking-wider text-white transition-all duration-200 hover:bg-accent-red-light hover:scale-[1.02]"
         >
           <Wand2 className="h-4 w-4" />
-          Wizard&apos;ı Kullan
+          Sihirbazı Kullan
           <ArrowRight className="h-4 w-4" />
         </Link>
       </div>
@@ -910,7 +874,7 @@ function PageHeader() {
     <section className="relative bg-bg-obsidian pt-32 pb-16 md:pt-40 md:pb-20">
       <div className="mx-auto max-w-7xl px-6 lg:px-10">
         <p
-          className="font-body text-sm font-medium uppercase tracking-[0.08em] text-accent-red"
+          className="font-body text-sm font-medium uppercase tracking-[0.08em] text-accent-red-light"
           style={{
             animation: 'fadeUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both',
           }}
@@ -924,7 +888,7 @@ function PageHeader() {
             letterSpacing: '-0.01em',
           }}
         >
-          Türkçe-Optimize Yapay Zeka Modelleri
+          Türkçe-Optimize Edilmiş Yapay Zeka Modelleri
         </h1>
         <p
           className="mt-5 max-w-xl font-body text-base leading-relaxed text-text-secondary md:text-lg"

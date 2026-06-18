@@ -268,7 +268,7 @@ function KVKKHeavyContent({ sectionStyle }: HeavyContentProps) {
                 <strong>masaüstü ürününün</strong> AI işleme bileşenini kapsar. Bu{' '}
                 <strong>web sitesi</strong> ve yol haritasındaki olası bulut hizmetleri ise aşağıda yer alan
                 Aydınlatma Metni ile{' '}
-                <Link to="/cerez-politikasi" className="text-accent-red-light underline hover:text-accent-red">
+                <Link to="/cerez-politikasi" className="text-accent-red-light underline hover:text-accent-red-light">
                   Çerez Politikası
                 </Link>{' '}
                 kapsamındadır.
@@ -296,7 +296,7 @@ function KVKKHeavyContent({ sectionStyle }: HeavyContentProps) {
                   className="flex items-center"
                   aria-hidden="true"
                 >
-                  <XCircle className="h-4 w-4 text-accent-red" />
+                  <XCircle className="h-4 w-4 text-accent-red-light" />
                 </motion.div>
                 <span className="font-body text-xs text-text-muted line-through">İnternet/Sunucu</span>
               </div>
@@ -372,7 +372,7 @@ function KVKKHeavyContent({ sectionStyle }: HeavyContentProps) {
                 }}
                 className="flex items-start gap-4"
               >
-                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-accent-red text-sm font-bold text-white">
+                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-accent-red-deep text-sm font-bold text-white">
                   {step.num}
                 </div>
                 <div className="flex items-start gap-3">
@@ -422,7 +422,7 @@ function KVKKHeavyContent({ sectionStyle }: HeavyContentProps) {
                   <th className="px-5 py-4 text-left font-display text-sm font-bold uppercase tracking-wider text-text-muted">
                     Özellik
                   </th>
-                  <th className="border-l-2 border-l-accent-red px-5 py-4 text-left font-display text-sm font-bold uppercase tracking-wider text-accent-red">
+                  <th className="border-l-2 border-l-accent-red px-5 py-4 text-left font-display text-sm font-bold uppercase tracking-wider text-accent-red-light">
                     OllamaTR
                   </th>
                   <th className="px-5 py-4 text-left font-display text-sm font-bold uppercase tracking-wider text-text-muted">
@@ -469,7 +469,7 @@ function KVKKHeavyContent({ sectionStyle }: HeavyContentProps) {
             style={sectionStyle(aydinlatmaVisible)}
             className="mb-4 inline-flex items-center gap-2 rounded border border-border-subtle bg-bg-obsidian px-3 py-1.5"
           >
-            <ScrollText className="h-3.5 w-3.5 text-accent-red" />
+            <ScrollText className="h-3.5 w-3.5 text-accent-red-light" />
             <span className="font-mono text-[0.625rem] uppercase tracking-wider text-text-muted">
               6698 Sayılı KVKK Madde 10
             </span>
@@ -508,7 +508,7 @@ function KVKKHeavyContent({ sectionStyle }: HeavyContentProps) {
                 E-posta:{' '}
                 <a
                   href="mailto:iletisim@ollamatr.com"
-                  className="text-accent-red-light underline hover:text-accent-red"
+                  className="text-accent-red-light underline hover:text-accent-red-light"
                 >
                   iletisim@ollamatr.com
                 </a>
@@ -520,7 +520,7 @@ function KVKKHeavyContent({ sectionStyle }: HeavyContentProps) {
                   href="https://github.com/eruo005-dev/ollamatr-app"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-accent-red-light underline hover:text-accent-red"
+                  className="text-accent-red-light underline hover:text-accent-red-light"
                 >
                   github.com/eruo005-dev/ollamatr-app
                 </a>
@@ -602,7 +602,7 @@ function KVKKHeavyContent({ sectionStyle }: HeavyContentProps) {
               KVKK'nın 11. maddesi uyarınca veri sorumlusuna başvurarak aşağıdaki haklarınızı kullanabilirsiniz.
               Her ilgili kişi:
             </p>
-            <ol className="mt-3 list-decimal space-y-2 pl-6 text-sm leading-relaxed text-text-secondary marker:text-accent-red">
+            <ol className="mt-3 list-decimal space-y-2 pl-6 text-sm leading-relaxed text-text-secondary marker:text-accent-red-light">
               {article11Rights.map((right) => (
                 <li key={right}>{right}</li>
               ))}
@@ -611,7 +611,7 @@ function KVKKHeavyContent({ sectionStyle }: HeavyContentProps) {
               Bu haklarınızı kullanmak için{' '}
               <a
                 href="mailto:privacy@ollamatr.com"
-                className="text-accent-red-light underline hover:text-accent-red"
+                className="text-accent-red-light underline hover:text-accent-red-light"
               >
                 privacy@ollamatr.com
               </a>{' '}
@@ -644,7 +644,7 @@ function KVKKHeavyContent({ sectionStyle }: HeavyContentProps) {
             <p className="mt-3 text-sm leading-relaxed text-text-secondary">
               Bu <strong>web sitesinin kendisi</strong> ve gelecekteki olası kurumsal/bulut hizmetleri; işbu
               Aydınlatma Metni ve{' '}
-              <Link to="/cerez-politikasi" className="text-accent-red-light underline hover:text-accent-red">
+              <Link to="/cerez-politikasi" className="text-accent-red-light underline hover:text-accent-red-light">
                 Çerez Politikası
               </Link>{' '}
               kapsamındadır. Şu anda satışı yapılan ücretli bir hizmet bulunmamaktadır.
@@ -699,7 +699,7 @@ function KVKKHeavyContent({ sectionStyle }: HeavyContentProps) {
               href="https://t.me/+sK_c-yKLc4E0Y2I0"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded bg-accent-red px-7 py-3.5 font-body text-sm font-semibold uppercase tracking-wider text-white transition-colors duration-200 hover:bg-accent-red-light"
+              className="inline-flex items-center gap-2 rounded bg-accent-red-deep px-7 py-3.5 font-body text-sm font-semibold uppercase tracking-wider text-white transition-colors duration-200 hover:bg-accent-red-light"
             >
               Telegram'a Katıl
             </a>
@@ -762,7 +762,7 @@ export default function KVKK() {
         <div ref={heroRef} className="mx-auto max-w-7xl">
           <span
             style={heroStyle(0)}
-            className="mb-4 inline-block font-body text-sm font-medium uppercase tracking-wider text-accent-red"
+            className="mb-4 inline-block font-body text-sm font-medium uppercase tracking-wider text-accent-red-light"
           >
             VERİ GİZLİLİĞİ
           </span>

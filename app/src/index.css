@@ -1,13 +1,24 @@
-/* Self-hosted fonts (no yurt dışı veri aktarımı) */
-@import '@fontsource/inter/400.css';
-@import '@fontsource/inter/500.css';
-@import '@fontsource/inter/600.css';
-@import '@fontsource/inter/700.css';
-@import '@fontsource/space-grotesk/400.css';
-@import '@fontsource/space-grotesk/700.css';
-@import '@fontsource/jetbrains-mono/400.css';
-@import '@fontsource/jetbrains-mono/500.css';
-@import '@fontsource/jetbrains-mono/600.css';
+/* Self-hosted fonts (no yurt dışı veri aktarımı).
+   Only latin + latin-ext subsets — latin-ext covers Turkish (ş/ğ/İ/ı/ç/ö/ü).
+   Dropping Cyrillic/Greek/Vietnamese subsets trims ~100-150 KB of font payload. */
+@import '@fontsource/inter/latin-400.css';
+@import '@fontsource/inter/latin-ext-400.css';
+@import '@fontsource/inter/latin-500.css';
+@import '@fontsource/inter/latin-ext-500.css';
+@import '@fontsource/inter/latin-600.css';
+@import '@fontsource/inter/latin-ext-600.css';
+@import '@fontsource/inter/latin-700.css';
+@import '@fontsource/inter/latin-ext-700.css';
+@import '@fontsource/space-grotesk/latin-400.css';
+@import '@fontsource/space-grotesk/latin-ext-400.css';
+@import '@fontsource/space-grotesk/latin-700.css';
+@import '@fontsource/space-grotesk/latin-ext-700.css';
+@import '@fontsource/jetbrains-mono/latin-400.css';
+@import '@fontsource/jetbrains-mono/latin-ext-400.css';
+@import '@fontsource/jetbrains-mono/latin-500.css';
+@import '@fontsource/jetbrains-mono/latin-ext-500.css';
+@import '@fontsource/jetbrains-mono/latin-600.css';
+@import '@fontsource/jetbrains-mono/latin-ext-600.css';
 
 @tailwind base;
 @tailwind components;
@@ -19,10 +30,11 @@
     --bg-charcoal: #131217;
     --bg-surface: #1A191D;
     --accent-red: #E13549;
+    --accent-red-deep: #B81D32;
     --accent-red-light: #FF3B5C;
     --text-primary: #F4F4F5;
     --text-secondary: #8A8A93;
-    --text-muted: #5A5A63;
+    --text-muted: #84848D;
     --border-subtle: rgba(244, 244, 245, 0.08);
     --border-active: rgba(217, 30, 54, 0.5);
     --safe-green: #00E5A0;

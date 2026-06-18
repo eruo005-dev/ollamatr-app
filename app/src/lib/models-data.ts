@@ -32,7 +32,6 @@ export type Model = {
   description: string
   popularity: number
   releasedAt: string
-  downloads: string
   rating: number
   license: ModelLicense
   commercialUse: boolean
@@ -69,7 +68,6 @@ export const MODELS: Model[] = [
       "Meta'nın Llama 3 mimarisinin Türkçe ince ayarı. Günlük sohbet, soru-cevap ve içerik üretimi için dengeli bir genel amaçlı seçenektir.",
     popularity: 94,
     releasedAt: '2024-08-12',
-    downloads: '24.5K',
     rating: 4.7,
     license: 'Meta Llama 3 Community',
     commercialUse: true,
@@ -87,7 +85,6 @@ export const MODELS: Model[] = [
       'Mistral mimarisinin Türkçe sürümü. Düşük RAM tüketimiyle hızlı metin üretimi ve kısa kod parçacıkları için uygundur.',
     popularity: 88,
     releasedAt: '2024-06-03',
-    downloads: '19.2K',
     rating: 4.5,
     license: 'Apache 2.0',
     commercialUse: true,
@@ -105,7 +102,6 @@ export const MODELS: Model[] = [
       "Türkiye'de geliştirilen açık kaynaklı dil modeli. Yerel kültürel bağlama duyarlı, doğal Türkçe yanıtlar üretir.",
     popularity: 82,
     releasedAt: '2024-09-21',
-    downloads: '12.8K',
     rating: 4.4,
     license: 'Custom (Topluluk)',
     commercialUse: true,
@@ -123,7 +119,6 @@ export const MODELS: Model[] = [
       "Trendyol'un e-ticaret verisiyle eğitilmiş Türkçe dil modeli. Ürün açıklamaları, müşteri diyalogları ve öneri senaryolarında öne çıkar.",
     popularity: 90,
     releasedAt: '2024-07-15',
-    downloads: '21.7K',
     rating: 4.6,
     license: 'Apache 2.0',
     commercialUse: true,
@@ -141,7 +136,6 @@ export const MODELS: Model[] = [
       'Karmaşık akıl yürütme görevlerinde başarılı, 13 milyar parametreli Türkçe model. Akademik özetleme ve detaylı analizler için tercih edilir.',
     popularity: 78,
     releasedAt: '2024-05-08',
-    downloads: '9.6K',
     rating: 4.5,
     license: 'Custom (Topluluk)',
     commercialUse: true,
@@ -159,7 +153,6 @@ export const MODELS: Model[] = [
       "Google Gemma 2 tabanlı, Türkçe için optimize edilmiş model. İngilizce-Türkçe çeviri ve günlük sohbet performansı yüksektir.",
     popularity: 85,
     releasedAt: '2024-08-30',
-    downloads: '17.3K',
     rating: 4.4,
     license: 'Google Gemma Terms',
     commercialUse: true,
@@ -177,7 +170,6 @@ export const MODELS: Model[] = [
       'Talimat ayarlamasıyla güçlendirilmiş Türkçe Mistral varyantı. Yapay zeka asistanı kurulumları için kullanıcı yönergelerine sadık kalır.',
     popularity: 80,
     releasedAt: '2024-04-19',
-    downloads: '11.4K',
     rating: 4.3,
     license: 'Apache 2.0',
     commercialUse: true,
@@ -195,7 +187,6 @@ export const MODELS: Model[] = [
       "Microsoft Phi-3 Mini'nin Türkçe sürümü. 4 GB RAM'de çalışacak kadar hafiftir; eski dizüstüler ve uç cihazlar için idealdir.",
     popularity: 72,
     releasedAt: '2024-10-05',
-    downloads: '14.9K',
     rating: 4.2,
     license: 'MIT',
     commercialUse: true,
@@ -213,7 +204,6 @@ export const MODELS: Model[] = [
       "Alibaba Qwen2 ailesinin Türkçe ince ayarı. Çok dilli yapıyla güçlü çeviri ve diller arası karşılaştırma görevlerinde başarılıdır.",
     popularity: 76,
     releasedAt: '2024-09-12',
-    downloads: '10.1K',
     rating: 4.3,
     license: 'Tongyi Qianwen',
     commercialUse: true,
@@ -231,7 +221,6 @@ export const MODELS: Model[] = [
       "Cohere Command R mimarisinin Türkçe sürümü. RAG iş akışları, belge sorgulama ve kurumsal bilgi tabanı senaryoları için tasarlanmıştır.",
     popularity: 68,
     releasedAt: '2024-03-27',
-    downloads: '5.4K',
     rating: 4.6,
     license: 'CC-BY-NC 4.0',
     commercialUse: false,
@@ -249,7 +238,6 @@ export const MODELS: Model[] = [
       "DeepSeek'in akıl yürütme odaklı Türkçe modeli. Algoritmik düşünme, matematiksel adım adım çözümler ve teknik soru-cevap için güçlüdür.",
     popularity: 74,
     releasedAt: '2024-11-02',
-    downloads: '8.2K',
     rating: 4.4,
     license: 'DeepSeek License',
     commercialUse: true,
@@ -267,7 +255,6 @@ export const MODELS: Model[] = [
       'Doğal dildeki Türkçe sorulardan SQL üretmeye odaklanmış kod modeli. Veritabanı analistleri ve BI ekipleri için özelleşmiştir.',
     popularity: 64,
     releasedAt: '2024-10-22',
-    downloads: '4.7K',
     rating: 4.5,
     license: 'CC-BY-SA 4.0',
     commercialUse: true,

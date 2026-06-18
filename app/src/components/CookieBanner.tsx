@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Cookie, X } from 'lucide-react'
 import { Link } from 'react-router'
@@ -73,6 +73,21 @@ export default function CookieBanner() {
   const [marketing, setMarketing] = useState(false)
   const [preferences, setPreferences] = useState(false)
 
+  // Çerez Politikası page (and footer) dispatch this to reopen the manager
+  // even after consent was already given — without it that control was dead.
+  useEffect(() => {
+    const open = () => {
+      const c = readConsent()
+      setAnalytics(c?.analytics ?? false)
+      setMarketing(c?.marketing ?? false)
+      setPreferences(c?.preferences ?? false)
+      setShowPreferences(true)
+      setVisible(true)
+    }
+    window.addEventListener('open-cookie-preferences', open)
+    return () => window.removeEventListener('open-cookie-preferences', open)
+  }, [])
+
   const buildConsent = (
     a: boolean,
     m: boolean,
@@ -141,7 +156,7 @@ export default function CookieBanner() {
 
             <div className="flex items-start gap-4">
               <div
-                className="hidden h-10 w-10 shrink-0 items-center justify-center rounded-full bg-accent-red/10 text-accent-red sm:flex"
+                className="hidden h-10 w-10 shrink-0 items-center justify-center rounded-full bg-accent-red/10 text-accent-red-light sm:flex"
                 aria-hidden="true"
               >
                 <Cookie className="h-5 w-5" />
@@ -164,7 +179,7 @@ export default function CookieBanner() {
                   bilgi için{' '}
                   <Link
                     to="/cerez-politikasi"
-                    className="text-accent-red underline-offset-2 hover:underline focus:outline-none focus:ring-2 focus:ring-accent-red"
+                    className="text-accent-red-light underline-offset-2 hover:underline focus:outline-none focus:ring-2 focus:ring-accent-red"
                   >
                     Çerez Politikası
                   </Link>
@@ -254,7 +269,7 @@ export default function CookieBanner() {
                   <button
                     type="button"
                     onClick={handleAcceptAll}
-                    className="rounded-md bg-accent-red px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-accent-red-light focus:outline-none focus:ring-2 focus:ring-accent-red focus:ring-offset-2 focus:ring-offset-bg-surface"
+                    className="rounded-md bg-accent-red-deep px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-accent-red-light focus:outline-none focus:ring-2 focus:ring-accent-red focus:ring-offset-2 focus:ring-offset-bg-surface"
                   >
                     Hepsini Kabul Et
                   </button>

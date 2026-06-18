@@ -91,7 +91,7 @@ const STATUS_CONFIG: Record<
   },
   danger: {
     text: 'YETERSİZ: RAM ARTTIRILMALI',
-    colorClass: 'text-accent-red border-accent-red',
+    colorClass: 'text-accent-red-light border-accent-red',
   },
 }
 
@@ -116,66 +116,35 @@ export default function Home() {
 }
 
 /* ═══════════════════════════ SECTION 1: HERO ═══════════════════════════ */
-const HERO_TITLE = 'YAPAY ZEKA, TÜRKÇE KONUŞSUN.'
+const HERO_TITLE = 'Yapay zeka, Türkçe konuşsun.'
 
 function HeroSection() {
-  const chars = Array.from(HERO_TITLE)
-  const midpoint = (chars.length - 1) / 2
-
   return (
     <section className="relative flex min-h-[100dvh] items-center justify-center overflow-hidden">
-      {/* Gradient overlay for text readability */}
-      <div
-        className="pointer-events-none absolute inset-0 z-[1]"
-        style={{ background: 'transparent' }}
-      />
-
       {/* Hero content */}
       <div className="relative z-10 mx-auto max-w-[800px] px-6 pt-16 text-center">
         <h1
           className="font-display text-4xl font-bold leading-[1.05] tracking-tight text-text-primary sm:text-5xl md:text-[4.5rem]"
           style={{ letterSpacing: '-0.02em' }}
-          aria-label={HERO_TITLE}
         >
-          {chars.map((char, index) => {
-            const delay = Math.abs(index - midpoint) * 0.04 + 0.3
-            return (
-              <span
-                key={`${char}-${index}`}
-                className="hero-char"
-                style={{ animationDelay: `${delay}s` }}
-                aria-hidden="true"
-              >
-                {char === ' ' ? ' ' : char}
-              </span>
-            )
-          })}
+          {HERO_TITLE}
         </h1>
 
-        <div
-          className="hero-cta mt-6 inline-flex items-center gap-2 rounded-full border border-safe-green/30 bg-safe-green/10 px-4 py-1.5 font-mono text-xs uppercase tracking-wider text-safe-green"
-          style={{ animationDelay: '0.7s' }}
-        >
+        <div className="mt-6 inline-flex items-center gap-2 rounded-full border border-safe-green/30 bg-safe-green/10 px-4 py-1.5 font-mono text-xs uppercase tracking-wider text-safe-green">
           <span className="h-1.5 w-1.5 rounded-full bg-safe-green" aria-hidden="true" />
           Topluluk Edisyonu · Tamamen Ücretsiz
         </div>
 
-        <p
-          className="hero-subtitle mx-auto mt-6 max-w-[600px] text-lg leading-relaxed text-text-secondary md:text-xl"
-          style={{ animationDelay: '0.8s' }}
-        >
-          OllamaTR, 100&apos;den fazla Türkçe-uyumlu yapay zeka modelini tek tıkla
-          bilgisayarınıza getirir. Ücretsiz, açık kaynak ve %100 veri gizliliği
-          garantisiyle.
+        <p className="mx-auto mt-6 max-w-[600px] text-lg leading-relaxed text-text-secondary md:text-xl">
+          OllamaTR, özenle seçilmiş Türkçe-uyumlu yapay zeka modellerini tek
+          tıkla bilgisayarınıza getirir. Ücretsiz, açık kaynak ve %100 yerel
+          işleme.
         </p>
 
-        <div
-          className="hero-cta mt-12 flex flex-col items-center justify-center gap-4 sm:flex-row"
-          style={{ animationDelay: '1.0s' }}
-        >
+        <div className="mt-12 flex flex-col items-center justify-center gap-4 sm:flex-row">
           <Link
             to="/modeller"
-            className="inline-flex items-center gap-2 rounded bg-accent-red px-7 py-3.5 text-sm font-semibold uppercase tracking-wider text-white transition-colors duration-200 hover:bg-accent-red-light"
+            className="inline-flex items-center gap-2 rounded bg-accent-red-deep px-7 py-3.5 text-sm font-semibold uppercase tracking-wider text-white transition-colors duration-200 hover:bg-accent-red-light"
           >
             Modelleri Gör
             <ArrowRight className="h-4 w-4" />
@@ -222,23 +191,12 @@ function ProblemSection() {
 
 /* ═══════════════════════════ SECTION 3: MODEL SHOWCASE ═══════════════════════════ */
 function ModelShowcaseSection() {
-  const { ref, visible } = useScrollReveal()
-
-  const row1 = MODELS.slice(0, 3)
-  const row2 = MODELS.slice(3, 6)
-
   return (
-    <section ref={ref} className="bg-bg-obsidian py-24 md:py-32 lg:py-[120px]">
+    <section className="bg-bg-obsidian py-24 md:py-32 lg:py-[120px]">
       <div className="mx-auto max-w-7xl px-6 lg:px-10">
-        <div
-          style={{
-            opacity: visible ? 1 : 0,
-            transform: visible ? 'translateY(0)' : 'translateY(40px)',
-            transition: 'all 0.8s cubic-bezier(0.16, 1, 0.3, 1)',
-          }}
-        >
+        <div>
           <h2 className="font-display text-2xl font-bold tracking-tight text-text-primary md:text-3xl lg:text-[2.5rem]">
-            100+ TÜRKÇE-OPTİMİZE MODEL
+            Özenle seçilmiş Türkçe modeller
           </h2>
           <Link
             to="/modeller"
@@ -249,63 +207,10 @@ function ModelShowcaseSection() {
           </Link>
         </div>
 
-        {/* 3D Perspective Grid - Desktop */}
-        <div className="mt-12 hidden md:block" style={{ perspective: '1000px' }}>
-          {/* Row 1 - rotateY(-3deg) */}
-          <div
-            style={{ transformStyle: 'preserve-3d', transform: 'rotateY(-3deg)' }}
-          >
-            <div className="grid grid-cols-3 gap-6">
-              {row1.map((model, i) => (
-                <div
-                  key={model.name}
-                  style={{
-                    opacity: visible ? 1 : 0,
-                    transform: visible ? 'translateY(0)' : 'translateY(60px)',
-                    transition: `all 0.6s cubic-bezier(0.16, 1, 0.3, 1) ${0.08 * i}s`,
-                  }}
-                >
-                  <ModelCard model={model} />
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Row 2 - rotateY(3deg) */}
-          <div
-            className="mt-6"
-            style={{ transformStyle: 'preserve-3d', transform: 'rotateY(3deg)' }}
-          >
-            <div className="grid grid-cols-3 gap-6">
-              {row2.map((model, i) => (
-                <div
-                  key={model.name}
-                  style={{
-                    opacity: visible ? 1 : 0,
-                    transform: visible ? 'translateY(0)' : 'translateY(60px)',
-                    transition: `all 0.6s cubic-bezier(0.16, 1, 0.3, 1) ${0.08 * (i + 3)}s`,
-                  }}
-                >
-                  <ModelCard model={model} />
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        {/* Flat grid - Mobile */}
-        <div className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2 md:hidden">
-          {MODELS.map((model, i) => (
-            <div
-              key={model.name}
-              style={{
-                opacity: visible ? 1 : 0,
-                transform: visible ? 'translateY(0)' : 'translateY(60px)',
-                transition: `all 0.6s cubic-bezier(0.16, 1, 0.3, 1) ${0.08 * i}s`,
-              }}
-            >
-              <ModelCard model={model} />
-            </div>
+        {/* Flat responsive grid — cards visible by default */}
+        <div className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3">
+          {MODELS.slice(0, 6).map((model) => (
+            <ModelCard key={model.name} model={model} />
           ))}
         </div>
       </div>
@@ -330,7 +235,7 @@ function ModelCard({ model }: { model: (typeof MODELS)[0] }) {
         </p>
         <Link
           to="/modeller"
-          className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-accent-red-light transition-colors hover:text-accent-red"
+          className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-accent-red-light transition-colors hover:text-accent-red-light"
         >
           <ArrowRight className="h-3.5 w-3.5" />
           Detaylar
@@ -357,7 +262,7 @@ function RAMCalculatorSection() {
         }}
       >
         <h2 className="text-center font-display text-2xl font-bold tracking-tight text-text-primary md:text-3xl lg:text-[2.5rem]">
-          SİSTEMİN HAZIR MI?
+          Sisteminiz hazır mı?
         </h2>
         <p className="mt-4 text-center text-base text-text-secondary">
           Model boyutu ve RAM miktarını girin, uyumluluğu anında görün.
@@ -461,7 +366,7 @@ function FeaturesSection() {
             transition: 'all 0.8s cubic-bezier(0.16, 1, 0.3, 1)',
           }}
         >
-          NEDEN OLLAMATR?
+          Neden OllamaTR?
         </h2>
 
         <div className="mt-12 grid grid-cols-1 gap-8 sm:grid-cols-2">
@@ -477,14 +382,7 @@ function FeaturesSection() {
                   transition: `all 0.6s cubic-bezier(0.16, 1, 0.3, 1) ${0.12 * i}s`,
                 }}
               >
-                <Icon
-                  className="h-8 w-8 text-accent-red"
-                  style={{
-                    opacity: visible ? 1 : 0,
-                    transform: visible ? 'scale(1)' : 'scale(0.8)',
-                    transition: `all 0.4s cubic-bezier(0.16, 1, 0.3, 1) ${0.12 * i - 0.2}s`,
-                  }}
-                />
+                <Icon className="h-8 w-8 text-accent-red-light" />
                 <h3 className="mt-5 font-display text-lg font-bold text-text-primary">
                   {feature.title}
                 </h3>
@@ -521,7 +419,7 @@ function CTABannerSection() {
             transition: 'all 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.3s',
           }}
         >
-          TÜRKİYE&apos;NİN AI DEVRİMİNE KATIL.
+          Türkiye&apos;nin AI devrimine katıl.
         </h2>
 
         <p
@@ -532,8 +430,8 @@ function CTABannerSection() {
             transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.8s',
           }}
         >
-          Hemen ücretsiz indirin ve yerel yapay zeka deneyimini keşfedin. Pro
-          tier ile gelişmiş özelliklere erişin.
+          Topluluğa katıl ve özenle seçilmiş Türkçe modelleri yerel olarak
+          çalıştırmaya başla. Tamamen ücretsiz ve açık kaynak.
         </p>
 
         <div
@@ -548,16 +446,16 @@ function CTABannerSection() {
             href="https://t.me/+sK_c-yKLc4E0Y2I0"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 rounded bg-accent-red px-7 py-3.5 text-sm font-semibold uppercase tracking-wider text-white transition-colors duration-200 hover:bg-accent-red-light"
+            className="inline-flex items-center gap-2 rounded bg-accent-red-deep px-7 py-3.5 text-sm font-semibold uppercase tracking-wider text-white transition-colors duration-200 hover:bg-accent-red-light"
           >
-            Telegram'a Katıl
+            Telegram topluluğuna katıl
             <ArrowRight className="h-4 w-4" />
           </a>
           <Link
-            to="/nabiz"
+            to="/modeller"
             className="inline-flex items-center gap-2 rounded border border-border-subtle px-7 py-3.5 text-sm font-semibold uppercase tracking-wider text-text-primary transition-colors duration-200 hover:border-accent-red hover:text-accent-red-light"
           >
-            Nabız'a Bak
+            Modelleri keşfet
             <ArrowRight className="h-4 w-4" />
           </Link>
         </div>

@@ -6,11 +6,11 @@ import { Home, Compass } from 'lucide-react'
  * status is still 200; this gives users an honest, navigable not-found state. */
 export default function NotFound() {
   return (
-    <main
+    <section
       className="flex min-h-[70vh] w-full flex-col items-center justify-center px-6 text-center"
       aria-labelledby="notfound-title"
     >
-      <p className="font-mono text-sm uppercase tracking-[0.3em] text-accent-red">404</p>
+      <p className="font-mono text-sm uppercase tracking-[0.3em] text-accent-red-light">404</p>
       <h1
         id="notfound-title"
         className="mt-4 font-display text-3xl font-bold text-text-primary sm:text-4xl"
@@ -24,7 +24,7 @@ export default function NotFound() {
       <div className="mt-8 flex flex-col items-center gap-4 sm:flex-row">
         <Link
           to="/"
-          className="inline-flex items-center justify-center gap-2 rounded bg-accent-red px-7 py-3.5 font-body text-sm font-semibold uppercase tracking-wider text-white transition-colors duration-200 hover:bg-accent-red-light"
+          className="inline-flex items-center justify-center gap-2 rounded bg-accent-red-deep px-7 py-3.5 font-body text-sm font-semibold uppercase tracking-wider text-white transition-colors duration-200 hover:bg-accent-red-light"
         >
           <Home className="h-4 w-4" aria-hidden="true" />
           Ana sayfa
@@ -37,6 +37,6 @@ export default function NotFound() {
           Modeller
         </Link>
       </div>
-    </main>
+    </section>
   )
 }

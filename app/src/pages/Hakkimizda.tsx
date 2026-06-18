@@ -19,11 +19,14 @@ interface TeamMember {
   initials: string
 }
 
+// TODO (KVKK Madde 10): Bir gerçek veri sorumlusu adı-soyadı, proje sahibi
+// tarafından eklenmelidir. Aydınlatma yükümlülüğü için yasal veri sorumlusu
+// kimliği zorunludur — buraya uydurma isim YAZILMAMALIDIR.
 const teamMembers: TeamMember[] = [
   {
-    name: '[Operatör İsim Soyisim]',
-    role: 'Bireysel Operatör · Topluluk Yöneticisi',
-    bio: 'OllamaTR şu anda topluluk tarafından geliştirilen, kâr amacı gütmeyen bir açık kaynak projesidir ve tek bir bireysel operatörün KVKK md.3/1-ı kapsamındaki sorumluluğu altında yürütülmektedir. Gerçek isim ve iletişim bilgisi GitHub profili üzerinden görülebilir.',
+    name: 'OllamaTR topluluk projesi',
+    role: 'Açık kaynak topluluk projesi',
+    bio: 'OllamaTR yeni başlayan, kâr amacı gütmeyen bir açık kaynak topluluk projesidir. Sorular, katkı ve iletişim için iletisim@ollamatr.com adresinden veya GitHub deposu üzerinden bize ulaşabilirsiniz.',
     initials: '··',
   },
 ]
@@ -51,45 +54,48 @@ interface RoadmapItem {
   statusLabel: string
 }
 
+// Honest, forward-looking roadmap. No quarters with a fabricated shipped
+// history and no false "Tamamlandı"/"Devam Ediyor" badges — every item is
+// genuinely a plan, so all are "Planlandı".
 const roadmapItems: RoadmapItem[] = [
   {
-    quarter: 'Q1 2024',
-    title: 'Kuruluş & İlk Beta',
-    description: 'Ekibin oluşması, ilk Türkçe LLM beta sürümü',
-    status: 'completed',
-    statusLabel: 'Tamamlandı',
-  },
-  {
-    quarter: 'Q2 2024',
-    title: 'Public Launch',
-    description: 'Ücretsiz tier ile genel kullanıma açılım',
-    status: 'completed',
-    statusLabel: 'Tamamlandı',
-  },
-  {
-    quarter: 'Q3 2024',
-    title: 'GPU Cluster Desteği',
-    description: 'Çoklu GPU üzerinde dağıtık çıkarım',
-    status: 'in-progress',
-    statusLabel: 'Devam Ediyor',
-  },
-  {
-    quarter: 'Q4 2024',
-    title: 'Fine-Tune Platformu',
-    description: 'Topluluk-driven Türkçe model fine-tune',
+    quarter: 'Planlandı',
+    title: 'Kuruluş & ilk beta',
+    description: 'İlk Türkçe LLM beta sürümünün hazırlanması',
     status: 'planned',
     statusLabel: 'Planlandı',
   },
   {
-    quarter: 'Q1 2025',
-    title: 'Mobile SDK',
+    quarter: 'Planlandı',
+    title: 'Genel kullanıma açılım',
+    description: 'Ücretsiz katmanla genel kullanıma açılım',
+    status: 'planned',
+    statusLabel: 'Planlandı',
+  },
+  {
+    quarter: 'Planlandı',
+    title: 'GPU cluster desteği',
+    description: 'Çoklu GPU üzerinde dağıtık çıkarım',
+    status: 'planned',
+    statusLabel: 'Planlandı',
+  },
+  {
+    quarter: 'Planlandı',
+    title: 'Fine-tune platformu',
+    description: 'Topluluk odaklı Türkçe model fine-tune',
+    status: 'planned',
+    statusLabel: 'Planlandı',
+  },
+  {
+    quarter: 'Planlandı',
+    title: 'Mobil SDK',
     description: 'iOS ve Android için yerel SDK',
     status: 'planned',
     statusLabel: 'Planlandı',
   },
   {
-    quarter: 'Q2 2025',
-    title: 'Federal Öğrenme',
+    quarter: 'Planlandı',
+    title: 'Federal öğrenme',
     description: 'Veri paylaşmadan ortak model eğitimi',
     status: 'planned',
     statusLabel: 'Planlandı',
@@ -101,7 +107,7 @@ function getStatusColor(status: RoadmapItem['status']) {
     case 'completed':
       return 'bg-safe-green'
     case 'in-progress':
-      return 'bg-accent-red'
+      return 'bg-accent-red-deep'
     case 'planned':
       return 'bg-text-muted'
   }
@@ -112,7 +118,7 @@ function getStatusTextColor(status: RoadmapItem['status']) {
     case 'completed':
       return 'text-safe-green'
     case 'in-progress':
-      return 'text-accent-red'
+      return 'text-accent-red-light'
     case 'planned':
       return 'text-text-muted'
   }
@@ -132,41 +138,48 @@ function RoadmapTimeline({ items }: { items: RoadmapItem[] }) {
     () => {
       if (!containerRef.current || !lineFillRef.current) return
 
-      // Animate the red fill line with scroll
-      gsap.fromTo(
-        lineFillRef.current,
-        { scaleY: 0 },
-        {
-          scaleY: 1,
-          transformOrigin: 'top center',
-          ease: 'none',
-          scrollTrigger: {
-            trigger: containerRef.current,
-            start: 'top 70%',
-            end: 'bottom 40%',
-            scrub: 0.5,
-          },
-        }
-      )
+      // Respect prefers-reduced-motion (WCAG 2.3.3). Animations only run for
+      // users who have NOT requested reduced motion; reduced-motion users see
+      // the final, static state.
+      const mm = gsap.matchMedia()
 
-      // Animate each milestone item
-      itemRefs.current.forEach((item) => {
-        if (!item) return
+      mm.add('(prefers-reduced-motion: no-preference)', () => {
+        // Animate the red fill line with scroll
         gsap.fromTo(
-          item,
-          { opacity: 0, x: -20 },
+          lineFillRef.current,
+          { scaleY: 0 },
           {
-            opacity: 1,
-            x: 0,
-            duration: 0.5,
-            ease: 'power2.out',
+            scaleY: 1,
+            transformOrigin: 'top center',
+            ease: 'none',
             scrollTrigger: {
-              trigger: item,
-              start: 'top 80%',
-              toggleActions: 'play none none none',
+              trigger: containerRef.current,
+              start: 'top 70%',
+              end: 'bottom 40%',
+              scrub: 0.5,
             },
           }
         )
+
+        // Animate each milestone item
+        itemRefs.current.forEach((item) => {
+          if (!item) return
+          gsap.fromTo(
+            item,
+            { opacity: 0, x: -20 },
+            {
+              opacity: 1,
+              x: 0,
+              duration: 0.5,
+              ease: 'power2.out',
+              scrollTrigger: {
+                trigger: item,
+                start: 'top 80%',
+                toggleActions: 'play none none none',
+              },
+            }
+          )
+        })
       })
     },
     { scope: containerRef }
@@ -183,7 +196,7 @@ function RoadmapTimeline({ items }: { items: RoadmapItem[] }) {
       {/* Red fill line */}
       <div
         ref={lineFillRef}
-        className="absolute left-[22px] top-0 w-[2px] bg-accent-red md:left-[26px]"
+        className="absolute left-[22px] top-0 w-[2px] bg-accent-red-deep md:left-[26px]"
         style={{ height: '100%', transformOrigin: 'top center' }}
       />
 
@@ -238,13 +251,13 @@ export default function Hakkimizda() {
       <section className="px-6 pb-16 pt-40 lg:px-10 lg:pb-24 lg:pt-44">
         <div className="mx-auto max-w-4xl text-center">
           <motion.p
-            className="mb-4 font-body text-sm font-medium uppercase tracking-wider text-accent-red"
+            className="mb-4 font-body text-sm font-medium uppercase tracking-wider text-accent-red-light"
             variants={fadeUp}
             initial="hidden"
             animate="visible"
             custom={0}
           >
-            HAKKIMIZDA
+            Hakkımızda
           </motion.p>
           <motion.h1
             className="font-display text-3xl font-bold leading-tight tracking-tight text-text-primary md:text-4xl lg:text-5xl"
@@ -306,10 +319,9 @@ export default function Hakkimizda() {
               Hikayemiz
             </h2>
             <p className="mt-6 font-body text-lg leading-relaxed text-text-secondary">
-              2024&apos;te bir grup Türk geliştirici, &ldquo;Neden Türkçe AI
-              altyapısı yok?&rdquo; sorusuyla yola çıktı. OllamaTR doğdu. Bugün
-              10.000+ kullanıcı, 100+ model ve büyüyen bir ekosistemle yola
-              devam ediyoruz.
+              &ldquo;Neden Türkçe AI altyapısı yok?&rdquo; sorusuyla yola çıktık
+              ve OllamaTR doğdu. Şu an yeni başlayan, açık kaynak bir topluluk
+              projesiyiz ve birlikte büyüyoruz.
             </p>
           </motion.div>
         </div>
@@ -320,7 +332,7 @@ export default function Hakkimizda() {
         <div className="mx-auto max-w-5xl">
           <ScrollReveal>
             <h2 className="mb-12 text-center font-display text-3xl font-bold tracking-tight text-text-primary lg:text-4xl">
-              EKİP
+              Ekip
             </h2>
           </ScrollReveal>
 
@@ -341,7 +353,7 @@ export default function Hakkimizda() {
                 <div
                   role="img"
                   aria-label={`${member.name} profil resmi`}
-                  className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-bg-surface font-display text-lg font-bold text-accent-red"
+                  className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-bg-surface font-display text-lg font-bold text-accent-red-light"
                 >
                   {member.initials}
                 </div>
@@ -349,12 +361,28 @@ export default function Hakkimizda() {
                 <h3 className="font-display text-base font-bold text-text-primary">
                   {member.name}
                 </h3>
-                <p className="mt-1 font-body text-sm font-medium text-accent-red">
+                <p className="mt-1 font-body text-sm font-medium text-accent-red-light">
                   {member.role}
                 </p>
-                <p className="mt-2 font-body text-xs leading-relaxed text-text-secondary line-clamp-3">
+                <p className="mt-2 font-body text-xs leading-relaxed text-text-secondary">
                   {member.bio}
                 </p>
+                <div className="mt-4 flex flex-wrap gap-x-4 gap-y-2">
+                  <a
+                    href="mailto:iletisim@ollamatr.com"
+                    className="font-body text-xs font-medium text-accent-red-light transition-colors hover:text-accent-red-light"
+                  >
+                    iletisim@ollamatr.com
+                  </a>
+                  <a
+                    href="https://github.com/eruo005-dev/ollamatr-app"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="font-body text-xs font-medium text-accent-red-light transition-colors hover:text-accent-red-light"
+                  >
+                    GitHub deposu
+                  </a>
+                </div>
               </motion.div>
             ))}
           </motion.div>
@@ -366,7 +394,7 @@ export default function Hakkimizda() {
         <div className="mx-auto max-w-4xl text-center">
           <ScrollReveal>
             <h2 className="mb-4 font-display text-2xl font-bold tracking-tight text-text-primary">
-              İLGİLİ EKOSİSTEM
+              İlgili ekosistem
             </h2>
           </ScrollReveal>
           <ScrollReveal delay={0.1}>
@@ -417,7 +445,7 @@ export default function Hakkimizda() {
               Ortaklık ve işbirliği için{' '}
               <a
                 href="mailto:iletisim@ollamatr.com"
-                className="text-accent-red-light transition-colors hover:text-accent-red"
+                className="text-accent-red-light transition-colors hover:text-accent-red-light"
               >
                 iletisim@ollamatr.com
               </a>{' '}
@@ -432,7 +460,7 @@ export default function Hakkimizda() {
         <div className="mx-auto max-w-3xl">
           <ScrollReveal>
             <h2 className="mb-12 text-center font-display text-3xl font-bold tracking-tight text-text-primary">
-              YOL HARİTASI
+              Yol haritası
             </h2>
           </ScrollReveal>
 
@@ -454,7 +482,7 @@ export default function Hakkimizda() {
               href="https://t.me/+sK_c-yKLc4E0Y2I0"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center rounded bg-accent-red px-8 py-3.5 font-body text-sm font-semibold uppercase tracking-wider text-white transition-colors duration-200 hover:bg-accent-red-light"
+              className="inline-flex items-center justify-center rounded bg-accent-red-deep px-8 py-3.5 font-body text-sm font-semibold uppercase tracking-wider text-white transition-colors duration-200 hover:bg-accent-red-light"
             >
               Telegram'a Katıl
             </a>

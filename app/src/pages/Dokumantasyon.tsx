@@ -102,7 +102,7 @@ export default function Dokumantasyon() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, ease: easeExpoOut }}
-            className="mb-4 inline-block font-body text-sm font-medium uppercase tracking-wider text-accent-red"
+            className="mb-4 inline-block font-body text-sm font-medium uppercase tracking-wider text-accent-red-light"
           >
             DOKÜMANTASYON
           </motion.span>
@@ -138,7 +138,7 @@ export default function Dokumantasyon() {
                 placeholder="Dokümantasyonda ara..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="h-14 w-full rounded-lg border border-border-subtle bg-bg-surface pl-12 pr-4 font-body text-base text-text-primary outline-none transition-all duration-200 placeholder:text-text-muted focus:border-accent-red focus:shadow-[0_0_12px_rgba(217,30,54,0.2)]"
+                className="h-14 w-full rounded-lg border border-border-subtle bg-bg-surface pl-12 pr-4 font-body text-base text-text-primary outline-none transition-all duration-200 placeholder:text-text-muted focus:border-accent-red focus:ring-2 focus:ring-accent-red/50"
               />
             </div>
           </motion.div>
@@ -175,12 +175,12 @@ export default function Dokumantasyon() {
                 variants={fadeUp}
                 className="group block cursor-not-allowed rounded-lg border border-border-subtle bg-bg-charcoal p-6 text-left opacity-70 transition-all duration-200"
               >
-                <card.icon className="h-8 w-8 text-accent-red" />
+                <card.icon className="h-8 w-8 text-accent-red-light" />
                 <h3 className="mt-4 font-display text-lg font-bold text-text-primary">
                   {card.title}
                 </h3>
                 <p className="mt-2 text-sm leading-relaxed text-text-secondary">{card.desc}</p>
-                <span className="mt-4 inline-block font-body text-sm font-medium text-accent-red">
+                <span className="mt-4 inline-block font-body text-sm font-medium text-accent-red-light">
                   {card.linkText}
                 </span>
               </motion.button>
@@ -217,14 +217,14 @@ export default function Dokumantasyon() {
                   className="flex gap-4 rounded-lg border border-border-subtle bg-bg-charcoal p-6 transition-all duration-200 hover:-translate-y-0.5 hover:border-accent-red/30"
                 >
                   <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-accent-red/10">
-                    <cat.icon className="h-5 w-5 text-accent-red" />
+                    <cat.icon className="h-5 w-5 text-accent-red-light" />
                   </div>
                   <div>
                     <h3 className="font-display text-base font-bold text-text-primary">
                       {cat.title}
                     </h3>
                     <p className="mt-1 text-sm leading-relaxed text-text-secondary">{cat.desc}</p>
-                    <span className="mt-2 inline-block rounded-full bg-accent-red/10 px-2 py-0.5 font-body text-xs font-medium text-accent-red">
+                    <span className="mt-2 inline-block rounded-full bg-accent-red/10 px-2 py-0.5 font-body text-xs font-medium text-accent-red-light">
                       Yakında
                     </span>
                   </div>
@@ -287,7 +287,7 @@ export default function Dokumantasyon() {
                       {article.category} · Yakında
                     </p>
                   </div>
-                  <ArrowRight className="h-4 w-4 shrink-0 text-text-muted transition-all duration-200 group-hover:translate-x-1 group-hover:text-accent-red" />
+                  <ArrowRight className="h-4 w-4 shrink-0 text-text-muted transition-all duration-200 group-hover:translate-x-1 group-hover:text-accent-red-light" />
                 </motion.button>
               ))}
             </div>
@@ -309,7 +309,7 @@ export default function Dokumantasyon() {
           className="mx-auto max-w-xl text-center"
         >
           <motion.div variants={staggerChild}>
-            <Users className="mx-auto h-10 w-10 text-accent-red" />
+            <Users className="mx-auto h-10 w-10 text-accent-red-light" />
           </motion.div>
           <motion.h2
             variants={staggerChild}
@@ -326,7 +326,7 @@ export default function Dokumantasyon() {
           >
             <Link
               to="/topluluk"
-              className="inline-flex items-center gap-2 rounded bg-accent-red px-7 py-3.5 font-body text-sm font-semibold uppercase tracking-wider text-white transition-all duration-200 hover:scale-[1.02] hover:bg-accent-red-light"
+              className="inline-flex items-center gap-2 rounded bg-accent-red-deep px-7 py-3.5 font-body text-sm font-semibold uppercase tracking-wider text-white transition-all duration-200 hover:scale-[1.02] hover:bg-accent-red-light"
             >
               Topluluğa Katıl →
             </Link>

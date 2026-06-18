@@ -40,7 +40,7 @@ export default function Footer() {
               className="inline-flex items-center gap-0 font-display text-xl font-bold tracking-tight"
             >
               <span className="text-text-primary">Ollama</span>
-              <span className="text-accent-red">TR</span>
+              <span className="text-accent-red-light">TR</span>
             </Link>
             <p className="mt-4 text-sm leading-relaxed text-text-secondary">
               Türkçe-uyumlu, yerel çalışan, açık kaynak yapay zeka stack'i. Topluluk tarafından geliştirilen, kâr amacı gütmeyen bir projedir.

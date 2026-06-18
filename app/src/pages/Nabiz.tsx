@@ -77,7 +77,7 @@ export default function Nabiz() {
       {/* HERO */}
       <section className="px-6 pb-12 pt-40 lg:px-10 lg:pb-16 lg:pt-44">
         <div className="mx-auto max-w-4xl">
-          <p className="mb-3 font-mono text-xs uppercase tracking-wider text-accent-red">
+          <p className="mb-3 font-mono text-xs uppercase tracking-wider text-accent-red-light">
             Nabız
           </p>
           <h1 className="font-display text-4xl font-bold leading-tight tracking-tight text-text-primary lg:text-5xl">
@@ -121,7 +121,7 @@ export default function Nabiz() {
                   aria-pressed={isActive}
                   className={`rounded-sm border px-3 py-1.5 font-mono text-xs uppercase tracking-wider transition-colors duration-200 ${
                     isActive
-                      ? 'border-accent-red bg-accent-red/10 text-accent-red'
+                      ? 'border-accent-red bg-accent-red/10 text-accent-red-light'
                       : 'border-border-subtle bg-transparent text-text-secondary hover:border-text-secondary hover:text-text-primary'
                   }`}
                 >
@@ -208,7 +208,7 @@ export default function Nabiz() {
               href="https://t.me/+sK_c-yKLc4E0Y2I0"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded bg-accent-red px-6 py-3 font-body text-sm font-semibold uppercase tracking-wider text-white transition-colors duration-200 hover:bg-accent-red-light"
+              className="inline-flex items-center gap-2 rounded bg-accent-red-deep px-6 py-3 font-body text-sm font-semibold uppercase tracking-wider text-white transition-colors duration-200 hover:bg-accent-red-light"
             >
               <Send className="h-4 w-4" aria-hidden="true" />
               Telegram'da öner

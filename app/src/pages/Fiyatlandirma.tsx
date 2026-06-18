@@ -1,7 +1,6 @@
-import { useState } from 'react'
 import { Link } from 'react-router'
 import { Check, X, Clock, Info, Heart, ExternalLink } from 'lucide-react'
-import { motion } from 'framer-motion'
+import { motion, useReducedMotion } from 'framer-motion'
 import {
   Accordion,
   AccordionItem,
@@ -47,7 +46,7 @@ const tiers: Tier[] = [
     period: 'açık kaynak',
     description: 'Bireysel kullanıcılar, hobiler, geliştiriciler',
     features: [
-      { text: '50+ Türkçe model erişimi', status: 'included' },
+      { text: 'Özenle seçilmiş Türkçe modellere erişim', status: 'included' },
       { text: 'Yerel çalıştırma — verileriniz cihazınızda', status: 'included' },
       { text: 'Topluluk WebUI', status: 'included' },
       { text: 'Türkçe dokümantasyon', status: 'included' },
@@ -111,9 +110,9 @@ interface ComparisonRow {
 }
 
 const comparisonFeatures: ComparisonRow[] = [
-  { name: '50+ Türkçe model', ucretsiz: '✓', pro: '✓', kobi: '✓' },
+  { name: 'Özenle seçilmiş Türkçe modeller', ucretsiz: '✓', pro: '✓', kobi: '✓' },
   { name: 'Yerel çalıştırma', ucretsiz: '✓', pro: '✓', kobi: '✓' },
-  { name: 'Topluluk desteği (Discord / GitHub)', ucretsiz: '✓', pro: '✓', kobi: '✓' },
+  { name: 'Topluluk desteği (Telegram / GitHub)', ucretsiz: '✓', pro: '✓', kobi: '✓' },
   { name: 'Anahtar teslim kurulum', ucretsiz: '–', pro: '–', kobi: 'Yakında' },
   { name: 'KVKK danışmanlığı', ucretsiz: '–', pro: '–', kobi: 'Yakında' },
   { name: 'SLA garantisi', ucretsiz: '–', pro: '–', kobi: 'Yakında' },
@@ -127,7 +126,7 @@ const faqItems = [
   {
     question: "OllamaTR'yi şirketim için ticari olarak kullanabilir miyim?",
     answer:
-      'Topluluk Edisyonu MIT lisansı altında ticari kullanıma açıktır. Ancak şu anda biz herhangi bir ticari hizmet satmıyoruz; OllamaTR henüz bir tüzel kişiliğe (şirket) sahip değildir. Yardım almak için topluluk Discord ve GitHub kanallarına katılabilirsiniz.',
+      'Topluluk Edisyonu MIT lisansı altında ticari kullanıma açıktır. Ancak şu anda biz herhangi bir ticari hizmet satmıyoruz; OllamaTR henüz bir tüzel kişiliğe (şirket) sahip değildir. Yardım almak için topluluk Telegram ve GitHub kanallarına katılabilirsiniz.',
   },
   {
     question: 'Bağış yapanlar özel destek alır mı?',
@@ -152,36 +151,11 @@ const faqItems = [
 ]
 
 /* ------------------------------------------------------------------ */
-/*  Testimonials data                                                   */
-/* ------------------------------------------------------------------ */
-
-const testimonials = [
-  {
-    quote:
-      "Yerel makinemde tam Türkçe LLM stack'i 10 dakikada kurabildim. Bu yıl en sevdiğim açık kaynak projesi.",
-    author: 'Selin A.',
-    role: 'İndie geliştirici',
-  },
-  {
-    quote:
-      "GitHub Issues'a katkıda bulundum, beni topluluğa iyi karşıladılar. Türkçe AI ekosistemi için harika bir başlangıç.",
-    author: 'Burak T.',
-    role: 'Açık kaynak gönüllüsü',
-  },
-  {
-    quote:
-      'Bitirme projemde kullandım. Tamamen ücretsiz, çevrimdışı çalışıyor — KVKK derdi olmadan deneyebildim.',
-    author: 'Zeynep K.',
-    role: 'ODTÜ öğrencisi',
-  },
-]
-
-/* ------------------------------------------------------------------ */
 /*  Main component                                                      */
 /* ------------------------------------------------------------------ */
 
 export default function Fiyatlandirma() {
-  const [hoveredRow, setHoveredRow] = useState<number | null>(null)
+  const prefersReducedMotion = useReducedMotion()
 
   return (
     <div className="bg-bg-obsidian">
@@ -189,18 +163,18 @@ export default function Fiyatlandirma() {
       <section className="px-6 pb-16 pt-40 lg:px-10 lg:pb-24 lg:pt-44">
         <div className="mx-auto max-w-4xl text-center">
           <motion.p
-            className="mb-4 font-body text-sm font-medium uppercase tracking-wider text-accent-red"
+            className="mb-4 font-body text-sm font-medium uppercase tracking-wider text-accent-red-light"
             variants={fadeUp}
-            initial="hidden"
+            initial={prefersReducedMotion ? false : 'hidden'}
             animate="visible"
             custom={0}
           >
-            DESTEK · BAĞIŞ
+            Destek · Bağış
           </motion.p>
           <motion.h1
             className="font-display text-4xl font-bold leading-tight tracking-tight text-text-primary lg:text-5xl"
             variants={fadeUp}
-            initial="hidden"
+            initial={prefersReducedMotion ? false : 'hidden'}
             animate="visible"
             custom={1}
           >
@@ -209,7 +183,7 @@ export default function Fiyatlandirma() {
           <motion.p
             className="mx-auto mt-6 max-w-2xl font-body text-lg leading-relaxed text-text-secondary"
             variants={fadeUp}
-            initial="hidden"
+            initial={prefersReducedMotion ? false : 'hidden'}
             animate="visible"
             custom={2}
           >
@@ -228,9 +202,9 @@ export default function Fiyatlandirma() {
             className="rounded-lg border border-accent-red/30 bg-accent-red/10 p-4 md:p-5"
           >
             <div className="flex items-start gap-3">
-              <Info className="mt-0.5 h-5 w-5 shrink-0 text-accent-red" />
+              <Info className="mt-0.5 h-5 w-5 shrink-0 text-accent-red-light" />
               <p className="font-mono text-xs leading-relaxed text-text-secondary md:text-sm">
-                <span className="font-semibold uppercase tracking-wider text-accent-red">
+                <span className="font-semibold uppercase tracking-wider text-accent-red-light">
                   Topluluk Projesi
                 </span>{' '}
                 — OllamaTR şu anda topluluk tarafından geliştirilen, kâr amacı
@@ -249,8 +223,8 @@ export default function Fiyatlandirma() {
         <motion.div
           className="mx-auto grid max-w-6xl grid-cols-1 gap-6 md:grid-cols-3"
           variants={staggerContainer}
-          initial="hidden"
-          whileInView="visible"
+          initial={prefersReducedMotion ? false : 'hidden'}
+          whileInView={prefersReducedMotion ? undefined : 'visible'}
           viewport={{ once: true, margin: '-100px' }}
         >
           {tiers.map((tier) => (
@@ -267,7 +241,7 @@ export default function Fiyatlandirma() {
             >
               {/* Featured badge */}
               {tier.featured && (
-                <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded bg-accent-red px-3 py-1 font-body text-xs font-semibold uppercase tracking-wider text-white">
+                <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded bg-accent-red-deep px-3 py-1 font-body text-xs font-semibold uppercase tracking-wider text-white">
                   DESTEKLE
                 </span>
               )}
@@ -275,7 +249,7 @@ export default function Fiyatlandirma() {
               {/* Tier label */}
               <p
                 className={`mb-3 font-body text-xs font-medium uppercase tracking-wider ${
-                  tier.featured ? 'text-accent-red' : 'text-text-muted'
+                  tier.featured ? 'text-accent-red-light' : 'text-text-muted'
                 }`}
               >
                 {tier.label}
@@ -285,7 +259,7 @@ export default function Fiyatlandirma() {
               <div className="flex items-baseline gap-1">
                 <span
                   className={`font-display text-4xl font-bold ${
-                    tier.featured ? 'text-accent-red' : 'text-text-primary'
+                    tier.featured ? 'text-accent-red-light' : 'text-text-primary'
                   }`}
                 >
                   {tier.price}
@@ -309,7 +283,7 @@ export default function Fiyatlandirma() {
                     href={tier.ctaHref}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex w-full items-center justify-center gap-2 rounded bg-accent-red py-3.5 font-body text-sm font-semibold uppercase tracking-wider text-white transition-all duration-200 hover:bg-accent-red-light hover:scale-[1.02]"
+                    className="inline-flex w-full items-center justify-center gap-2 rounded bg-accent-red-deep py-3.5 font-body text-sm font-semibold uppercase tracking-wider text-white transition-all duration-200 hover:bg-accent-red-light hover:scale-[1.02]"
                   >
                     <Heart className="h-4 w-4" />
                     {tier.cta}
@@ -398,7 +372,7 @@ export default function Fiyatlandirma() {
       <section className="px-6 py-24 lg:px-10 lg:py-32">
         <ScrollReveal>
           <h2 className="mb-10 text-center font-display text-2xl font-bold tracking-tight text-text-primary">
-            ÖZELLİK KARŞILAŞTIRMASI
+            Özellik karşılaştırması
           </h2>
         </ScrollReveal>
 
@@ -413,7 +387,7 @@ export default function Fiyatlandirma() {
                   <th className="sticky top-0 bg-bg-obsidian px-4 py-4 text-center font-body text-sm font-medium text-text-secondary">
                     Topluluk
                   </th>
-                  <th className="sticky top-0 bg-bg-obsidian px-4 py-4 text-center font-body text-sm font-semibold text-accent-red">
+                  <th className="sticky top-0 bg-bg-obsidian px-4 py-4 text-center font-body text-sm font-semibold text-accent-red-light">
                     Bağış
                   </th>
                   <th className="sticky top-0 bg-bg-obsidian px-4 py-4 text-center font-body text-sm font-medium text-text-secondary">
@@ -425,15 +399,11 @@ export default function Fiyatlandirma() {
                 {comparisonFeatures.map((row, idx) => (
                   <tr
                     key={idx}
-                    className={`border-b border-border-subtle transition-colors duration-200 ${
-                      hoveredRow === idx
-                        ? 'bg-[rgba(244,244,245,0.04)]'
-                        : idx % 2 === 0
-                          ? 'bg-transparent'
-                          : 'bg-[rgba(244,244,245,0.02)]'
+                    className={`border-b border-border-subtle transition-colors duration-200 hover:bg-[rgba(244,244,245,0.04)] focus-within:bg-[rgba(244,244,245,0.04)] ${
+                      idx % 2 === 0
+                        ? 'bg-transparent'
+                        : 'bg-[rgba(244,244,245,0.02)]'
                     }`}
-                    onMouseEnter={() => setHoveredRow(idx)}
-                    onMouseLeave={() => setHoveredRow(null)}
                   >
                     <td className="py-4 pr-6 font-body text-sm font-medium text-text-primary">
                       {row.name}
@@ -460,7 +430,7 @@ export default function Fiyatlandirma() {
         <div className="mx-auto max-w-3xl">
           <ScrollReveal>
             <h2 className="mb-10 text-center font-display text-2xl font-bold tracking-tight text-text-primary">
-              SIK SORULAN SORULAR
+              Sık sorulan sorular
             </h2>
           </ScrollReveal>
 
@@ -485,47 +455,17 @@ export default function Fiyatlandirma() {
         </div>
       </section>
 
-      {/* ========== TESTIMONIALS ========== */}
+      {/* ========== COMMUNITY REVIEWS — honest empty state ==========
+       * The fabricated testimonials ("Selin A.", "Burak T.", "Zeynep K.")
+       * were removed: no real user quotes exist yet. When the community
+       * grows and real, attributable reviews come in, a section can return
+       * here with live data only.
+       */}
       <section className="px-6 py-20 lg:px-10 lg:py-24">
-        <div className="mx-auto max-w-5xl">
-          <ScrollReveal>
-            <h2 className="mb-10 text-center font-display text-xl font-bold tracking-tight text-text-primary">
-              MÜŞTERİ YORUMLARI
-            </h2>
-          </ScrollReveal>
-
-          <motion.div
-            className="grid grid-cols-1 gap-6 md:grid-cols-3"
-            variants={staggerContainer}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: '-50px' }}
-          >
-            {testimonials.map((t, idx) => (
-              <motion.div
-                key={idx}
-                variants={staggerChild}
-                className="rounded-lg border border-border-subtle bg-bg-charcoal p-8 transition-all duration-300 hover:border-accent-red/30"
-              >
-                <p className="font-body text-base leading-relaxed text-text-primary">
-                  &ldquo;{t.quote}&rdquo;
-                </p>
-                <div className="mt-6 flex items-center gap-3">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-bg-surface font-display text-sm font-bold text-accent-red">
-                    {t.author.charAt(0)}
-                  </div>
-                  <div>
-                    <p className="font-body text-sm font-semibold text-text-primary">
-                      {t.author}
-                    </p>
-                    <p className="font-body text-xs text-text-secondary">
-                      {t.role}
-                    </p>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </motion.div>
+        <div className="mx-auto max-w-2xl text-center">
+          <p className="font-body text-sm leading-relaxed text-text-secondary">
+            Gerçek kullanıcı yorumları topluluk büyüdükçe burada eklenecek.
+          </p>
         </div>
       </section>
 
@@ -544,7 +484,7 @@ export default function Fiyatlandirma() {
               href="https://t.me/+sK_c-yKLc4E0Y2I0"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center rounded bg-accent-red px-8 py-3.5 font-body text-sm font-semibold uppercase tracking-wider text-white transition-colors duration-200 hover:bg-accent-red-light"
+              className="inline-flex items-center justify-center rounded bg-accent-red-deep px-8 py-3.5 font-body text-sm font-semibold uppercase tracking-wider text-white transition-colors duration-200 hover:bg-accent-red-light"
             >
               Telegram'a Katıl
             </a>

@@ -295,6 +295,12 @@ function getRamColor(ram: number): string {
   return '#D91E36'
 }
 
+/* ---- prefers-reduced-motion check for interaction-driven tweens ---- */
+function prefersReducedMotion(): boolean {
+  if (typeof window === 'undefined' || !window.matchMedia) return false
+  return window.matchMedia('(prefers-reduced-motion: reduce)').matches
+}
+
 /* ------------------------------------------------------------------ */
 /*  Refs container type                                               */
 /* ------------------------------------------------------------------ */
@@ -364,105 +370,107 @@ export default function HangiModel() {
     }
   }, [])
 
-  /* ---- GSAP: Hero entrance ---- */
+  /* ---- GSAP: Hero entrance (guarded for reduced motion) ---- */
   useGSAP(
     () => {
       if (!heroScope.current) return
-      const els = heroScope.current.querySelectorAll('.hero-animate')
-      gsap.from(els, {
-        y: 40,
-        opacity: 0,
-        duration: 0.8,
-        stagger: 0.12,
-        ease: 'expo.out',
-        delay: 0.2,
+      const mm = gsap.matchMedia()
+      mm.add('(prefers-reduced-motion: no-preference)', () => {
+        const els = heroScope.current!.querySelectorAll('.hero-animate')
+        gsap.from(els, {
+          y: 40,
+          opacity: 0,
+          duration: 0.8,
+          stagger: 0.12,
+          ease: 'expo.out',
+          delay: 0.2,
+        })
       })
+      return () => mm.revert()
     },
     { scope: heroScope }
   )
 
-  /* ---- GSAP: Wizard entrance ---- */
+  /* ---- GSAP: Wizard entrance (guarded for reduced motion) ---- */
   useGSAP(
     () => {
       if (!wizardScope.current) return
-      gsap.from(wizardScope.current, {
-        y: 20,
-        opacity: 0,
-        duration: 0.6,
-        ease: 'expo.out',
-        delay: 0.5,
+      const mm = gsap.matchMedia()
+      mm.add('(prefers-reduced-motion: no-preference)', () => {
+        gsap.from(wizardScope.current!, {
+          y: 20,
+          opacity: 0,
+          duration: 0.6,
+          ease: 'expo.out',
+          delay: 0.5,
+        })
       })
+      return () => mm.revert()
     },
     { scope: wizardScope }
   )
 
-  /* ---- GSAP: Nasıl Çalışır scroll ---- */
+  /* ---- GSAP: Nasıl Çalışır scroll (guarded for reduced motion) ---- */
   useGSAP(
     () => {
       if (!nasilScope.current) return
-      const steps = nasilScope.current.querySelectorAll('.process-step')
-      const line = nasilScope.current.querySelector('.process-line-fill')
-
-      gsap.from(steps, {
-        y: 30,
-        opacity: 0,
-        scale: 0.8,
-        duration: 0.5,
-        stagger: 0.15,
-        ease: 'expo.out',
-        scrollTrigger: {
-          trigger: nasilScope.current,
-          start: 'top 80%',
-          once: true,
-        },
+      const mm = gsap.matchMedia()
+      mm.add('(prefers-reduced-motion: no-preference)', () => {
+        const steps = nasilScope.current!.querySelectorAll('.process-step')
+        gsap.from(steps, {
+          y: 30,
+          opacity: 0,
+          scale: 0.8,
+          duration: 0.5,
+          stagger: 0.15,
+          ease: 'expo.out',
+          scrollTrigger: {
+            trigger: nasilScope.current,
+            start: 'top 80%',
+            once: true,
+          },
+        })
       })
-
-      if (line) {
-        // scrub: true → line fills progressively with scroll position
-        gsap.fromTo(
-          line,
-          { scaleX: 0 },
-          {
-            scaleX: 1,
-            ease: 'none',
-            scrollTrigger: {
-              trigger: nasilScope.current,
-              start: 'top 85%',
-              end: 'bottom 60%',
-              scrub: true,
-            },
-          }
-        )
-      }
+      return () => mm.revert()
     },
     { scope: nasilScope }
   )
 
-  /* ---- GSAP: CTA scroll ---- */
+  /* ---- GSAP: CTA scroll (guarded for reduced motion) ---- */
   useGSAP(
     () => {
       if (!ctaScope.current) return
-      gsap.from(ctaScope.current.querySelectorAll('.cta-animate'), {
-        y: 30,
-        opacity: 0,
-        duration: 0.6,
-        stagger: 0.12,
-        ease: 'expo.out',
-        scrollTrigger: {
-          trigger: ctaScope.current,
-          start: 'top 85%',
-          once: true,
-        },
+      const mm = gsap.matchMedia()
+      mm.add('(prefers-reduced-motion: no-preference)', () => {
+        gsap.from(ctaScope.current!.querySelectorAll('.cta-animate'), {
+          y: 30,
+          opacity: 0,
+          duration: 0.6,
+          stagger: 0.12,
+          ease: 'expo.out',
+          scrollTrigger: {
+            trigger: ctaScope.current,
+            start: 'top 85%',
+            once: true,
+          },
+        })
       })
+      return () => mm.revert()
     },
     { scope: ctaScope }
   )
 
-  /* ---- Step transition ---- */
+  /* ---- Step transition (guarded for reduced motion) ---- */
   const animateStepTransition = useCallback(
     (direction: 'forward' | 'backward', onComplete: () => void) => {
       const target = domRefs.current.stepContent
       if (!target) {
+        onComplete()
+        return
+      }
+      if (prefersReducedMotion()) {
+        // No motion: advance immediately with the panel fully visible.
+        gsap.set(target, { opacity: 1, x: 0 })
         onComplete()
         return
       }
@@ -486,26 +494,20 @@ export default function HangiModel() {
     []
   )
 
-  /* ---- Loading animation ---- */
+  /* ---- Loading animation (typewriter removed; bar guarded) ---- */
   const runLoadingAnimation = useCallback(() => {
     const bar = domRefs.current.loadingBar
     const textEl = domRefs.current.loadingText
     if (!bar || !textEl) return
 
-    const loadingText = 'Modeliniz analiz ediliyor...'
-    textEl.textContent = ''
+    // Static label — no typewriter effect.
+    textEl.textContent = 'Model seçiliyor…'
 
-    // Typewriter effect
-    let charIndex = 0
-    const typeInterval = setInterval(() => {
-      const current = domRefs.current.loadingText
-      if (charIndex < loadingText.length && current) {
-        current.textContent += loadingText[charIndex]
-        charIndex++
-      } else {
-        clearInterval(typeInterval)
-      }
-    }, 40)
+    if (prefersReducedMotion()) {
+      // No motion: show the bar already full.
+      gsap.set(bar, { width: '100%' })
+      return
+    }
 
     // Progress bar
     gsap.fromTo(
@@ -515,10 +517,14 @@ export default function HangiModel() {
     )
   }, [])
 
-  /* ---- Result animation ---- */
+  /* ---- Result animation (guarded for reduced motion) ---- */
   const animateResult = useCallback(() => {
     const card = domRefs.current.resultCard
     if (!card) return
+    // With reduced motion the card and alternatives render fully visible
+    // without any entrance tween.
+    if (prefersReducedMotion()) return
+
     gsap.from(card, {
       scale: 0.9,
       opacity: 0,
@@ -702,7 +708,7 @@ export default function HangiModel() {
         className="relative bg-bg-obsidian px-6 pt-40 pb-20 lg:px-10"
       >
         <div className="mx-auto max-w-4xl text-center">
-          <span className="hero-animate mb-4 inline-block font-body text-sm font-medium uppercase tracking-wider text-accent-red">
+          <span className="hero-animate mb-4 inline-block font-body text-sm font-medium uppercase tracking-wider text-accent-red-light">
             MODEL SİHİRBAZI
           </span>
           <h1 className="hero-animate font-display text-4xl font-bold leading-tight tracking-tight text-text-primary md:text-5xl lg:text-[4rem]">
@@ -743,28 +749,26 @@ export default function HangiModel() {
               </span>
             </div>
 
-            {/* Progress indicator / stepper — tablist semantics */}
+            {/* Progress indicator / stepper — progressbar semantics */}
             <div
-              role="tablist"
-              aria-label="Sihirbaz adımları"
+              role="progressbar"
+              aria-label="Sihirbaz ilerlemesi"
+              aria-valuenow={step}
+              aria-valuemin={1}
+              aria-valuemax={5}
+              aria-valuetext={`Adım ${step} / 5`}
               className="mb-8 flex items-center gap-2"
             >
               {[1, 2, 3, 4, 5].map((s) => (
                 <div
                   key={s}
-                  role="tab"
-                  aria-selected={step === s}
-                  aria-label={`Adım ${s}`}
+                  aria-hidden="true"
                   className="h-1 flex-1 rounded-full transition-all duration-300"
                   style={{
                     backgroundColor:
                       s <= step
                         ? 'rgba(217, 30, 54, 0.8)'
                         : 'rgba(244, 244, 245, 0.08)',
-                    boxShadow:
-                      s <= step
-                        ? '0 0 8px rgba(217, 30, 54, 0.4)'
-                        : 'none',
                   }}
                 />
               ))}
@@ -775,8 +779,6 @@ export default function HangiModel() {
               ref={(el) => {
                 domRefs.current.stepContent = el
               }}
-              role="tabpanel"
-              aria-label={`Adım ${step}`}
               aria-live="polite"
             >
               {/* ---- STEP 1: USE CASE ---- */}
@@ -801,13 +803,12 @@ export default function HangiModel() {
                           aria-pressed={selected}
                           className="group relative flex flex-col items-start gap-3 rounded-lg border p-5 text-left transition-all duration-200"
                           style={{
-                            backgroundColor: 'var(--bg-surface)',
+                            backgroundColor: selected
+                              ? 'rgba(217, 30, 54, 0.08)'
+                              : 'var(--bg-surface)',
                             borderColor: selected
                               ? 'rgba(217, 30, 54, 0.8)'
                               : 'rgba(244, 244, 245, 0.08)',
-                            boxShadow: selected
-                              ? '0 0 20px rgba(217, 30, 54, 0.2)'
-                              : 'none',
                             borderLeftWidth: selected ? '3px' : '1px',
                             borderLeftColor: selected
                               ? 'var(--accent-red)'
@@ -957,13 +958,12 @@ export default function HangiModel() {
                           aria-pressed={selected}
                           className="group flex items-center gap-4 rounded-lg border p-5 text-left transition-all duration-200"
                           style={{
-                            backgroundColor: 'var(--bg-surface)',
+                            backgroundColor: selected
+                              ? 'rgba(217, 30, 54, 0.08)'
+                              : 'var(--bg-surface)',
                             borderColor: selected
                               ? 'rgba(217, 30, 54, 0.8)'
                               : 'rgba(244, 244, 245, 0.08)',
-                            boxShadow: selected
-                              ? '0 0 20px rgba(217, 30, 54, 0.2)'
-                              : 'none',
                             borderLeftWidth: selected ? '3px' : '1px',
                             borderLeftColor: selected
                               ? 'var(--accent-red)'
@@ -1076,9 +1076,6 @@ export default function HangiModel() {
                             color: selected
                               ? 'var(--accent-red-light)'
                               : 'var(--text-secondary)',
-                            boxShadow: selected
-                              ? '0 0 12px rgba(217, 30, 54, 0.2)'
-                              : 'none',
                           }}
                         >
                           <Icon className="h-4 w-4" />
@@ -1160,8 +1157,8 @@ export default function HangiModel() {
                         style={{
                           backgroundColor: 'var(--bg-charcoal)',
                           borderColor: 'rgba(217, 30, 54, 0.5)',
-                          boxShadow:
-                            '0 0 30px rgba(217, 30, 54, 0.2)',
+                          borderLeftWidth: '3px',
+                          borderLeftColor: 'var(--accent-red)',
                         }}
                       >
                         {/* Match badge */}
@@ -1183,7 +1180,7 @@ export default function HangiModel() {
                           </span>
                         </div>
 
-                        <h3 className="font-display text-2xl font-bold text-accent-red">
+                        <h3 className="font-display text-2xl font-bold text-accent-red-light">
                           {result.best.name}
                         </h3>
 
@@ -1198,7 +1195,7 @@ export default function HangiModel() {
                               key={t}
                               className="inline-flex items-center gap-1 rounded bg-bg-surface px-2.5 py-1 text-xs text-text-secondary"
                             >
-                              <Zap className="h-3 w-3 text-accent-red" />
+                              <Zap className="h-3 w-3 text-accent-red-light" />
                               {t}
                             </span>
                           ))}
@@ -1243,7 +1240,7 @@ export default function HangiModel() {
                             href={`https://ollama.com/search?q=${encodeURIComponent(result.best.shortName)}`}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="inline-flex items-center justify-center gap-2 rounded bg-accent-red px-6 py-3 text-sm font-semibold uppercase tracking-wider text-white transition-colors duration-200 hover:bg-accent-red-light"
+                            className="inline-flex items-center justify-center gap-2 rounded bg-accent-red-deep px-6 py-3 text-sm font-semibold uppercase tracking-wider text-white transition-colors duration-200 hover:bg-accent-red-light"
                           >
                             <ArrowUpRight className="h-4 w-4" />
                             Ollama Hub'da Ara
@@ -1322,7 +1319,7 @@ export default function HangiModel() {
       >
         <div className="mx-auto max-w-[1000px]">
           <h2 className="mb-16 text-center font-display text-3xl font-bold tracking-tight text-text-primary md:text-4xl">
-            SİHİRBAZ NASIL ÇALIŞIR?
+            Sihirbaz nasıl çalışır?
           </h2>
 
           <div className="relative">
@@ -1356,7 +1353,7 @@ export default function HangiModel() {
                 {
                   num: '03',
                   title: 'Model Öner',
-                  desc: 'Katalogdaki 100+ model arasından en uygununu seçer.',
+                  desc: `Katalogdaki ${MODELS.length} model arasından en uygununu seçer.`,
                   icon: Sparkles,
                 },
                 {
@@ -1377,16 +1374,14 @@ export default function HangiModel() {
                       style={{
                         borderColor: 'var(--accent-red)',
                         backgroundColor: 'var(--bg-obsidian)',
-                        boxShadow:
-                          '0 0 20px rgba(217, 30, 54, 0.2)',
                       }}
                     >
-                      <span className="font-display text-lg font-bold text-accent-red">
+                      <span className="font-display text-lg font-bold text-accent-red-light">
                         {item.num}
                       </span>
                     </div>
                     <div className="mb-2 flex items-center gap-2">
-                      <Icon className="h-4 w-4 text-accent-red" />
+                      <Icon className="h-4 w-4 text-accent-red-light" />
                       <span className="font-display text-sm font-bold text-text-primary">
                         {item.title}
                       </span>

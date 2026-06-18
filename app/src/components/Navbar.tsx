@@ -29,7 +29,7 @@ export default function Navbar() {
         {/* Logo */}
         <Link to="/" className="flex items-center gap-0 font-display text-xl font-bold tracking-tight">
           <span className="text-text-primary">Ollama</span>
-          <span className="text-accent-red">TR</span>
+          <span className="text-accent-red-light">TR</span>
         </Link>
 
         {/* Desktop nav links */}
@@ -40,13 +40,13 @@ export default function Navbar() {
               to={link.to}
               className={`text-sm font-medium transition-colors duration-200 ${
                 isActive(link.to)
-                  ? 'text-accent-red'
+                  ? 'text-accent-red-light'
                   : 'text-text-secondary hover:text-text-primary'
               }`}
             >
               {link.label}
               {isActive(link.to) && (
-                <span className="mt-0.5 block h-0.5 w-full rounded-full bg-accent-red" />
+                <span className="mt-0.5 block h-0.5 w-full rounded-full bg-accent-red-deep" />
               )}
             </Link>
           ))}
@@ -57,7 +57,7 @@ export default function Navbar() {
           href="https://t.me/+sK_c-yKLc4E0Y2I0"
           target="_blank"
           rel="noopener noreferrer"
-          className="hidden items-center gap-2 rounded bg-accent-red px-5 py-2.5 text-sm font-semibold uppercase tracking-wider text-white transition-colors duration-200 hover:bg-accent-red-light md:inline-flex"
+          className="hidden items-center gap-2 rounded bg-accent-red-deep px-5 py-2.5 text-sm font-semibold uppercase tracking-wider text-white transition-colors duration-200 hover:bg-accent-red-light md:inline-flex"
         >
           <Send className="h-4 w-4" />
           Telegram'a Katıl
@@ -90,7 +90,7 @@ export default function Navbar() {
                 onClick={closeMobile}
                 className={`text-base font-medium transition-colors ${
                   isActive(link.to)
-                    ? 'text-accent-red'
+                    ? 'text-accent-red-light'
                     : 'text-text-secondary hover:text-text-primary'
                 }`}
               >
@@ -102,7 +102,7 @@ export default function Navbar() {
               target="_blank"
               rel="noopener noreferrer"
               onClick={closeMobile}
-              className="mt-2 inline-flex items-center justify-center gap-2 rounded bg-accent-red px-5 py-3 text-sm font-semibold uppercase tracking-wider text-white"
+              className="mt-2 inline-flex items-center justify-center gap-2 rounded bg-accent-red-deep px-5 py-3 text-sm font-semibold uppercase tracking-wider text-white"
             >
               <Send className="h-4 w-4" />
               Telegram'a Katıl

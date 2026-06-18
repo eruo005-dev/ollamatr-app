@@ -46,7 +46,7 @@ export default function Layout({ children }: LayoutProps) {
     <div className="relative min-h-[100dvh]">
       <a
         href="#main-content"
-        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-md focus:bg-accent-red focus:px-4 focus:py-2 focus:font-mono focus:text-sm focus:font-semibold focus:text-white"
+        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-md focus:bg-accent-red-deep focus:px-4 focus:py-2 focus:font-mono focus:text-sm focus:font-semibold focus:text-white"
       >
         İçeriğe geç
       </a>

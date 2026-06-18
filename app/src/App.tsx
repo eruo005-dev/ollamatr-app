@@ -82,7 +82,7 @@ function RouteLoader() {
       aria-live="polite"
       className="flex min-h-[60vh] w-full items-center justify-center"
     >
-      <Loader2 className="h-8 w-8 animate-spin text-accent-red" aria-hidden="true" />
+      <Loader2 className="h-8 w-8 animate-spin text-accent-red-light" aria-hidden="true" />
       <span className="sr-only">Yükleniyor</span>
     </div>
   )

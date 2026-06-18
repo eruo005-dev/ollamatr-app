@@ -89,7 +89,7 @@ export default function CerezPolitikasi() {
         >
           <motion.span
             variants={staggerChild}
-            className="mb-4 inline-flex items-center gap-2 font-body text-sm font-medium uppercase tracking-wider text-accent-red"
+            className="mb-4 inline-flex items-center gap-2 font-body text-sm font-medium uppercase tracking-wider text-accent-red-light"
           >
             <Cookie className="h-4 w-4" />
             ÇEREZ BİLGİLENDİRMESİ
@@ -194,7 +194,7 @@ export default function CerezPolitikasi() {
                       key={`${cat.category}-${row.name}`}
                       className={i % 2 === 0 ? 'bg-bg-obsidian' : 'bg-bg-charcoal/40'}
                     >
-                      <td className="px-5 py-4 font-body text-sm font-semibold text-accent-red">
+                      <td className="px-5 py-4 font-body text-sm font-semibold text-accent-red-light">
                         {cat.category}
                       </td>
                       <td className="px-5 py-4 font-body text-sm font-medium text-text-primary">
@@ -241,7 +241,7 @@ export default function CerezPolitikasi() {
             }}
             className="mb-4 inline-flex items-center gap-2 rounded border border-border-subtle bg-bg-obsidian px-3 py-1.5"
           >
-            <Settings2 className="h-3.5 w-3.5 text-accent-red" />
+            <Settings2 className="h-3.5 w-3.5 text-accent-red-light" />
             <span className="font-mono text-[0.625rem] uppercase tracking-wider text-text-muted">
               Tercih Yönetimi
             </span>
@@ -279,7 +279,7 @@ export default function CerezPolitikasi() {
             <button
               type="button"
               onClick={openCookiePreferences}
-              className="inline-flex items-center gap-2 rounded bg-accent-red px-6 py-3 font-body text-sm font-semibold uppercase tracking-wider text-white transition-all duration-200 hover:scale-[1.02] hover:bg-accent-red-light"
+              className="inline-flex items-center gap-2 rounded bg-accent-red-deep px-6 py-3 font-body text-sm font-semibold uppercase tracking-wider text-white transition-all duration-200 hover:scale-[1.02] hover:bg-accent-red-light"
             >
               <Settings2 className="h-4 w-4" />
               Çerez Tercihlerimi Aç
