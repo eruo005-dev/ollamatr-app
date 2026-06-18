@@ -151,3 +151,10 @@
     opacity: 1 !important;
   }
 }
+
+/* === Visible keyboard focus (WCAG 2.4.7 / 1.4.11) — global, AA-contrast ring === */
+*:focus-visible {
+  outline: 2px solid var(--accent-red-light);
+  outline-offset: 2px;
+  border-radius: 2px;
+}

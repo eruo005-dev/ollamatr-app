@@ -4,7 +4,6 @@ import {
   Search,
   Download,
   X,
-  Star,
   MemoryStick,
   ArrowRight,
   Wand2,
@@ -18,7 +17,7 @@ import { TiltCard } from '@/components/TiltCard'
 /* ═══════════════════════════ TYPES ═══════════════════════════ */
 type RamFilter = 'Tüm RAM' | '< 8GB (Düşük)' | '8-16GB (Orta)' | '16GB+ (Yüksek)'
 type UseCaseFilter = 'Tümü' | UseCase
-type SortOption = 'Popülerlik' | 'RAM (Düşük → Yüksek)' | 'RAM (Yüksek → Düşük)' | 'En Yeni'
+type SortOption = 'İsim (A → Z)' | 'RAM (Düşük → Yüksek)' | 'RAM (Yüksek → Düşük)'
 
 const PAGE_SIZE = 9
 
@@ -49,7 +48,7 @@ function useModelFilters() {
   const [searchQuery, setSearchQuery] = useState('')
   const [ramFilter, setRamFilter] = useState<RamFilter>('Tüm RAM')
   const [useCaseFilter, setUseCaseFilter] = useState<UseCaseFilter>('Tümü')
-  const [sortOption, setSortOption] = useState<SortOption>('Popülerlik')
+  const [sortOption, setSortOption] = useState<SortOption>('İsim (A → Z)')
 
   const filteredModels = useMemo(() => {
     let result = [...MODELS]
@@ -76,17 +75,14 @@ function useModelFilters() {
     }
 
     switch (sortOption) {
-      case 'Popülerlik':
-        result.sort((a, b) => b.popularity - a.popularity)
+      case 'İsim (A → Z)':
+        result.sort((a, b) => a.name.localeCompare(b.name, 'tr'))
         break
       case 'RAM (Düşük → Yüksek)':
         result.sort((a, b) => a.ramGB - b.ramGB)
         break
       case 'RAM (Yüksek → Düşük)':
         result.sort((a, b) => b.ramGB - a.ramGB)
-        break
-      case 'En Yeni':
-        result.sort((a, b) => new Date(b.releasedAt).getTime() - new Date(a.releasedAt).getTime())
         break
     }
 
@@ -159,21 +155,10 @@ function ModelCard({ model, onSelect }: ModelCardProps) {
         ))}
       </div>
 
-      {/* Rating */}
-      <div className="mt-4 flex items-center gap-2">
-        <div className="flex items-center gap-1">
-          {Array.from({ length: 5 }).map((_, i) => (
-            <Star
-              key={i}
-              className={`h-3.5 w-3.5 ${i < Math.floor(model.rating) ? 'fill-warn-yellow text-warn-yellow' : 'text-text-muted'}`}
-            />
-          ))}
-        </div>
-        <span className="font-mono text-xs text-text-secondary">{model.rating}</span>
-        <span className="ml-auto font-mono text-[10px] uppercase tracking-wider text-accent-red-light">
-          %{model.popularity} popülerlik
-        </span>
-      </div>
+      {/* Source repo (verifiable) */}
+      <p className="mt-4 truncate font-mono text-[10px] text-text-muted">
+        Kaynak: {model.source}
+      </p>
 
       {/* Bottom row: actions */}
       <div className="mt-5 flex items-center justify-end gap-2 border-t border-border-subtle pt-4">
@@ -193,7 +178,7 @@ function ModelCard({ model, onSelect }: ModelCardProps) {
           target="_blank"
           rel="noopener noreferrer"
           onClick={(e) => e.stopPropagation()}
-          className="inline-flex items-center gap-1.5 rounded-sm bg-accent-red-deep px-4 py-2 font-body text-xs font-semibold uppercase tracking-wider text-white transition-all duration-200 hover:bg-accent-red-light"
+          className="inline-flex items-center gap-1.5 rounded-sm bg-accent-red-deep px-4 py-2 font-body text-xs font-semibold uppercase tracking-wider text-white transition-all duration-200 hover:bg-[#A01528]"
           aria-label={`${model.name} için Ollama Hub'da ara`}
         >
           <Download className="h-3.5 w-3.5" />
@@ -370,10 +355,9 @@ function DetailModal({ model, onClose }: DetailModalProps) {
         {/* Specs grid */}
         <div className="mt-6 grid grid-cols-2 gap-4 md:grid-cols-3">
           <SpecItem label="Kısa Ad" value={model.shortName} />
-          <SpecItem label="RAM Gereksinimi" value={`${model.ramGB}GB`} color={ramHex} />
+          <SpecItem label="RAM (tahmini)" value={`~${model.ramGB}GB`} color={ramHex} />
           <SpecItem label="RAM Sınıfı" value={model.ramBucket} />
-          <SpecItem label="Popülerlik" value={`%${model.popularity}`} />
-          <SpecItem label="Yayın Tarihi" value={new Date(model.releasedAt).toLocaleDateString('tr-TR')} />
+          <SpecItem label="Kaynak (HF)" value={model.source} />
         </div>
 
         {/* Use cases */}
@@ -389,19 +373,6 @@ function DetailModal({ model, onClose }: DetailModalProps) {
               </span>
             ))}
           </div>
-        </div>
-
-        {/* Rating stars */}
-        <div className="mt-6 flex items-center gap-3">
-          <div className="flex items-center gap-1">
-            {Array.from({ length: 5 }).map((_, i) => (
-              <Star
-                key={i}
-                className={`h-5 w-5 ${i < Math.floor(model.rating) ? 'fill-warn-yellow text-warn-yellow' : 'text-text-muted'}`}
-              />
-            ))}
-          </div>
-          <span className="font-mono text-sm text-text-secondary">{model.rating} / 5.0</span>
         </div>
 
         {/* Tags */}
@@ -434,7 +405,7 @@ function DetailModal({ model, onClose }: DetailModalProps) {
 
         {/* Performance note */}
         <p className="mt-6 font-body text-sm leading-relaxed text-text-muted">
-          Bu model {model.ramGB}GB RAM gerektirir. GPU hızlandırma önerilir. OllamaTR ile tek komutla indirin ve çalıştırın.
+          Bu model yaklaşık {model.ramGB}GB RAM gerektirir (~Q4 quant tahmini). GPU hızlandırma önerilir. OllamaTR ile tek komutla indirin ve çalıştırın.
         </p>
 
         {/* Action buttons */}
@@ -443,7 +414,7 @@ function DetailModal({ model, onClose }: DetailModalProps) {
             href={`https://ollama.com/search?q=${encodeURIComponent(model.shortName)}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center justify-center gap-2 rounded-sm bg-accent-red-deep px-6 py-3.5 font-body text-sm font-semibold uppercase tracking-wider text-white transition-all duration-200 hover:bg-accent-red-light"
+            className="inline-flex items-center justify-center gap-2 rounded-sm bg-accent-red-deep px-6 py-3.5 font-body text-sm font-semibold uppercase tracking-wider text-white transition-all duration-200 hover:bg-[#A01528]"
           >
             <Download className="h-4 w-4" />
             Modeli İndir
@@ -495,7 +466,7 @@ interface FilterBarProps {
 
 const RAM_OPTIONS: RamFilter[] = ['Tüm RAM', '< 8GB (Düşük)', '8-16GB (Orta)', '16GB+ (Yüksek)']
 const USE_CASE_OPTIONS: UseCaseFilter[] = ['Tümü', 'Genel Amaçlı', 'Kod', 'Sohbet', 'Soru-Cevap', 'Çeviri', 'Özetleme']
-const SORT_OPTIONS: SortOption[] = ['Popülerlik', 'RAM (Düşük → Yüksek)', 'RAM (Yüksek → Düşük)', 'En Yeni']
+const SORT_OPTIONS: SortOption[] = ['İsim (A → Z)', 'RAM (Düşük → Yüksek)', 'RAM (Yüksek → Düşük)']
 
 function FilterBar({
   searchQuery, setSearchQuery,
@@ -857,7 +828,7 @@ function CTASection() {
         </p>
         <Link
           to="/hangi-model"
-          className="mt-8 inline-flex items-center gap-2 rounded-sm bg-accent-red-deep px-7 py-3.5 font-body text-sm font-semibold uppercase tracking-wider text-white transition-all duration-200 hover:bg-accent-red-light hover:scale-[1.02]"
+          className="mt-8 inline-flex items-center gap-2 rounded-sm bg-accent-red-deep px-7 py-3.5 font-body text-sm font-semibold uppercase tracking-wider text-white transition-all duration-200 hover:bg-[#A01528] hover:scale-[1.02]"
         >
           <Wand2 className="h-4 w-4" />
           Sihirbazı Kullan
@@ -896,7 +867,7 @@ function PageHeader() {
             animation: 'fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.5s both',
           }}
         >
-          Türkçe için optimize edilmiş model kataloğumuzdan ihtiyacınıza en uygun olanı bulun. RAM gereksinimleri, kullanım alanları ve performans metrikleriyle birlikte.
+          Türkçe için eğitilmiş, gerçek ve doğrulanmış model kataloğumuzdan ihtiyacınıza en uygun olanı bulun. Tahmini RAM gereksinimleri, kullanım alanları ve kaynak depoları ile birlikte.
         </p>
       </div>
 

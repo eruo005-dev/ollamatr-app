@@ -208,7 +208,7 @@ export default function Nabiz() {
               href="https://t.me/+sK_c-yKLc4E0Y2I0"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded bg-accent-red-deep px-6 py-3 font-body text-sm font-semibold uppercase tracking-wider text-white transition-colors duration-200 hover:bg-accent-red-light"
+              className="inline-flex items-center gap-2 rounded bg-accent-red-deep px-6 py-3 font-body text-sm font-semibold uppercase tracking-wider text-white transition-colors duration-200 hover:bg-[#A01528]"
             >
               <Send className="h-4 w-4" aria-hidden="true" />
               Telegram'da öner

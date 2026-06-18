@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
 import { Cookie, X } from 'lucide-react'
 import { Link } from 'react-router'
 
@@ -67,6 +67,7 @@ function readConsent(): Consent | null {
 }
 
 export default function CookieBanner() {
+  const reduce = useReducedMotion()
   const [visible, setVisible] = useState<boolean>(() => readConsent() === null)
   const [showPreferences, setShowPreferences] = useState(false)
   const [analytics, setAnalytics] = useState(false)
@@ -138,10 +139,10 @@ export default function CookieBanner() {
           role="dialog"
           aria-labelledby="cookie-banner-title"
           aria-describedby="cookie-banner-desc"
-          initial={{ y: 100, opacity: 0 }}
+          initial={reduce ? false : { y: 100, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
-          exit={{ y: 100, opacity: 0 }}
-          transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+          exit={reduce ? { opacity: 0 } : { y: 100, opacity: 0 }}
+          transition={{ duration: reduce ? 0 : 0.4, ease: [0.16, 1, 0.3, 1] }}
           className="fixed bottom-4 left-4 right-4 z-[90] mx-auto max-w-4xl rounded-lg border border-border-subtle bg-bg-surface text-text-primary shadow-2xl md:bottom-6 md:left-6 md:right-6"
         >
           <div className="relative p-5 md:p-6">
@@ -269,7 +270,7 @@ export default function CookieBanner() {
                   <button
                     type="button"
                     onClick={handleAcceptAll}
-                    className="rounded-md bg-accent-red-deep px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-accent-red-light focus:outline-none focus:ring-2 focus:ring-accent-red focus:ring-offset-2 focus:ring-offset-bg-surface"
+                    className="rounded-md bg-accent-red-deep px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-[#A01528] focus:outline-none focus:ring-2 focus:ring-accent-red focus:ring-offset-2 focus:ring-offset-bg-surface"
                   >
                     Hepsini Kabul Et
                   </button>

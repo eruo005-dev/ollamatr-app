@@ -1,5 +1,5 @@
 import { useRef } from 'react'
-import { motion } from 'framer-motion'
+import { motion, useReducedMotion } from 'framer-motion'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useGSAP } from '@gsap/react'
@@ -81,8 +81,8 @@ const roadmapItems: RoadmapItem[] = [
   },
   {
     quarter: 'Planlandı',
-    title: 'Fine-tune platformu',
-    description: 'Topluluk odaklı Türkçe model fine-tune',
+    title: 'İnce ayar platformu',
+    description: 'Topluluk odaklı Türkçe model ince ayarı',
     status: 'planned',
     statusLabel: 'Planlandı',
   },
@@ -245,6 +245,9 @@ function RoadmapTimeline({ items }: { items: RoadmapItem[] }) {
 /* ------------------------------------------------------------------ */
 
 export default function Hakkimizda() {
+  const reduce = useReducedMotion()
+  const hasPartners = partners.length > 0
+
   return (
     <div className="bg-bg-obsidian">
       {/* ========== HERO ========== */}
@@ -253,7 +256,7 @@ export default function Hakkimizda() {
           <motion.p
             className="mb-4 font-body text-sm font-medium uppercase tracking-wider text-accent-red-light"
             variants={fadeUp}
-            initial="hidden"
+            initial={reduce ? false : 'hidden'}
             animate="visible"
             custom={0}
           >
@@ -262,7 +265,7 @@ export default function Hakkimizda() {
           <motion.h1
             className="font-display text-3xl font-bold leading-tight tracking-tight text-text-primary md:text-4xl lg:text-5xl"
             variants={fadeUp}
-            initial="hidden"
+            initial={reduce ? false : 'hidden'}
             animate="visible"
             custom={1}
           >
@@ -271,7 +274,7 @@ export default function Hakkimizda() {
           <motion.p
             className="mx-auto mt-6 max-w-3xl font-body text-lg leading-relaxed text-text-secondary"
             variants={fadeUp}
-            initial="hidden"
+            initial={reduce ? false : 'hidden'}
             animate="visible"
             custom={2}
           >
@@ -285,11 +288,11 @@ export default function Hakkimizda() {
         <div className="mx-auto grid max-w-5xl grid-cols-1 gap-12 md:grid-cols-2 md:gap-16">
           {/* Mission */}
           <motion.div
-            initial={{ opacity: 0, x: -30 }}
+            initial={reduce ? false : { opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: '-100px' }}
             transition={{
-              duration: 0.7,
+              duration: reduce ? 0 : 0.7,
               ease: [0.16, 1, 0.3, 1] as [number, number, number, number],
             }}
           >
@@ -306,12 +309,12 @@ export default function Hakkimizda() {
 
           {/* Story */}
           <motion.div
-            initial={{ opacity: 0, x: 30 }}
+            initial={reduce ? false : { opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: '-100px' }}
             transition={{
-              duration: 0.7,
-              delay: 0.1,
+              duration: reduce ? 0 : 0.7,
+              delay: reduce ? 0 : 0.1,
               ease: [0.16, 1, 0.3, 1] as [number, number, number, number],
             }}
           >
@@ -339,8 +342,8 @@ export default function Hakkimizda() {
           <motion.div
             className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4"
             variants={staggerContainer}
-            initial="hidden"
-            whileInView="visible"
+            initial={reduce ? false : 'hidden'}
+            whileInView={reduce ? undefined : 'visible'}
             viewport={{ once: true, margin: '-50px' }}
           >
             {teamMembers.map((member, idx) => (
@@ -390,6 +393,9 @@ export default function Hakkimizda() {
       </section>
 
       {/* ========== PARTNERS ========== */}
+      {/* Hidden until at least one real ecosystem partner exists — we don't
+       * render a heading + disclaimer over an empty grid. */}
+      {hasPartners && (
       <section className="bg-bg-charcoal px-6 py-24 lg:px-10 lg:py-32">
         <div className="mx-auto max-w-4xl text-center">
           <ScrollReveal>
@@ -415,8 +421,8 @@ export default function Hakkimizda() {
           <motion.div
             className="grid grid-cols-2 gap-6 sm:grid-cols-3 md:grid-cols-6"
             variants={staggerContainer}
-            initial="hidden"
-            whileInView="visible"
+            initial={reduce ? false : 'hidden'}
+            whileInView={reduce ? undefined : 'visible'}
             viewport={{ once: true, margin: '-50px' }}
           >
             {partners.map((partner, idx) => (
@@ -454,6 +460,7 @@ export default function Hakkimizda() {
           </ScrollReveal>
         </div>
       </section>
+      )}
 
       {/* ========== ROADMAP ========== */}
       <section className="px-6 py-24 lg:px-10 lg:py-32">
@@ -482,7 +489,7 @@ export default function Hakkimizda() {
               href="https://t.me/+sK_c-yKLc4E0Y2I0"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center rounded bg-accent-red-deep px-8 py-3.5 font-body text-sm font-semibold uppercase tracking-wider text-white transition-colors duration-200 hover:bg-accent-red-light"
+              className="inline-flex items-center justify-center rounded bg-accent-red-deep px-8 py-3.5 font-body text-sm font-semibold uppercase tracking-wider text-white transition-colors duration-200 hover:bg-[#A01528]"
             >
               Telegram'a Katıl
             </a>

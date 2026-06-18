@@ -87,7 +87,7 @@ const tiers: Tier[] = [
     comingSoon: true,
     features: [
       { text: 'Anahtar teslim KOBİ kurulumu', status: 'coming-soon' },
-      { text: 'Özel model fine-tune', status: 'coming-soon' },
+      { text: 'Özel model ince ayarı', status: 'coming-soon' },
       { text: '7/24 telefon desteği', status: 'coming-soon' },
       { text: 'SLA garantisi', status: 'coming-soon' },
       { text: 'KVKK danışmanlığı', status: 'coming-soon' },
@@ -104,18 +104,18 @@ const tiers: Tier[] = [
 
 interface ComparisonRow {
   name: string
-  ucretsiz: string
-  pro: string
-  kobi: string
+  topluluk: string
+  bagis: string
+  kurumsal: string
 }
 
 const comparisonFeatures: ComparisonRow[] = [
-  { name: 'Özenle seçilmiş Türkçe modeller', ucretsiz: '✓', pro: '✓', kobi: '✓' },
-  { name: 'Yerel çalıştırma', ucretsiz: '✓', pro: '✓', kobi: '✓' },
-  { name: 'Topluluk desteği (Telegram / GitHub)', ucretsiz: '✓', pro: '✓', kobi: '✓' },
-  { name: 'Anahtar teslim kurulum', ucretsiz: '–', pro: '–', kobi: 'Yakında' },
-  { name: 'KVKK danışmanlığı', ucretsiz: '–', pro: '–', kobi: 'Yakında' },
-  { name: 'SLA garantisi', ucretsiz: '–', pro: '–', kobi: 'Yakında' },
+  { name: 'Özenle seçilmiş Türkçe modeller', topluluk: '✓', bagis: '✓', kurumsal: '✓' },
+  { name: 'Yerel çalıştırma', topluluk: '✓', bagis: '✓', kurumsal: '✓' },
+  { name: 'Topluluk desteği (Telegram / GitHub)', topluluk: '✓', bagis: '✓', kurumsal: '✓' },
+  { name: 'Anahtar teslim kurulum', topluluk: '–', bagis: '–', kurumsal: 'Yakında' },
+  { name: 'KVKK danışmanlığı', topluluk: '–', bagis: '–', kurumsal: 'Yakında' },
+  { name: 'SLA garantisi', topluluk: '–', bagis: '–', kurumsal: 'Yakında' },
 ]
 
 /* ------------------------------------------------------------------ */
@@ -234,7 +234,7 @@ export default function Fiyatlandirma() {
               className={`relative flex flex-col rounded-lg border p-8 transition-all duration-300 ${
                 tier.featured
                   ? 'border-accent-red md:scale-[1.02]'
-                  : tier.name === 'KOBİ Paketi'
+                  : tier.comingSoon
                     ? 'border-[#FFB800]/40'
                     : 'border-border-subtle'
               } bg-bg-charcoal`}
@@ -283,7 +283,7 @@ export default function Fiyatlandirma() {
                     href={tier.ctaHref}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex w-full items-center justify-center gap-2 rounded bg-accent-red-deep py-3.5 font-body text-sm font-semibold uppercase tracking-wider text-white transition-all duration-200 hover:bg-accent-red-light hover:scale-[1.02]"
+                    className="inline-flex w-full items-center justify-center gap-2 rounded bg-accent-red-deep py-3.5 font-body text-sm font-semibold uppercase tracking-wider text-white transition-all duration-200 hover:bg-[#A01528] hover:scale-[1.02]"
                   >
                     <Heart className="h-4 w-4" />
                     {tier.cta}
@@ -409,13 +409,13 @@ export default function Fiyatlandirma() {
                       {row.name}
                     </td>
                     <td className="px-4 py-4 text-center font-body text-sm text-text-secondary">
-                      {row.ucretsiz}
+                      {row.topluluk}
                     </td>
                     <td className="border-l border-r border-accent-red/10 bg-accent-red/[0.03] px-4 py-4 text-center font-body text-sm font-medium text-text-primary">
-                      {row.pro}
+                      {row.bagis}
                     </td>
                     <td className="px-4 py-4 text-center font-body text-sm text-text-secondary">
-                      {row.kobi}
+                      {row.kurumsal}
                     </td>
                   </tr>
                 ))}
@@ -484,7 +484,7 @@ export default function Fiyatlandirma() {
               href="https://t.me/+sK_c-yKLc4E0Y2I0"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center rounded bg-accent-red-deep px-8 py-3.5 font-body text-sm font-semibold uppercase tracking-wider text-white transition-colors duration-200 hover:bg-accent-red-light"
+              className="inline-flex items-center justify-center rounded bg-accent-red-deep px-8 py-3.5 font-body text-sm font-semibold uppercase tracking-wider text-white transition-colors duration-200 hover:bg-[#A01528]"
             >
               Telegram'a Katıl
             </a>

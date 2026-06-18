@@ -11,47 +11,14 @@ import {
 import DataStreamCanvas from '@/components/DataStreamCanvas'
 import TiltCard from '@/components/TiltCard'
 import { useScrollReveal } from '@/hooks/useScrollReveal'
+import { MODELS, type Model } from '@/lib/models-data'
 
-/* ───────────────────────── Animated counter ───────────────────────── */
-/* ═══════════════════════════ MODEL DATA ═══════════════════════════ */
-const MODELS = [
-  {
-    name: 'Llama-3-Turkish-8B',
-    desc: "Meta'nın Llama 3'ünün Türkçe fine-tune'u. Genel amaçlı, hafif, hızlı.",
-    ram: 8,
-    ramColor: 'text-warn-yellow',
-  },
-  {
-    name: 'Mistral-Turk-7B',
-    desc: 'Mistral mimarisi üzerinden Türkçe dil modeli. Kod ve metin üretimi.',
-    ram: 7,
-    ramColor: 'text-safe-green',
-  },
-  {
-    name: 'Bora-7B',
-    desc: "Türkiye'de geliştirilen açık kaynak dil modeli. Yerel bağlama duyarlı.",
-    ram: 7,
-    ramColor: 'text-safe-green',
-  },
-  {
-    name: 'Trendyol-LLM-7B-v2',
-    desc: "Türkiye'nin en büyük e-ticaret verisiyle eğitilmiş model.",
-    ram: 7,
-    ramColor: 'text-safe-green',
-  },
-  {
-    name: 'Kardesler-LLM-13B',
-    desc: 'Yüksek performanslı Türkçe model. Karmaşık görevler için ideal.',
-    ram: 13,
-    ramColor: 'text-warn-yellow',
-  },
-  {
-    name: 'Gemma-2-Turkish-9B',
-    desc: 'Google Gemma 2 tabanlı, Türkçe optimize edilmiş model.',
-    ram: 9,
-    ramColor: 'text-warn-yellow',
-  },
-]
+/* ───────────────────────── RAM color helper ───────────────────────── */
+function ramColorClass(ramGB: number): string {
+  if (ramGB < 8) return 'text-safe-green'
+  if (ramGB <= 16) return 'text-warn-yellow'
+  return 'text-accent-red-light'
+}
 
 /* ═══════════════════════════ RAM CALCULATOR HOOK ═══════════════════════════ */
 type RamStatus = 'neutral' | 'safe' | 'warning' | 'danger'
@@ -144,7 +111,7 @@ function HeroSection() {
         <div className="mt-12 flex flex-col items-center justify-center gap-4 sm:flex-row">
           <Link
             to="/modeller"
-            className="inline-flex items-center gap-2 rounded bg-accent-red-deep px-7 py-3.5 text-sm font-semibold uppercase tracking-wider text-white transition-colors duration-200 hover:bg-accent-red-light"
+            className="inline-flex items-center gap-2 rounded bg-accent-red-deep px-7 py-3.5 text-sm font-semibold uppercase tracking-wider text-white transition-colors duration-200 hover:bg-[#A01528]"
           >
             Modelleri Gör
             <ArrowRight className="h-4 w-4" />
@@ -202,15 +169,15 @@ function ModelShowcaseSection() {
             to="/modeller"
             className="mt-3 inline-flex items-center gap-1 text-sm font-medium uppercase tracking-wider text-text-secondary transition-colors hover:text-accent-red-light"
           >
-            İlk 6 popüler model gösteriliyor. Tümünü gör
+            Öne çıkan modeller gösteriliyor. Tümünü gör
             <ArrowRight className="h-3.5 w-3.5" />
           </Link>
         </div>
 
-        {/* Flat responsive grid — cards visible by default */}
+        {/* Flat responsive grid — first 6 from the real catalog, cards visible by default */}
         <div className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3">
           {MODELS.slice(0, 6).map((model) => (
-            <ModelCard key={model.name} model={model} />
+            <ModelCard key={model.id} model={model} />
           ))}
         </div>
       </div>
@@ -218,7 +185,7 @@ function ModelShowcaseSection() {
   )
 }
 
-function ModelCard({ model }: { model: (typeof MODELS)[0] }) {
+function ModelCard({ model }: { model: Model }) {
   return (
     <TiltCard className="h-full">
       <div className="rounded-lg border border-border-subtle bg-bg-charcoal p-6 transition-colors duration-200 hover:border-accent-red/50 h-full flex flex-col">
@@ -226,12 +193,12 @@ function ModelCard({ model }: { model: (typeof MODELS)[0] }) {
           <h3 className="font-display text-base font-bold text-text-primary md:text-lg">
             {model.name}
           </h3>
-          <span className="font-mono shrink-0 rounded border border-border-subtle bg-bg-surface px-2 py-0.5 text-xs uppercase text-text-secondary">
-            {model.ram}GB
+          <span className={`font-mono shrink-0 rounded border border-border-subtle bg-bg-surface px-2 py-0.5 text-xs uppercase ${ramColorClass(model.ramGB)}`}>
+            ~{model.ramGB}GB
           </span>
         </div>
         <p className="mt-3 flex-1 text-sm leading-relaxed text-text-secondary">
-          {model.desc}
+          {model.description}
         </p>
         <Link
           to="/modeller"
@@ -446,7 +413,7 @@ function CTABannerSection() {
             href="https://t.me/+sK_c-yKLc4E0Y2I0"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 rounded bg-accent-red-deep px-7 py-3.5 text-sm font-semibold uppercase tracking-wider text-white transition-colors duration-200 hover:bg-accent-red-light"
+            className="inline-flex items-center gap-2 rounded bg-accent-red-deep px-7 py-3.5 text-sm font-semibold uppercase tracking-wider text-white transition-colors duration-200 hover:bg-[#A01528]"
           >
             Telegram topluluğuna katıl
             <ArrowRight className="h-4 w-4" />

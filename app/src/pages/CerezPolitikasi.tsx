@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion'
+import { motion, useReducedMotion } from 'framer-motion'
 import { Link } from 'react-router'
 import { Cookie, Settings2, ScrollText, ExternalLink } from 'lucide-react'
 import { fadeUp, staggerContainer, staggerChild } from '@/lib/animations'
@@ -70,6 +70,7 @@ function openCookiePreferences(): void {
 }
 
 export default function CerezPolitikasi() {
+  const reduce = useReducedMotion()
   const { ref: tableRef, visible: tableVisible } = useScrollReveal()
   const { ref: preferencesRef, visible: preferencesVisible } = useScrollReveal()
   const { ref: browserRef, visible: browserVisible } = useScrollReveal()
@@ -82,7 +83,7 @@ export default function CerezPolitikasi() {
       {/* ============================================================ */}
       <section className="bg-bg-obsidian px-6 pt-40 pb-16 lg:px-10">
         <motion.div
-          initial="hidden"
+          initial={reduce ? false : 'hidden'}
           animate="visible"
           variants={staggerContainer}
           className="mx-auto max-w-7xl"
@@ -115,8 +116,8 @@ export default function CerezPolitikasi() {
       {/* ============================================================ */}
       <section className="bg-bg-charcoal px-6 py-20 lg:px-10">
         <motion.div
-          initial="hidden"
-          whileInView="visible"
+          initial={reduce ? false : 'hidden'}
+          whileInView={reduce ? undefined : 'visible'}
           viewport={{ once: true, amount: 0.3 }}
           variants={fadeUp}
           className="mx-auto max-w-3xl"
@@ -279,7 +280,7 @@ export default function CerezPolitikasi() {
             <button
               type="button"
               onClick={openCookiePreferences}
-              className="inline-flex items-center gap-2 rounded bg-accent-red-deep px-6 py-3 font-body text-sm font-semibold uppercase tracking-wider text-white transition-all duration-200 hover:scale-[1.02] hover:bg-accent-red-light"
+              className="inline-flex items-center gap-2 rounded bg-accent-red-deep px-6 py-3 font-body text-sm font-semibold uppercase tracking-wider text-white transition-all duration-200 hover:scale-[1.02] hover:bg-[#A01528]"
             >
               <Settings2 className="h-4 w-4" />
               Çerez Tercihlerimi Aç

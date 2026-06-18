@@ -117,7 +117,7 @@ export default function Topluluk() {
               href={TELEGRAM_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-2 rounded bg-accent-red-deep px-8 py-3.5 font-body text-sm font-semibold uppercase tracking-wider text-white transition-all duration-200 hover:bg-accent-red-light hover:scale-[1.02]"
+              className="inline-flex items-center justify-center gap-2 rounded bg-accent-red-deep px-8 py-3.5 font-body text-sm font-semibold uppercase tracking-wider text-white transition-all duration-200 hover:bg-[#A01528] hover:scale-[1.02]"
             >
               <Send className="h-4 w-4" />
               Telegram'a katıl
@@ -297,7 +297,7 @@ export default function Topluluk() {
               href={TELEGRAM_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center rounded bg-accent-red-deep px-8 py-3.5 font-body text-sm font-semibold uppercase tracking-wider text-white transition-all duration-200 hover:bg-accent-red-light hover:scale-[1.02]"
+              className="inline-flex items-center justify-center rounded bg-accent-red-deep px-8 py-3.5 font-body text-sm font-semibold uppercase tracking-wider text-white transition-all duration-200 hover:bg-[#A01528] hover:scale-[1.02]"
             >
               <Send className="mr-2 h-4 w-4" />
               Topluluğa katıl

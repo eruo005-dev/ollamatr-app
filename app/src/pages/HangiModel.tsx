@@ -174,12 +174,23 @@ const SKILL_RAM_TARGET: Record<string, number> = {
   Uzman: 16,
 }
 
+/* ---- Qualitative match label (no false-precise percentage) ---- */
+type MatchLevel = 'Güçlü uyum' | 'İyi uyum' | 'Kısmi uyum'
+
+function matchLevelFromScore(score: number, maxScore: number): MatchLevel {
+  if (maxScore <= 0) return 'Kısmi uyum'
+  const ratio = score / maxScore
+  if (ratio >= 0.75) return 'Güçlü uyum'
+  if (ratio >= 0.5) return 'İyi uyum'
+  return 'Kısmi uyum'
+}
+
 function findBestModel(
   wizardUseCase: string,
   ram: number,
   skill: string,
   priorities: string[]
-): { best: Model; alternatives: Model[]; matchPercent: number } {
+): { best: Model; alternatives: Model[]; matchLevel: MatchLevel } {
   // Treat "Bilmiyorum" (0) as 16GB default for matching
   const effectiveRam = ram > 0 ? ram : 16
 
@@ -232,8 +243,9 @@ function findBestModel(
             pScore += m.ramGB <= 8 ? 15 : m.ramGB <= 12 ? 8 : 0
             break
           case 'Doğruluk (en iyi cevaplar)':
-            // Higher popularity/rating = better answers
-            pScore += (m.popularity / 100) * 10 + (m.rating - 4) * 5
+            // Larger models (more parameters ≈ more RAM) tend to give
+            // stronger answers. Scored on real size, not invented ratings.
+            pScore += m.ramGB >= 8 ? 15 : m.ramGB >= 6 ? 8 : 3
             break
           case 'Çok dilli (İngilizce + Türkçe)':
             pScore += isMultilingual(m) ? 15 : 0
@@ -255,11 +267,12 @@ function findBestModel(
     const ramUtilization = Math.min(1, m.ramGB / effectiveRam)
     score += ramUtilization * 15
 
-    // Popularity tiebreaker (0-5)
-    score += (m.popularity / 100) * 5
-
     return { model: m, score }
   })
+
+  // Theoretical maximum across the four real scoring components above:
+  // use-case (30) + skill affinity (25) + priorities (30) + RAM efficiency (15).
+  const MAX_SCORE = 100
 
   scored.sort((a, b) => b.score - a.score)
 
@@ -280,9 +293,9 @@ function findBestModel(
     else break
   }
 
-  const matchPercent = Math.min(99, Math.round(scored[0]?.score ?? 85))
+  const matchLevel = matchLevelFromScore(scored[0]?.score ?? 0, MAX_SCORE)
 
-  return { best, alternatives, matchPercent }
+  return { best, alternatives, matchLevel }
 }
 
 /* ------------------------------------------------------------------ */
@@ -352,7 +365,7 @@ export default function HangiModel() {
   const [result, setResult] = useState<{
     best: Model
     alternatives: Model[]
-    matchPercent: number
+    matchLevel: MatchLevel
   } | null>(null)
 
   // Cancellation ref for async loading flow
@@ -811,7 +824,7 @@ export default function HangiModel() {
                               : 'rgba(244, 244, 245, 0.08)',
                             borderLeftWidth: selected ? '3px' : '1px',
                             borderLeftColor: selected
-                              ? 'var(--accent-red)'
+                              ? 'var(--accent-red-deep)'
                               : 'transparent',
                           }}
                         >
@@ -819,7 +832,7 @@ export default function HangiModel() {
                             className="h-6 w-6 transition-colors"
                             style={{
                               color: selected
-                                ? 'var(--accent-red)'
+                                ? 'var(--accent-red-deep)'
                                 : 'var(--text-secondary)',
                             }}
                           />
@@ -843,7 +856,7 @@ export default function HangiModel() {
                       className="inline-flex items-center gap-2 rounded px-6 py-3 text-sm font-semibold uppercase tracking-wider text-white transition-all duration-200 disabled:cursor-not-allowed disabled:opacity-40"
                       style={{
                         backgroundColor: useCase
-                          ? 'var(--accent-red)'
+                          ? 'var(--accent-red-deep)'
                           : 'rgba(244,244,245,0.1)',
                       }}
                     >
@@ -925,7 +938,7 @@ export default function HangiModel() {
                       style={{
                         backgroundColor:
                           ram !== null
-                            ? 'var(--accent-red)'
+                            ? 'var(--accent-red-deep)'
                             : 'rgba(244,244,245,0.1)',
                       }}
                     >
@@ -966,7 +979,7 @@ export default function HangiModel() {
                               : 'rgba(244, 244, 245, 0.08)',
                             borderLeftWidth: selected ? '3px' : '1px',
                             borderLeftColor: selected
-                              ? 'var(--accent-red)'
+                              ? 'var(--accent-red-deep)'
                               : 'transparent',
                           }}
                         >
@@ -982,7 +995,7 @@ export default function HangiModel() {
                               className="h-5 w-5"
                               style={{
                                 color: selected
-                                  ? 'var(--accent-red)'
+                                  ? 'var(--accent-red-deep)'
                                   : 'var(--text-secondary)',
                               }}
                             />
@@ -999,7 +1012,7 @@ export default function HangiModel() {
                             className="h-4 w-4 flex-shrink-0 transition-all"
                             style={{
                               color: selected
-                                ? 'var(--accent-red)'
+                                ? 'var(--accent-red-deep)'
                                 : 'transparent',
                               transform: selected
                                 ? 'translateX(0)'
@@ -1026,7 +1039,7 @@ export default function HangiModel() {
                       className="inline-flex items-center gap-2 rounded px-6 py-3 text-sm font-semibold uppercase tracking-wider text-white transition-all duration-200 disabled:cursor-not-allowed disabled:opacity-40"
                       style={{
                         backgroundColor: skill
-                          ? 'var(--accent-red)'
+                          ? 'var(--accent-red-deep)'
                           : 'rgba(244,244,245,0.1)',
                       }}
                     >
@@ -1108,7 +1121,7 @@ export default function HangiModel() {
                       style={{
                         backgroundColor:
                           priorities.length > 0
-                            ? 'var(--accent-red)'
+                            ? 'var(--accent-red-deep)'
                             : 'rgba(244,244,245,0.1)',
                       }}
                     >
@@ -1131,7 +1144,7 @@ export default function HangiModel() {
                           }}
                           className="h-full rounded-full"
                           style={{
-                            backgroundColor: 'var(--accent-red)',
+                            backgroundColor: 'var(--accent-red-deep)',
                             width: '0%',
                           }}
                         />
@@ -1158,14 +1171,14 @@ export default function HangiModel() {
                           backgroundColor: 'var(--bg-charcoal)',
                           borderColor: 'rgba(217, 30, 54, 0.5)',
                           borderLeftWidth: '3px',
-                          borderLeftColor: 'var(--accent-red)',
+                          borderLeftColor: 'var(--accent-red-deep)',
                         }}
                       >
                         {/* Match badge */}
                         <div className="mb-4 flex items-center justify-between">
                           <span className="inline-flex items-center gap-1.5 rounded-full bg-accent-red/10 px-3 py-1 font-mono text-xs text-accent-red-light">
                             <Sparkles className="h-3 w-3" />
-                            %{result.matchPercent} Eşleşme
+                            {result.matchLevel} (tahmini)
                           </span>
                           <span
                             className="inline-flex items-center gap-1 rounded border px-2 py-0.5 font-mono text-xs uppercase"
@@ -1240,7 +1253,7 @@ export default function HangiModel() {
                             href={`https://ollama.com/search?q=${encodeURIComponent(result.best.shortName)}`}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="inline-flex items-center justify-center gap-2 rounded bg-accent-red-deep px-6 py-3 text-sm font-semibold uppercase tracking-wider text-white transition-colors duration-200 hover:bg-accent-red-light"
+                            className="inline-flex items-center justify-center gap-2 rounded bg-accent-red-deep px-6 py-3 text-sm font-semibold uppercase tracking-wider text-white transition-colors duration-200 hover:bg-[#A01528]"
                           >
                             <ArrowUpRight className="h-4 w-4" />
                             Ollama Hub'da Ara
@@ -1331,7 +1344,7 @@ export default function HangiModel() {
                 style={{
                   width: '100%',
                   background:
-                    'var(--accent-red)',
+                    'var(--accent-red-deep)',
                 }}
               />
             </div>
@@ -1372,7 +1385,7 @@ export default function HangiModel() {
                     <div
                       className="relative z-10 mb-5 flex h-16 w-16 items-center justify-center rounded-full border-2"
                       style={{
-                        borderColor: 'var(--accent-red)',
+                        borderColor: 'var(--accent-red-deep)',
                         backgroundColor: 'var(--bg-obsidian)',
                       }}
                     >

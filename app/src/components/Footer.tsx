@@ -21,7 +21,7 @@ const LEGAL_LINKS: { label: string; to: string }[] = [
 ]
 
 const LEGAL_INFO: { label: string; value: string }[] = [
-  { label: 'Veri Sorumlusu', value: 'Bireysel Operatör — [Operatör İsim Soyisim]' },
+  { label: 'Veri Sorumlusu', value: 'Bireysel Operatör — OllamaTR — eruo005-dev (açık kaynak topluluk projesi)' },
   { label: 'İletişim', value: 'iletisim@ollamatr.com' },
   { label: 'Proje Türü', value: 'Topluluk Projesi · Açık Kaynak (MIT)' },
   { label: 'GitHub', value: 'github.com/eruo005-dev/ollamatr-app' },

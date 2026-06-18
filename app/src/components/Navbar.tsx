@@ -57,7 +57,7 @@ export default function Navbar() {
           href="https://t.me/+sK_c-yKLc4E0Y2I0"
           target="_blank"
           rel="noopener noreferrer"
-          className="hidden items-center gap-2 rounded bg-accent-red-deep px-5 py-2.5 text-sm font-semibold uppercase tracking-wider text-white transition-colors duration-200 hover:bg-accent-red-light md:inline-flex"
+          className="hidden items-center gap-2 rounded bg-accent-red-deep px-5 py-2.5 text-sm font-semibold uppercase tracking-wider text-white transition-colors duration-200 hover:bg-[#A01528] md:inline-flex"
         >
           <Send className="h-4 w-4" />
           Telegram'a Katıl

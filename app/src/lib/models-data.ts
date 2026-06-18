@@ -1,4 +1,14 @@
-/** Canonical 12-model Turkish LLM catalog shared between the Modeller catalog page and the HangiModel wizard. */
+/**
+ * Canonical Turkish LLM catalog shared between the Modeller catalog page and the HangiModel wizard.
+ *
+ * HONESTY POLICY (anti-vapor):
+ * Every entry below is a model that VERIFIABLY EXISTS as a real HuggingFace repo
+ * (checked against huggingface.co/api/models, June 2026). The `source` field records
+ * the canonical repo id so any claim can be re-verified. We do NOT carry invented
+ * "rating" / "popularity" / "release date" metrics — those were fabricated and have
+ * been removed. RAM figures are honest approximations for a ~Q4 quant of the stated
+ * parameter count and are labelled as estimates in the UI.
+ */
 
 export type UseCase =
   | 'Genel Amaçlı'
@@ -15,24 +25,19 @@ export type ModelLicense =
   | 'Apache 2.0'
   | 'MIT'
   | 'Google Gemma Terms'
-  | 'Tongyi Qianwen'
-  | 'DeepSeek License'
-  | 'CC-BY-NC 4.0'
-  | 'CC-BY-SA 4.0'
-  | 'Custom (Topluluk)'
 
 export type Model = {
   id: number
   name: string
   shortName: string
+  /** Canonical HuggingFace repo id — the verifiable source of truth for this entry. */
+  source: string
+  /** Approximate RAM for a ~Q4 quant of the stated parameter count (estimate, shown as such in the UI). */
   ramGB: number
   ramBucket: RamBucket
   useCases: UseCase[]
   tags: string[]
   description: string
-  popularity: number
-  releasedAt: string
-  rating: number
   license: ModelLicense
   commercialUse: boolean
   attribution: string
@@ -58,207 +63,123 @@ export function getRamBucket(ramGB: number): RamBucket {
 export const MODELS: Model[] = [
   {
     id: 1,
-    name: 'Llama-3-Turkish-8B',
-    shortName: 'Llama-3-TR',
-    ramGB: 8,
-    ramBucket: getRamBucket(8),
-    useCases: ['Genel Amaçlı', 'Sohbet', 'Soru-Cevap'],
-    tags: ['Açık Kaynak', 'Meta', 'Genel Amaçlı', 'Topluluk'],
+    name: 'Trendyol-LLM-7b-chat-v1.0',
+    shortName: 'Trendyol-LLM',
+    source: 'Trendyol/Trendyol-LLM-7b-chat-v1.0',
+    ramGB: 7,
+    ramBucket: getRamBucket(7),
+    useCases: ['Sohbet', 'Soru-Cevap', 'Özetleme'],
+    tags: ['E-ticaret', 'Trendyol', 'Mistral Tabanlı'],
     description:
-      "Meta'nın Llama 3 mimarisinin Türkçe ince ayarı. Günlük sohbet, soru-cevap ve içerik üretimi için dengeli bir genel amaçlı seçenektir.",
-    popularity: 94,
-    releasedAt: '2024-08-12',
-    rating: 4.7,
-    license: 'Meta Llama 3 Community',
+      "Trendyol tarafından Mistral 7B tabanında eğitilmiş Türkçe sohbet modeli. Ürün açıklamaları, müşteri diyalogları ve genel Türkçe sohbet senaryolarında kullanılır.",
+    license: 'Apache 2.0',
     commercialUse: true,
-    attribution: 'Built with Meta Llama 3',
+    attribution: 'Trendyol — Apache 2.0 (Mistral 7B tabanlı)',
   },
   {
     id: 2,
-    name: 'Mistral-Turk-7B',
-    shortName: 'Mistral-TR',
-    ramGB: 7,
-    ramBucket: getRamBucket(7),
-    useCases: ['Genel Amaçlı', 'Kod', 'Özetleme'],
-    tags: ['Mistral', 'Hafif', 'Üretken', 'Hızlı'],
+    name: 'Turkish-Llama-8b-Instruct-v0.1',
+    shortName: 'Turkish-Llama-8b-Instruct',
+    source: 'ytu-ce-cosmos/Turkish-Llama-8b-Instruct-v0.1',
+    ramGB: 8,
+    ramBucket: getRamBucket(8),
+    useCases: ['Genel Amaçlı', 'Sohbet', 'Soru-Cevap'],
+    tags: ['YTÜ COSMOS', 'Llama 3', 'Talimat-Ayarlı', 'Akademik'],
     description:
-      'Mistral mimarisinin Türkçe sürümü. Düşük RAM tüketimiyle hızlı metin üretimi ve kısa kod parçacıkları için uygundur.',
-    popularity: 88,
-    releasedAt: '2024-06-03',
-    rating: 4.5,
-    license: 'Apache 2.0',
+      "Yıldız Teknik Üniversitesi COSMOS ekibi tarafından Llama 3 8B üzerine eğitilmiş talimat-ayarlı Türkçe model. Günlük sohbet, soru-cevap ve genel amaçlı kullanım için dengeli bir seçenektir.",
+    license: 'Meta Llama 3 Community',
     commercialUse: true,
-    attribution: 'Mistral 7B (Apache 2.0)',
+    attribution: 'ytu-ce-cosmos — Built with Meta Llama 3',
   },
   {
     id: 3,
-    name: 'Bora-7B',
-    shortName: 'Bora',
-    ramGB: 7,
-    ramBucket: getRamBucket(7),
-    useCases: ['Sohbet', 'Soru-Cevap', 'Özetleme'],
-    tags: ['Yerli', 'Açık Kaynak', 'Türkçe-Öncelikli'],
-    description:
-      "Türkiye'de geliştirilen açık kaynaklı dil modeli. Yerel kültürel bağlama duyarlı, doğal Türkçe yanıtlar üretir.",
-    popularity: 82,
-    releasedAt: '2024-09-21',
-    rating: 4.4,
-    license: 'Custom (Topluluk)',
-    commercialUse: true,
-    attribution: 'Topluluk lisansı',
-  },
-  {
-    id: 4,
-    name: 'Trendyol-LLM-7B-v2',
-    shortName: 'Trendyol-LLM',
-    ramGB: 7,
-    ramBucket: getRamBucket(7),
-    useCases: ['Sohbet', 'Soru-Cevap', 'Özetleme'],
-    tags: ['E-ticaret', 'Trendyol', 'Müşteri Hizmetleri'],
-    description:
-      "Trendyol'un e-ticaret verisiyle eğitilmiş Türkçe dil modeli. Ürün açıklamaları, müşteri diyalogları ve öneri senaryolarında öne çıkar.",
-    popularity: 90,
-    releasedAt: '2024-07-15',
-    rating: 4.6,
-    license: 'Apache 2.0',
-    commercialUse: true,
-    attribution: 'Trendyol Group — Apache 2.0',
-  },
-  {
-    id: 5,
-    name: 'Kardesler-LLM-13B',
-    shortName: 'Kardeşler-13B',
-    ramGB: 13,
-    ramBucket: getRamBucket(13),
-    useCases: ['Genel Amaçlı', 'Soru-Cevap', 'Özetleme'],
-    tags: ['Yüksek Performans', 'Akademik', 'Uzun Bağlam'],
-    description:
-      'Karmaşık akıl yürütme görevlerinde başarılı, 13 milyar parametreli Türkçe model. Akademik özetleme ve detaylı analizler için tercih edilir.',
-    popularity: 78,
-    releasedAt: '2024-05-08',
-    rating: 4.5,
-    license: 'Custom (Topluluk)',
-    commercialUse: true,
-    attribution: 'Topluluk lisansı',
-  },
-  {
-    id: 6,
-    name: 'Gemma-2-Turkish-9B',
-    shortName: 'Gemma-2-TR',
+    name: 'Turkish-Gemma-9b-v0.1',
+    shortName: 'Turkish-Gemma-9b',
+    source: 'ytu-ce-cosmos/Turkish-Gemma-9b-v0.1',
     ramGB: 9,
     ramBucket: getRamBucket(9),
     useCases: ['Genel Amaçlı', 'Sohbet', 'Çeviri'],
-    tags: ['Google', 'Gemma', 'Çok Dilli'],
+    tags: ['YTÜ COSMOS', 'Gemma', 'Google'],
     description:
-      "Google Gemma 2 tabanlı, Türkçe için optimize edilmiş model. İngilizce-Türkçe çeviri ve günlük sohbet performansı yüksektir.",
-    popularity: 85,
-    releasedAt: '2024-08-30',
-    rating: 4.4,
+      "YTÜ COSMOS ekibinin Google Gemma 9B tabanında eğittiği Türkçe model. Genel sohbet ve diller arası görevlerde kullanılır.",
     license: 'Google Gemma Terms',
     commercialUse: true,
-    attribution: 'Gemma is provided under and subject to the Gemma Terms of Use',
+    attribution: 'ytu-ce-cosmos — Gemma Terms of Use kapsamında sağlanır',
+  },
+  {
+    id: 4,
+    name: 'Turkcell-LLM-7b-v1',
+    shortName: 'Turkcell-LLM',
+    source: 'TURKCELL/Turkcell-LLM-7b-v1',
+    ramGB: 7,
+    ramBucket: getRamBucket(7),
+    useCases: ['Genel Amaçlı', 'Sohbet', 'Soru-Cevap'],
+    tags: ['Turkcell', 'Mistral Tabanlı', 'Kurumsal'],
+    description:
+      "Turkcell tarafından Mistral mimarisi üzerine eğitilmiş Türkçe dil modeli. Genel amaçlı Türkçe metin üretimi ve soru-cevap için kullanılır.",
+    license: 'Apache 2.0',
+    commercialUse: true,
+    attribution: 'Turkcell — Apache 2.0 (Mistral tabanlı)',
+  },
+  {
+    id: 5,
+    name: 'Kocdigital-LLM-8b-v0.1',
+    shortName: 'Kocdigital-LLM',
+    source: 'KOCDIGITAL/Kocdigital-LLM-8b-v0.1',
+    ramGB: 8,
+    ramBucket: getRamBucket(8),
+    useCases: ['Genel Amaçlı', 'Soru-Cevap', 'Özetleme'],
+    tags: ['KoçDigital', 'Llama 3', 'Kurumsal'],
+    description:
+      "KoçDigital tarafından Llama 3 8B tabanında eğitilmiş Türkçe model. Genel amaçlı kurumsal kullanım, soru-cevap ve özetleme için uygundur.",
+    license: 'Meta Llama 3 Community',
+    commercialUse: true,
+    attribution: 'KoçDigital — Built with Meta Llama 3',
+  },
+  {
+    id: 6,
+    name: 'Commencis-LLM',
+    shortName: 'Commencis-LLM',
+    source: 'Commencis/Commencis-LLM',
+    ramGB: 7,
+    ramBucket: getRamBucket(7),
+    useCases: ['Soru-Cevap', 'Özetleme', 'Sohbet'],
+    tags: ['Commencis', 'Mistral Tabanlı', 'Finans'],
+    description:
+      "Commencis tarafından Mistral 7B tabanında eğitilmiş, finans alanına yönelik Türkçe dil modeli. Soru-cevap ve özetleme görevlerinde kullanılır.",
+    license: 'Apache 2.0',
+    commercialUse: true,
+    attribution: 'Commencis — Apache 2.0 (Mistral 7B tabanlı)',
   },
   {
     id: 7,
-    name: 'Turkish-Mistral-Instruct-7B',
-    shortName: 'TR-Mistral-Inst',
-    ramGB: 8,
-    ramBucket: getRamBucket(8),
-    useCases: ['Soru-Cevap', 'Özetleme', 'Sohbet'],
-    tags: ['Talimat-Ayarlı', 'Mistral', 'Asistan'],
+    name: 'kanarya-2b',
+    shortName: 'kanarya-2b',
+    source: 'asafaya/kanarya-2b',
+    ramGB: 3,
+    ramBucket: getRamBucket(3),
+    useCases: ['Genel Amaçlı', 'Sohbet'],
+    tags: ['Açık Kaynak', 'Hafif', 'Düşük RAM', 'Edge'],
     description:
-      'Talimat ayarlamasıyla güçlendirilmiş Türkçe Mistral varyantı. Yapay zeka asistanı kurulumları için kullanıcı yönergelerine sadık kalır.',
-    popularity: 80,
-    releasedAt: '2024-04-19',
-    rating: 4.3,
+      "asafaya tarafından yayımlanan 2 milyar parametreli açık kaynaklı Türkçe dil modeli. Düşük RAM'li sistemler ve uç cihazlar için hafif bir seçenektir.",
     license: 'Apache 2.0',
     commercialUse: true,
-    attribution: 'Mistral 7B (Apache 2.0)',
+    attribution: 'asafaya — Apache 2.0',
   },
   {
     id: 8,
-    name: 'Phi-3-Turkish-Mini-4B',
-    shortName: 'Phi-3-TR-Mini',
-    ramGB: 4,
-    ramBucket: getRamBucket(4),
-    useCases: ['Sohbet', 'Soru-Cevap', 'Özetleme'],
-    tags: ['Microsoft', 'Mini', 'Düşük RAM', 'Edge'],
+    name: 'turkish-gpt2-large-750m-instruct-v0.1',
+    shortName: 'turkish-gpt2-large-instruct',
+    source: 'ytu-ce-cosmos/turkish-gpt2-large-750m-instruct-v0.1',
+    ramGB: 2,
+    ramBucket: getRamBucket(2),
+    useCases: ['Sohbet', 'Soru-Cevap'],
+    tags: ['YTÜ COSMOS', 'GPT-2', 'Hafif', 'Düşük RAM'],
     description:
-      "Microsoft Phi-3 Mini'nin Türkçe sürümü. 4 GB RAM'de çalışacak kadar hafiftir; eski dizüstüler ve uç cihazlar için idealdir.",
-    popularity: 72,
-    releasedAt: '2024-10-05',
-    rating: 4.2,
+      "YTÜ COSMOS ekibinin 750M parametreli talimat-ayarlı Türkçe GPT-2 modeli. Çok düşük kaynak tüketimiyle basit sohbet ve soru-cevap için uygundur.",
     license: 'MIT',
     commercialUse: true,
-    attribution: 'Microsoft Phi-3 (MIT)',
-  },
-  {
-    id: 9,
-    name: 'Qwen2-Turkish-7B',
-    shortName: 'Qwen2-TR',
-    ramGB: 7,
-    ramBucket: getRamBucket(7),
-    useCases: ['Genel Amaçlı', 'Çeviri', 'Sohbet'],
-    tags: ['Alibaba', 'Qwen', 'Çok Dilli', 'Çeviri'],
-    description:
-      "Alibaba Qwen2 ailesinin Türkçe ince ayarı. Çok dilli yapıyla güçlü çeviri ve diller arası karşılaştırma görevlerinde başarılıdır.",
-    popularity: 76,
-    releasedAt: '2024-09-12',
-    rating: 4.3,
-    license: 'Tongyi Qianwen',
-    commercialUse: true,
-    attribution: 'Qwen2 — Tongyi Qianwen License',
-  },
-  {
-    id: 10,
-    name: 'Command-R-Turkish-35B',
-    shortName: 'Command-R-TR',
-    ramGB: 48,
-    ramBucket: getRamBucket(48),
-    useCases: ['Genel Amaçlı', 'Soru-Cevap', 'Özetleme'],
-    tags: ['Cohere', 'RAG', 'Kurumsal', 'Uzun Bağlam'],
-    description:
-      "Cohere Command R mimarisinin Türkçe sürümü. RAG iş akışları, belge sorgulama ve kurumsal bilgi tabanı senaryoları için tasarlanmıştır.",
-    popularity: 68,
-    releasedAt: '2024-03-27',
-    rating: 4.6,
-    license: 'CC-BY-NC 4.0',
-    commercialUse: false,
-    attribution: 'Cohere Command-R — CC-BY-NC 4.0 (yalnızca araştırma)',
-  },
-  {
-    id: 11,
-    name: 'DeepSeek-Turkish-7B',
-    shortName: 'DeepSeek-TR',
-    ramGB: 8,
-    ramBucket: getRamBucket(8),
-    useCases: ['Kod', 'Soru-Cevap', 'Genel Amaçlı'],
-    tags: ['DeepSeek', 'Akıl Yürütme', 'Geliştirici', 'Matematik'],
-    description:
-      "DeepSeek'in akıl yürütme odaklı Türkçe modeli. Algoritmik düşünme, matematiksel adım adım çözümler ve teknik soru-cevap için güçlüdür.",
-    popularity: 74,
-    releasedAt: '2024-11-02',
-    rating: 4.4,
-    license: 'DeepSeek License',
-    commercialUse: true,
-    attribution: 'DeepSeek License',
-  },
-  {
-    id: 12,
-    name: 'SQLCoder-TR-7B',
-    shortName: 'SQLCoder-TR',
-    ramGB: 8,
-    ramBucket: getRamBucket(8),
-    useCases: ['Kod', 'Soru-Cevap'],
-    tags: ['SQL', 'Veritabanı', 'Geliştirici', 'Niş'],
-    description:
-      'Doğal dildeki Türkçe sorulardan SQL üretmeye odaklanmış kod modeli. Veritabanı analistleri ve BI ekipleri için özelleşmiştir.',
-    popularity: 64,
-    releasedAt: '2024-10-22',
-    rating: 4.5,
-    license: 'CC-BY-SA 4.0',
-    commercialUse: true,
-    attribution: 'Defog SQLCoder — CC-BY-SA 4.0',
+    attribution: 'ytu-ce-cosmos — MIT',
   },
 ]
 

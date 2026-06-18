@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router'
-import { AnimatePresence, motion } from 'framer-motion'
+import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
 import {
   Shield,
   CheckCircle2,
@@ -57,7 +57,7 @@ const checklistItems: ChecklistItem[] = [
   {
     article: 'Madde 15',
     title: 'Veri İhlali Bildirimi',
-    desc: 'Yerel işleme veri ihlali riskini önemli ölçüde azaltır; ancak risk asla sıfır değildir. Veri ihlali halinde KVKK Kurulu’na 72 saat içinde bildirimde bulunma yükümlülüğümüz vardır ve bir İhlal Müdahale Planı sürdürülmektedir.',
+    desc: 'Yerel işleme veri ihlali riskini önemli ölçüde azaltır; ancak risk asla sıfır değildir. Bir veri ihlali halinde KVKK Kurulu’na 72 saat içinde bildirimde bulunulacak ve etkilenen ilgili kişiler bilgilendirilecektir.',
     label: 'MADDE 15: VERİ İHLALİ BİLDİRİMİ',
   },
 ]
@@ -150,6 +150,7 @@ function TrustPillarCard({ pillar, index }: { pillar: (typeof trustPillars)[numb
 
 function ExpandableChecklistItem({ item }: { item: ChecklistItem }) {
   const [open, setOpen] = useState(false)
+  const reduce = useReducedMotion()
 
   return (
     <div className="border-b border-border-subtle">
@@ -178,10 +179,10 @@ function ExpandableChecklistItem({ item }: { item: ChecklistItem }) {
       <AnimatePresence initial={false} mode="wait">
         {open && (
           <motion.div
-            initial={{ height: 0, opacity: 0 }}
+            initial={reduce ? false : { height: 0, opacity: 0 }}
             animate={{ height: 'auto', opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.25, ease: easeExpoOut }}
+            exit={reduce ? { opacity: 0 } : { height: 0, opacity: 0 }}
+            transition={{ duration: reduce ? 0 : 0.25, ease: easeExpoOut }}
             className="overflow-hidden"
           >
             <div className="px-2 pb-5 pl-[4.5rem]">
@@ -209,6 +210,7 @@ interface HeavyContentProps {
 }
 
 function KVKKHeavyContent({ sectionStyle }: HeavyContentProps) {
+  const reduce = useReducedMotion()
   const { ref: promiseRef, visible: promiseVisible } = useScrollReveal()
   const { ref: diagramRef, visible: diagramVisible } = useScrollReveal()
   const { ref: checklistRef, visible: checklistVisible } = useScrollReveal()
@@ -291,8 +293,8 @@ function KVKKHeavyContent({ sectionStyle }: HeavyContentProps) {
                   OllamaTR (Yerel)
                 </div>
                 <motion.div
-                  animate={{ opacity: [0.6, 1, 0.6] }}
-                  transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+                  animate={reduce ? undefined : { opacity: [0.6, 1, 0.6] }}
+                  transition={reduce ? undefined : { duration: 2, repeat: Infinity, ease: 'easeInOut' }}
                   className="flex items-center"
                   aria-hidden="true"
                 >
@@ -502,7 +504,7 @@ function KVKKHeavyContent({ sectionStyle }: HeavyContentProps) {
             </p>
             <ul className="mt-3 space-y-1.5 text-sm leading-relaxed text-text-secondary">
               <li>
-                Veri Sorumlusu: <code className="rounded bg-bg-obsidian px-1.5 py-0.5 font-mono text-xs text-warn-yellow">Bireysel Operatör — [Operatör İsim Soyisim]</code>
+                Veri Sorumlusu: <code className="rounded bg-bg-obsidian px-1.5 py-0.5 font-mono text-xs text-warn-yellow">Bireysel Operatör — OllamaTR — eruo005-dev (açık kaynak topluluk projesi)</code>
               </li>
               <li>
                 E-posta:{' '}
@@ -699,7 +701,7 @@ function KVKKHeavyContent({ sectionStyle }: HeavyContentProps) {
               href="https://t.me/+sK_c-yKLc4E0Y2I0"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded bg-accent-red-deep px-7 py-3.5 font-body text-sm font-semibold uppercase tracking-wider text-white transition-colors duration-200 hover:bg-accent-red-light"
+              className="inline-flex items-center gap-2 rounded bg-accent-red-deep px-7 py-3.5 font-body text-sm font-semibold uppercase tracking-wider text-white transition-colors duration-200 hover:bg-[#A01528]"
             >
               Telegram'a Katıl
             </a>

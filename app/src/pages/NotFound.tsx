@@ -24,7 +24,7 @@ export default function NotFound() {
       <div className="mt-8 flex flex-col items-center gap-4 sm:flex-row">
         <Link
           to="/"
-          className="inline-flex items-center justify-center gap-2 rounded bg-accent-red-deep px-7 py-3.5 font-body text-sm font-semibold uppercase tracking-wider text-white transition-colors duration-200 hover:bg-accent-red-light"
+          className="inline-flex items-center justify-center gap-2 rounded bg-accent-red-deep px-7 py-3.5 font-body text-sm font-semibold uppercase tracking-wider text-white transition-colors duration-200 hover:bg-[#A01528]"
         >
           <Home className="h-4 w-4" aria-hidden="true" />
           Ana sayfa
